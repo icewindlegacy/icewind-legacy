@@ -1,0 +1,72 @@
+#AREADATA
+Version     9
+Name        luskan~
+Credits     ~
+Builders    None~
+Kingdom     'Luskan'
+Continent   Faerun
+World       'All'
+VNUMs       687201 687299
+Levels      0 0
+Security    0
+Recall      687201
+Flags       B
+Color       7
+ExitSize    medium
+Created     1758959271
+Changed     1758960327 Sat Sep 27 04:05:27 2025
+End
+
+#MOBILES
+#687201
+the cow king remus~
+The Cow King Remus~
+A strange looking cow
+~
+~
+horse~
+AEG 0 0 0 0 0 0
+30 5 6d9+900 1d1+249 4d9+0 none
+-4 -3 -4 -3
+H 0 0 0
+stand stand male 300
+0 0 large 0 hard ''
+#0
+
+#OBJECTS
+#687201
+east gate of luskan~
+The East Gate of Luskan~
+The East Gate of Luskan~
+~
+portal 0 0 0
+0 0 0 111293 6 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#0
+
+#ROOMS
+#687201
+East Gate of Luskan~
+~
+~
+~
+~
+~
+~
+0 Ca 0 0
+S
+#0
+
+#RESETS
+O 0 687201 -1 687201
+S
+
+#SHOPS
+0
+
+#SPECIALS
+S
+
+#$

@@ -1,0 +1,475 @@
+#PLAYER
+Name Xaiam~
+Id   1747088826
+LogO 1747091282
+Vers 7
+ShD  a human~
+LnD  A human with wild,  black hair and young,  hazel eyes is here.
+~
+Prom '' ~
+Tpld 1
+Race human~
+Sex  1
+Cla  'mage'
+Levl 1
+Plyd 2456
+Scro 22
+Room 900
+Size medium
+HMV  50 50 100 100 200 200
+Exp  1000
+Act DEFGQST
+Act2 CFR
+Comm KNO
+Info ABCD
+LogC 1
+Security 0
+ClrMap   1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+Pos  stand
+Prac 5
+Trai 3
+Ethos  1000
+Alig  750
+ACs 100 100 100 100
+Attr 14 17 14 14 14
+AMod 0 0 0 0 0
+Pass XariuVcZXnQtE~
+Titl  the Newbie~
+Lnm Kalin~
+HairC black hair~
+HairA wild~
+EyeC hazel~
+EyeA young~
+Pnts 40
+TSex 1
+LLev 0
+HMVP 20 100 200
+Cnds  0 0 8 8 0 0 0 0
+Kngdm 1
+Skl 1 0 17 0'acid blast'
+Skl 1 0 17 0'acid rain'
+Skl 1 0 17 0'acid arrow'
+Skl 1 0 17 0'blade barrier'
+Skl 1 0 17 0'burning hands'
+Skl 1 0 17 0'caustic eruption'
+Skl 1 0 17 0'chill touch'
+Skl 1 0 17 0'colour spray'
+Skl 1 0 17 0'cone of cold'
+Skl 1 0 17 0'continual light'
+Skl 1 0 17 0'corrosive burst'
+Skl 1 0 17 0'create food'
+Skl 1 0 17 0'create rose'
+Skl 1 0 17 0'create spring'
+Skl 1 0 17 0'create water'
+Skl 1 0 17 0'dancing boots'
+Skl 1 0 17 0'disruption'
+Skl 1 0 17 0'electrocute'
+Skl 1 0 17 0'fireball'
+Skl 1 0 17 0'flamestrike'
+Skl 1 0 17 0'floating disc'
+Skl 1 0 17 0'gate'
+Skl 1 0 17 0'ion blast'
+Skl 1 0 17 0'lightning bolt'
+Skl 1 0 17 0'magic missile'
+Skl 1 0 17 0'nexus'
+Skl 1 0 17 0'portal'
+Skl 1 0 17 0'project force'
+Skl 1 0 17 0'rushing fist'
+Skl 1 0 17 0'shocking grasp'
+Skl 1 0 17 0'summon'
+Skl 1 0 17 0'summon greater golem'
+Skl 1 0 17 0'summon fire elemental'
+Skl 1 0 17 0'teleport'
+Skl 1 0 17 0'word of recall'
+Skl 1 0 17 0'acid breath'
+Skl 1 0 17 0'fire breath'
+Skl 1 0 17 0'frost breath'
+Skl 1 0 17 0'gas breath'
+Skl 1 0 17 0'lightning breath'
+Skl 1 0 17 0'club'
+Skl 40 0 17 0'dagger'
+Skl 1 0 17 0'mace'
+Skl 1 0 17 0'meditation'
+Skl 1 0 17 0'scrolls'
+Skl 1 0 17 0'spellcraft'
+Skl 1 0 17 0'staves'
+Skl 1 0 17 0'swimming'
+Skl 1 0 17 0'wands'
+Skl 1 0 17 0'recall'
+Gr 'rom basics'
+Gr 'mage basics'
+Gr 'mage default'
+Gr 'conjuration'
+Gr 'evocation'
+End
+
+#O
+Vnum 607
+Nest 0
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 606
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 914
+Nest 1
+Cond 0
+Wear -1
+Cost 2
+QCost 0
+End
+
+#O
+Vnum 915
+Nest 1
+Cond 0
+Wear -1
+Cost 5
+QCost 0
+End
+
+#O
+Vnum 608
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 609
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 603
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 604
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 601
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 601
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 602
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 602
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 605
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 605
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 902
+Nest 1
+Cond 0
+Wear -1
+Cost 150
+QCost 0
+End
+
+#O
+Vnum 902
+Nest 1
+Cond 0
+Wear -1
+Cost 150
+QCost 0
+End
+
+#O
+Vnum 901
+Nest 1
+Cond 0
+Wear -1
+Cost 20
+QCost 0
+End
+
+#O
+Vnum 901
+Nest 1
+Cond 0
+Wear -1
+Cost 20
+QCost 0
+End
+
+#O
+Vnum 903
+Nest 1
+Cond 0
+Wear -1
+Cost 20
+QCost 0
+End
+
+#O
+Vnum 900
+Nest 1
+Cond 0
+Wear -1
+Cost 50
+QCost 0
+End
+
+#O
+Vnum 900
+Nest 1
+Cond 0
+Wear -1
+Cost 50
+QCost 0
+End
+
+#O
+Vnum 905
+Nest 1
+Cond 0
+Wear -1
+Cost 30
+QCost 0
+End
+
+#O
+Vnum 905
+Nest 1
+Cond 0
+Wear -1
+Cost 30
+QCost 0
+End
+
+#O
+Vnum 906
+Nest 1
+Cond 0
+Wear -1
+Cost 20
+QCost 0
+End
+
+#O
+Vnum 906
+Nest 1
+Cond 0
+Wear -1
+Cost 20
+QCost 0
+End
+
+#O
+Vnum 907
+Nest 1
+Cond 0
+Wear -1
+Cost 10
+QCost 0
+End
+
+#O
+Vnum 907
+Nest 1
+Cond 0
+Wear -1
+Cost 10
+QCost 0
+End
+
+#O
+Vnum 908
+Nest 1
+Cond 0
+Wear -1
+Cost 60
+QCost 0
+End
+
+#O
+Vnum 911
+Nest 1
+Cond 0
+Wear -1
+Cost 50
+QCost 0
+End
+
+#O
+Vnum 611
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 916
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 610
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 610
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 610
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 610
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 610
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 610
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 610
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 610
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 610
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 610
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#END

@@ -1,0 +1,454 @@
+#PLAYER
+Name Elwood~
+Id   1732333476
+LogO 1732333667
+Vers 7
+ShD  a human~
+LnD  A human with fine,  grey hair and glazed,  grey eyes is here.
+~
+Prom <%hhp %mm %vmv> ~
+Tpld 1
+Race human~
+Sex  1
+Cla  'fighter'
+Levl 1
+Plyd 191
+Scro 0
+Room 601
+Size medium
+HMV  50 50 100 100 200 200
+Exp  1000
+Act DEFGQST
+Act2 CFR
+Comm KNO
+Info ABCD
+LogC 1
+Security 0
+ClrMap   1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+Pos  stand
+Prac 5
+Trai 3
+Ethos  1000
+Alig  750
+ACs 100 100 100 100
+Attr 17 14 14 14 14
+AMod 0 0 0 0 0
+Pass ElJ9EiyLYmxdc~
+Titl  the Newbie~
+HairC grey hair~
+HairA fine~
+EyeC grey~
+EyeA glazed~
+Pnts 31
+TSex 1
+LLev 0
+HMVP 20 100 200
+Cnds  0 44 46 46 44 0 0 0
+Kngdm 1
+Brd Changes 1719862720
+Skl 1 0 17 0'axe'
+Skl 1 0 17 0'broadsword'
+Skl 1 0 17 0'club'
+Skl 1 0 17 0'dagger'
+Skl 1 0 17 0'hammer'
+Skl 1 0 17 0'longsword'
+Skl 1 0 17 0'shortsword'
+Skl 1 0 17 0'spear'
+Skl 40 0 17 0'sword'
+Skl 1 0 17 0'bash'
+Skl 1 0 17 0'berserk'
+Skl 1 0 17 0'charge'
+Skl 1 0 17 0'counter'
+Skl 1 0 17 0'disarm'
+Skl 1 0 17 0'dodge'
+Skl 1 0 17 0'dual'
+Skl 1 0 17 0'engage'
+Skl 1 0 17 0'enhanced damage'
+Skl 1 0 17 0'kick'
+Skl 1 0 17 0'parry'
+Skl 1 0 17 0'rescue'
+Skl 1 0 17 0'second attack'
+Skl 1 0 17 0'shield block'
+Skl 1 0 17 0'third attack'
+Skl 1 0 17 0'fourth attack'
+Skl 1 0 17 0'fifth attack'
+Skl 1 0 17 0'fast healing'
+Skl 1 0 17 0'glance'
+Skl 1 0 17 0'swimming'
+Skl 1 0 17 0'recall'
+Gr 'rom basics'
+Gr 'fighter basics'
+Gr 'defensive fighting'
+Gr 'offensive fighting'
+End
+
+#O
+Vnum 607
+Nest 0
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 606
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 914
+Nest 1
+Cond 0
+Wear -1
+Cost 2
+QCost 0
+End
+
+#O
+Vnum 915
+Nest 1
+Cond 0
+Wear -1
+Cost 5
+QCost 0
+End
+
+#O
+Vnum 608
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 609
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 603
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 604
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 601
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 601
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 602
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 602
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 605
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 605
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 902
+Nest 1
+Cond 0
+Wear -1
+Cost 150
+QCost 0
+End
+
+#O
+Vnum 902
+Nest 1
+Cond 0
+Wear -1
+Cost 150
+QCost 0
+End
+
+#O
+Vnum 901
+Nest 1
+Cond 0
+Wear -1
+Cost 20
+QCost 0
+End
+
+#O
+Vnum 901
+Nest 1
+Cond 0
+Wear -1
+Cost 20
+QCost 0
+End
+
+#O
+Vnum 903
+Nest 1
+Cond 0
+Wear -1
+Cost 20
+QCost 0
+End
+
+#O
+Vnum 900
+Nest 1
+Cond 0
+Wear -1
+Cost 50
+QCost 0
+End
+
+#O
+Vnum 900
+Nest 1
+Cond 0
+Wear -1
+Cost 50
+QCost 0
+End
+
+#O
+Vnum 905
+Nest 1
+Cond 0
+Wear -1
+Cost 30
+QCost 0
+End
+
+#O
+Vnum 905
+Nest 1
+Cond 0
+Wear -1
+Cost 30
+QCost 0
+End
+
+#O
+Vnum 906
+Nest 1
+Cond 0
+Wear -1
+Cost 20
+QCost 0
+End
+
+#O
+Vnum 906
+Nest 1
+Cond 0
+Wear -1
+Cost 20
+QCost 0
+End
+
+#O
+Vnum 907
+Nest 1
+Cond 0
+Wear -1
+Cost 10
+QCost 0
+End
+
+#O
+Vnum 907
+Nest 1
+Cond 0
+Wear -1
+Cost 10
+QCost 0
+End
+
+#O
+Vnum 908
+Nest 1
+Cond 0
+Wear -1
+Cost 60
+QCost 0
+End
+
+#O
+Vnum 911
+Nest 1
+Cond 0
+Wear -1
+Cost 50
+QCost 0
+End
+
+#O
+Vnum 611
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 916
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 610
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 610
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 610
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 610
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 610
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 610
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 610
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 610
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 610
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 610
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#END

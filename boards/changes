@@ -1,0 +1,325 @@
+#NOTE
+Sender  Om~
+Date    Sat Oct 23 13:18:17 2021~
+Stamp   1635009497
+To      all~
+Subject Change List coming soon.~
+Text
+Change list to come soon.
+~
+End
+
+#NOTE
+Sender  Om~
+Date    Sat Oct 30 21:15:29 2021~
+Stamp   1635642929
+To      all~
+Subject New Change: Random objects!~
+Text
+New Change: Random equipment drops.
+ 
+Now when you kill a mobile, you will likely get a piece of gear.
+Even if you don't see it equipped to them or in their inventory, every mobile
+now has a chance to drop a totally randomized piece of gear and each piece
+is unique, but not all of them are beneficial.
+ 
+Each piece is of four different rarities:
+-Mastercrafted. This is the best, and adds significant value
+-Plain. This will have no special prefix, it's just plain.
+-Heavily-used. This is lesser quality, lesser value.
+-Cursed. This is worst quality, lowest value, and often comes with a nasty drawback.
+ 
+Each piece also has a chance to have a random enchantment:
+-Various spells. These are permanent spell effects such as flight, regeneration, haste, sanctuary etc
+-Lesser bonuses. These are +1 to stats, +5 to hp, mana, move, -1 to saves, etc
+-Regular bonuses. These are +2 to stats, +10 to hp, mana, move, and -2 to saves, etc
+-Greater bonuses. These are +3 to stats, +20 to hp, mana, move, and -5 to saves, etc.
+They also come in negative versions as well, such as vulnerability to fire, cold, lighting, etc
+as well as negative stats, hp, mana, move, etc. 
+ 
+Example: Mastercrafted Ring of Greater Nimbleness - This would have an increased value, and add +3 dex as ell as other bonuses.
+Cursed Armor of Sensitivity to Light - This would have a negative effect, be worth the least money, as well as add vulnerability to light dmg.
+~
+End
+
+#NOTE
+Sender  Om~
+Date    Mon Jul  1 15:35:57 2024~
+Stamp   1719862557
+To      all~
+Subject some changes~
+Text
+Changes: Level requirements for using weapons and armor are removed.
+They will be replaced with stat requirements, though. For example
+if you have a low Strength score, you will not be able to wield a 
+heavy weapon in your off-hand.
+ 
+Additionally, the weight requirement of your off-hand weapon needing to be lighter than
+your primary has been removed. That has never made sense to me as the
+most proficient two-handed fighters often use weapons that are equal in
+weight and balance.
+ 
+Age command added. 
+This command will show your age in MARS time, actual hours played, and 
+your number of logins.
+~
+End
+
+#NOTE
+Sender  Om~
+Date    Mon Jul  1 15:38:40 2024~
+Stamp   1719862720
+To      all~
+Subject re:Age command~
+Text
+The age command has been changed to 'played', to make it more in line
+with modern MMORPG games and their similar commands for checking how
+much time you've put into an individual character.
+~
+End
+
+#NOTE
+Sender  Om~
+Date    Mon Sep 22 02:22:13 2025~
+Stamp   1758522133
+To      all~
+Subject Change to sit,rest,sleep~
+Text
+You may now sit, rest and sleep on items in your inventory.
+
+No longer will you have to 'drop bedroll', 'sleep bedroll', 'get bedroll'
+and forget the dang thing half the time, rushing back to hope that no players or
+trash collector mobiles have absconded with your favorite bedroll you 
+took all that time to break in and make just the way you like it.
+ 
+Now you can target an item in your inventory that is able to be sat,rested
+or slept upon.  'sit bedroll' for example, will automatically drop your
+bedroll and you will sit on it, and when you stand up you will automatically grab it.
+This also works with rest and sleep. 
+~
+End
+
+#NOTE
+Sender  Om~
+Date    Mon Sep 22 02:27:17 2025~
+Stamp   1758522437
+To      all~
+Subject Dragonborn Breathe command~
+Text
+Dragonborn now have access to the 'breathe' command, which will activate
+a breath weapon dependent on the type of dragon they're descended from.
+ 
+Black and Copper dragons - Acid Breath
+Blue and Bronze dragons - Lightning breath
+Brass, Gold and Red dragons - Fire breath
+Green dragons - Poison breath
+Silver and White dragons - Frost breath
+ 
+There is a steep mana cost and time delay after using your breath weapon
+so it is not something you will want to spam. Additionally, if it's an AoE breath weapon
+and there are no enemies present, you will damage yourself with it. So be careful!
+~
+End
+
+#NOTE
+Sender  Om~
+Date    Mon Sep 22 02:30:11 2025~
+Stamp   1758522611
+To      all~
+Subject tracking~
+Text
+Fighters and Druids will now have access to the tracking skill.
+ 
+Tracking a mobile or player will tell you which direction, from
+where you are currently. However, if you have a low tracking skill...
+Let's just say the results will be less than accurate.
+~
+End
+
+#NOTE
+Sender  Om~
+Date    Mon Sep 22 02:44:03 2025~
+Stamp   1758523443
+To      all~
+Subject More skills!~
+Text
+Skills added:
+Butcher, skin, sharpen, blackjack, whirlwind, purify, engage
+ 
+Butcher: You can now turn a corpse into cuts of meat
+Skin: You can skin a corpse for its pelt/epidermis
+Sharpen: You can sharpen a bladed weapon
+Blackjack: You can use a sap to momentarily stun an opponent
+Whirlwind: A powerful melee attack that strikes everything near you
+Purify: You can call upon your deity to purify food and drink to remove poisons
+Engage: Force a target to engage you in combat. If you're over level 5,
+then you can even engage targets who are currently fighting someone else.
+ 
+ 
+Butcher is in anticipation of adding a cooking skill, in which players will
+be able to combine ingredients to create meals. 
+Some meals may even have extra beneficial effects!
+Skinning is in anticipation of the addition of a crafting system for
+making your own armor and weapons. 
+~
+End
+
+#NOTE
+Sender  Om~
+Date    Tue Sep 23 19:24:34 2025~
+Stamp   1758669874
+To      all~
+Subject Critical Strike~
+Text
+Critical Strikes are in.  If you have 91% skill in a weapon, you have a
+1% chance of a critical strike.  92% skill, 2% chance and so on up to a 10%
+chance at 100% weapon skill.  For monks (when the class is added) this will
+also apply tp hand-to-hand skill.  
+~
+End
+
+#NOTE
+Sender  Om~
+Date    Tue Sep 23 22:41:12 2025~
+Stamp   1758681672
+To      all~
+Subject spell memorization~
+Text
+Spell memorization is IN!
+ 
+Casters get spell slots each level. There are 10 'caster levels'
+and each level you earn new slots in a caster level. 
+ 
+If you want to know how many slots of each spell level you
+have available you can type 'slots' and that 
+will show you how many of each level you have.
+If you want to memorize a spell, you simply type 'memorize <spell>'
+If you want to forget a spell memorized, 'forget <spell>'
+To see what spells you have memorized already, 'memlist'
+ 
+The table of spell slots will be available under HELP SPELLSLOTS
+~
+End
+
+#NOTE
+Sender  Om~
+Date    Wed Sep 24 13:45:36 2025~
+Stamp   1758735936
+To      all~
+Subject new classes~
+Text
+New classes: barbarian, bard, monk and paladin
+ 
+Barbarian - Will have access to many of the same skills as a
+fighter, but will also have the ability to rage, increasing
+their combat effectiveness for a short time.
+ 
+Bard - part rogue, part spellcaster, bards are able to cast
+spells through a musical instrument focus and have access
+to powerful buff spells to aid their companions in battle.
+ 
+Monk - An unarmed fighting class, the monk can unleash powerful
+attacks that can daze and stun their opponents and combat techniques
+that can give them the advantage in battle.
+ 
+Paladin - A holy warrior, paladins fight for their deity and for law.
+Paladins are more combat adept than clerics, but lack as many divine
+spells. Though a paladin may 'lay on hands', sacrificing much of their
+health and mana to restore another.
+~
+End
+
+#NOTE
+Sender  Om~
+Date    Wed Sep 24 16:49:49 2025~
+Stamp   1758746989
+To      all~
+Subject skill/spells sorting~
+Text
+I've begun sorting skills and spells by class.
+ 
+One thing you will notice is that if you are a class
+that can cast spells, you have no spells above level 10
+ 
+This is not in error. There are 10 'caster levels', and
+with each character level you gain spells slots and increase
+your caster level.
+ 
+e.g. A level 7 Mage would have a caster level of 4, and be able
+to cast 6 level 1 spells, 6 level 2 spells, 6 level 3 spells, and 
+4 level 4 spells. At character level 8, the caster level would go
+up to 5 and the mage would gain an additional level 4 spell, as 
+well as 3 level 5 spells. There is a full chart in 'help SPELLSLOTS'
+ 
+~
+End
+
+#NOTE
+Sender  Om~
+Date    Thu Sep 25 00:22:19 2025~
+Stamp   1758774139
+To      all~
+Subject bow/crossbow~
+Text
+Bows and crossbows are in. They are not for prolonged combat,
+but rather as a combat opener as the average 'room' in MARS
+is 10' x 10' and it's assumed that in the time it takes to
+draw an arrow from your quiver, nock/load it, and fire that
+your opponent will have closed the distance to melee range
+by the time they're struck with the arrow.
+ 
+Now, I've taken a little liberties with how the system works...
+the only thing you cannot be doing while using a bow is dual wielding
+In real life, soldiers in middle age Hungary were known to have a shield on
+one arm, hold the bow with that same hand, wield a 1h weapon in
+their other hand, and load/draw/fire a bow then
+immediately be able to drop the bow (tethered to their belt)
+and enter into melee combat with a 1h weapon and shield.
+ 
+So that's how I designed this system. It will primarily be for
+the Ranger class once it's added, and it is assumed that since
+it's one of their specialties, a fantasy ranger can at least
+do what a real life human being in the middle agees could do.
+~
+End
+
+#NOTE
+Sender  Mask~
+Date    Sun Sep 28 15:10:04 2025~
+Stamp   1759086604
+To      all~
+Subject Summon Monster I-XI~
+Text
+Summon Monster spell is IN! 
+ 
+Instead of creating a separate spell for each version of Summon Monster, 
+I opted to make it a single spell that checks your level, and then
+summons from a pool of monsters for your level and alignment.
+ 
+e.g. If you're level 2 it will act as Summon Monster I and only the
+monsters from Summon Monster I will appear. But if you cast it at level 3
+You will instead get a monster from Summon Monster II.
+ 
+At present only monsters from I and II are available, but I will
+be adding all the way to IX
+~
+End
+
+#NOTE
+Sender  Mask~
+Date    Sun Sep 28 18:15:57 2025~
+Stamp   1759097757
+To      all~
+Subject Barbarian Rage~
+Text
+Barbarians can now rage, raising their hitroll and damroll by an
+absolutely absurd amount, but also raising their AC an equally
+absurd amount. Barbarians can rage for a very, very short amount
+of time making themselves extremely deadly, but also pretty squishy.
+ 
+And afterwards they're exhausted and unable to rage again for
+quite some time.
+~
+End
+
+#$

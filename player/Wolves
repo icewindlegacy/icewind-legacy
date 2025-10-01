@@ -1,0 +1,468 @@
+#PLAYER
+Name Wolves~
+Id   1722216439
+LogO 1722216741
+Vers 7
+ShD  a dwarf~
+LnD  A dwarf with wild,  red hair and young,  blue eyes is here.
+~
+Prom <%hhp %mm %vmv> ~
+Tpld 1
+Race dwarf~
+Sex  0
+Cla  'druid'
+Levl 1
+Plyd 302
+Scro 22
+Room 601
+Size medium
+HMV  50 50 100 100 200 200
+Exp  1400
+Act DEFGQST
+Act2 CFR
+AfBy JZ
+Comm KNO
+Info ABCD
+LogC 1
+Security 0
+ClrMap   1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+Pos  stand
+Prac 5
+Trai 3
+Ethos  0
+Alig  0
+ACs 100 100 100 100
+Attr 13 13 13 13 18
+AMod 0 0 0 0 0
+Pass WowiE8Tm7aIbE~
+Titl  the Newbie~
+Lnm Brolet~
+HairC red hair~
+HairA wild~
+EyeC blue~
+EyeA young~
+Pnts 48
+TSex 0
+LLev 0
+HMVP 20 100 200
+Cnds  0 40 44 44 40 0 0 0
+Kngdm 2
+Skl 1 0 17 0'acid geyser'
+Skl 1 0 17 0'animal summoning'
+Skl 1 0 17 0'astral walk'
+Skl 1 0 17 0'barkskin'
+Skl 1 0 17 0'bear claws'
+Skl 1 0 17 0'bear fat'
+Skl 1 0 17 0'call lightning'
+Skl 1 0 17 0'chain lightning'
+Skl 1 0 17 0'control weather'
+Skl 1 0 17 0'curse of nature'
+Skl 1 0 17 0'dragonscales'
+Skl 1 0 17 0'earthquake'
+Skl 1 0 17 0'faerie fire'
+Skl 1 0 17 0'faerie fog'
+Skl 1 0 17 0'goodberry'
+Skl 1 0 17 0'hurricane'
+Skl 1 0 17 0'infravision'
+Skl 1 0 17 0'natural armor'
+Skl 1 0 17 0'summon greater wolf'
+Skl 1 0 17 0'summon hawk'
+Skl 1 0 17 0'summon wolf'
+Skl 1 0 17 0'summon tiger'
+Skl 1 0 17 0'telekinetic force'
+Skl 1 0 17 0'axe'
+Skl 1 0 17 0'club'
+Skl 1 0 17 0'dagger'
+Skl 1 0 17 0'great axe'
+Skl 1 0 17 0'hammer'
+Skl 1 0 17 0'longsword'
+Skl 1 0 17 0'rapier'
+Skl 1 0 17 0'shortsword'
+Skl 1 0 17 0'staff'
+Skl 40 0 17 0'sword'
+Skl 1 0 17 0'whip'
+Skl 1 0 17 0'berserk'
+Skl 1 0 17 0'meditation'
+Skl 1 0 17 0'scrolls'
+Skl 1 0 17 0'staves'
+Skl 1 0 17 0'swimming'
+Skl 1 0 17 0'triage'
+Skl 1 0 17 0'wands'
+Skl 1 0 17 0'herbal lore'
+Skl 1 0 17 0'recall'
+Gr 'rom basics'
+Gr 'druid basics'
+Gr 'druid default'
+Gr 'nature magic'
+End
+
+#O
+Vnum 607
+Nest 0
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 606
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 914
+Nest 1
+Cond 0
+Wear -1
+Cost 2
+QCost 0
+End
+
+#O
+Vnum 915
+Nest 1
+Cond 0
+Wear -1
+Cost 5
+QCost 0
+End
+
+#O
+Vnum 608
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 609
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 603
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 604
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 601
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 601
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 602
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 602
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 605
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 605
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 902
+Nest 1
+Cond 0
+Wear -1
+Cost 150
+QCost 0
+End
+
+#O
+Vnum 902
+Nest 1
+Cond 0
+Wear -1
+Cost 150
+QCost 0
+End
+
+#O
+Vnum 901
+Nest 1
+Cond 0
+Wear -1
+Cost 20
+QCost 0
+End
+
+#O
+Vnum 901
+Nest 1
+Cond 0
+Wear -1
+Cost 20
+QCost 0
+End
+
+#O
+Vnum 903
+Nest 1
+Cond 0
+Wear -1
+Cost 20
+QCost 0
+End
+
+#O
+Vnum 900
+Nest 1
+Cond 0
+Wear -1
+Cost 50
+QCost 0
+End
+
+#O
+Vnum 900
+Nest 1
+Cond 0
+Wear -1
+Cost 50
+QCost 0
+End
+
+#O
+Vnum 905
+Nest 1
+Cond 0
+Wear -1
+Cost 30
+QCost 0
+End
+
+#O
+Vnum 905
+Nest 1
+Cond 0
+Wear -1
+Cost 30
+QCost 0
+End
+
+#O
+Vnum 906
+Nest 1
+Cond 0
+Wear -1
+Cost 20
+QCost 0
+End
+
+#O
+Vnum 906
+Nest 1
+Cond 0
+Wear -1
+Cost 20
+QCost 0
+End
+
+#O
+Vnum 907
+Nest 1
+Cond 0
+Wear -1
+Cost 10
+QCost 0
+End
+
+#O
+Vnum 907
+Nest 1
+Cond 0
+Wear -1
+Cost 10
+QCost 0
+End
+
+#O
+Vnum 908
+Nest 1
+Cond 0
+Wear -1
+Cost 60
+QCost 0
+End
+
+#O
+Vnum 911
+Nest 1
+Cond 0
+Wear -1
+Cost 50
+QCost 0
+End
+
+#O
+Vnum 611
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 916
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 610
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 610
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 610
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 610
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 610
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 610
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 610
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 610
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 610
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#O
+Vnum 610
+Nest 1
+Cond 0
+Wear -1
+Cost 0
+QCost 0
+End
+
+#END
