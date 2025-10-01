@@ -1,0 +1,28 @@
+# MUD Runtime Files
+log/
+player/
+gods/
+
+# Compiled Objects
+*.o
+src/o/
+
+# Backup Files
+*~
+*.bak
+*.save
+
+# Binary Executables
+legacy
+nohup.out
+
+# Temporary Files
+tmp/
+*.tmp
+
+# IDE Files
+.vscode/
+.codelite/
+
+# CVS Files
+CVS/
