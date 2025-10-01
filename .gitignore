@@ -23,6 +23,8 @@ tmp/
 # IDE Files
 .vscode/
 .codelite/
+.cvsignore
+src.workspace
 
 # CVS Files
 CVS/
