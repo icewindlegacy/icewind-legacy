@@ -28,3 +28,6 @@ src.workspace
 
 # CVS Files
 CVS/
+
+# Documentation
+MULTICLASS_IMPLEMENTATION.md
