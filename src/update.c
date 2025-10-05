@@ -1006,6 +1006,100 @@ weather_update( void )
 	    break;
     }
 
+    /*
+     * Temperature calculation based on season and time of day
+     */
+    {
+	int base_temp = 70;  /* Base temperature in degrees */
+	int hour_mod = 0;
+	int season_mod = 0;
+	
+	/* Seasonal temperature modifiers */
+	switch ( time_info.month )
+	{
+	    case 0:  /* Hammer - Winter, heavy snow */
+		season_mod = -30;
+		break;
+	    case 1:  /* Alturiak - Winter, lighter snow, warming */
+		season_mod = -20;
+		break;
+	    case 2:  /* Ches - Spring, warm days, cool nights */
+		season_mod = 5;
+		break;
+	    case 3:  /* Tarsakh - Spring, rains frequently */
+		season_mod = 10;
+		break;
+	    case 4:  /* Mirtul - Spring */
+		season_mod = 15;
+		break;
+	    case 5:  /* Kythorn - Summer */
+		season_mod = 25;
+		break;
+	    case 6:  /* Flamerule - Summer, hottest month */
+		season_mod = 35;
+		break;
+	    case 7:  /* Eleasis - Summer */
+		season_mod = 30;
+		break;
+	    case 8:  /* Eleint - Fall, wind brings chill */
+		season_mod = 10;
+		break;
+	    case 9:  /* Marpenoth - Fall, getting colder */
+		season_mod = 0;
+		break;
+	    case 10: /* Uktar - Fall, last month of fall, very chilly */
+		season_mod = -15;
+		break;
+	    case 11: /* Nightal - Winter, snow occasionally */
+		season_mod = -25;
+		break;
+	}
+	
+	/* Time of day temperature modifiers */
+	if ( time_info.hour >= 6 && time_info.hour <= 18 )  /* Daytime */
+	{
+	    if ( time_info.hour >= 12 && time_info.hour <= 16 )  /* Afternoon peak */
+		hour_mod = 10;
+	    else if ( time_info.hour >= 8 && time_info.hour <= 11 )  /* Morning warm-up */
+		hour_mod = 5;
+	    else  /* Early morning/evening */
+		hour_mod = 0;
+	}
+	else  /* Nighttime */
+	{
+	    if ( time_info.hour >= 22 || time_info.hour <= 5 )  /* Deep night */
+		hour_mod = -15;
+	    else  /* Early evening/dawn */
+		hour_mod = -5;
+	}
+	
+	/* Calculate target temperature */
+	int target_temp = base_temp + season_mod + hour_mod;
+	
+	/* Add some randomness */
+	target_temp += dice(1, 10) - 5;
+	
+	/* Gradual temperature change */
+	if ( weather_info.temperature < target_temp )
+	    weather_info.temperature += 1;
+	else if ( weather_info.temperature > target_temp )
+	    weather_info.temperature -= 1;
+	
+	/* Weather effects on temperature */
+	if ( weather_info.sky == SKY_RAINING || weather_info.sky == SKY_LIGHTNING )
+	    weather_info.temperature -= 5;
+	else if ( weather_info.sky == SKY_CLOUDY )
+	    weather_info.temperature -= 2;
+	
+	/* Wind chill effect */
+	if ( weather_info.wind_speed >= WIND_STRONG )
+	    weather_info.temperature -= weather_info.wind_speed;
+	
+	/* Clamp temperature to reasonable range */
+	weather_info.temperature = UMAX( weather_info.temperature, -40 );
+	weather_info.temperature = UMIN( weather_info.temperature, 120 );
+    }
+
     if ( buf[0] == '\0' )
     {
 	switch( number_bits( 5 ) )
@@ -1115,6 +1209,144 @@ void char_update( void )
 		ch->move += move_gain( ch );
 	    else
 		ch->move = ch->max_move;
+	}
+
+	/* Temperature effects on characters */
+	if ( !IS_NPC( ch ) && ch->level < LEVEL_IMMORTAL )
+	{
+	    bool has_campfire = FALSE;
+	    bool has_shelter = FALSE;
+	    OBJ_DATA *obj;
+	    
+	    /* Check for campfire in room */
+	    for ( obj = ch->in_room->contents; obj != NULL; obj = obj->next_content )
+	    {
+		if ( obj->pIndexData->vnum == OBJ_VNUM_CAMPFIRE )
+		{
+		    has_campfire = TRUE;
+		    break;
+		}
+	    }
+	    
+	    /* Check for shelter (furniture) */
+	    if ( ch->furniture_in != NULL && ch->furniture_in->item_type == ITEM_FURNITURE )
+		has_shelter = TRUE;
+	    
+	    /* Indoor recovery - always recover from wet/freezing when indoors */
+	    if ( !IS_OUTSIDE( ch ) )
+	    {
+		
+		if ( IS_SET( ch->act2, PLR_FREEZING ) )
+		{
+		    REMOVE_BIT( ch->act2, PLR_FREEZING );
+		    send_to_char( "You warm up indoors.\n\r", ch );
+		}
+		if ( IS_SET( ch->act2, PLR_WET ) && number_percent() < 50 )  /* 50% chance per tick indoors */
+		{
+		    REMOVE_BIT( ch->act2, PLR_WET );
+		    send_to_char( "You dry off indoors.\n\r", ch );
+		}
+	    }
+	    
+	    /* Outdoor weather effects */
+	    if ( IS_OUTSIDE( ch ) )
+	    {
+	    
+	    /* Cold effects */
+	    if ( weather_info.temperature < 32 )  /* Freezing */
+	    {
+		if ( !has_campfire && !has_shelter )
+		{
+		    /* Get wet from snow/rain */
+		    if ( weather_info.sky == SKY_RAINING || weather_info.sky == SKY_LIGHTNING )
+		    {
+			if ( !IS_SET( ch->act2, PLR_WET ) )
+			    send_to_char( "You get soaked by the rain!\n\r", ch );
+			SET_BIT( ch->act2, PLR_WET );
+		    }
+		    
+		    /* Snow makes it worse */
+		    if ( weather_info.sky == SKY_RAINING && weather_info.temperature < 20 )
+		    {
+			if ( !IS_SET( ch->act2, PLR_FREEZING ) )
+			    send_to_char( "The freezing rain makes you start shivering!\n\r", ch );
+			SET_BIT( ch->act2, PLR_FREEZING );
+		    }
+		    else if ( weather_info.temperature < 10 )
+		    {
+			if ( !IS_SET( ch->act2, PLR_FREEZING ) )
+			    send_to_char( "The bitter cold makes you start freezing!\n\r", ch );
+			SET_BIT( ch->act2, PLR_FREEZING );
+		    }
+		    
+		    /* Wet + freezing = faster death */
+		    if ( IS_SET( ch->act2, PLR_WET ) && IS_SET( ch->act2, PLR_FREEZING ) )
+		    {
+			damage( ch, ch, 2, TYPE_HIT + 31, DAM_COLD, TRUE );
+			send_to_char( "The freezing cold and wet conditions are deadly!\n\r", ch );
+		    }
+		    else if ( IS_SET( ch->act2, PLR_FREEZING ) )
+		    {
+			damage( ch, ch, 1, TYPE_HIT + 31, DAM_COLD, TRUE );
+			send_to_char( "You are freezing to death!\n\r", ch );
+		    }
+		}
+		else
+		{
+		    /* Warm up near fire or in shelter */
+		    if ( has_campfire || has_shelter )
+		    {
+			REMOVE_BIT( ch->act2, PLR_FREEZING );
+			if ( number_percent() < 20 )  /* 20% chance per tick */
+			    REMOVE_BIT( ch->act2, PLR_WET );
+			if ( IS_SET( ch->act2, PLR_FREEZING ) == FALSE )
+			    send_to_char( "You warm up by the fire.\n\r", ch );
+		    }
+		}
+	    }
+	    else if ( weather_info.temperature < 50 )  /* Chilly */
+	    {
+		/* Can get wet but not freezing */
+		if ( weather_info.sky == SKY_RAINING || weather_info.sky == SKY_LIGHTNING )
+		{
+		    if ( !IS_SET( ch->act2, PLR_WET ) )
+			send_to_char( "You get wet from the rain.\n\r", ch );
+		    SET_BIT( ch->act2, PLR_WET );
+		}
+		
+		/* Warm up if near fire or in shelter */
+		if ( has_campfire || has_shelter )
+		{
+		    if ( number_percent() < 30 )  /* 30% chance per tick */
+			REMOVE_BIT( ch->act2, PLR_WET );
+		}
+	    }
+	    
+	    /* Heat effects */
+	    if ( weather_info.temperature > 100 )  /* Blistering hot */
+	    {
+		/* Increased thirst and fatigue */
+		gain_condition( ch, COND_THIRST, -3 );
+		gain_condition( ch, COND_TIRED, -2 );
+		
+		if ( number_percent() < 10 )  /* 10% chance per tick */
+		    send_to_char( "The heat is oppressive and exhausting.\n\r", ch );
+	    }
+	    else if ( weather_info.temperature > 85 )  /* Hot */
+	    {
+		/* Moderate thirst increase */
+		gain_condition( ch, COND_THIRST, -1 );
+		gain_condition( ch, COND_TIRED, -1 );
+	    }
+	    
+	    /* Wet penalty - double move loss when walking */
+	    if ( IS_SET( ch->act2, PLR_WET ) && ch->move > 0 )
+	    {
+		ch->move = UMAX( 0, ch->move - 1 );  /* Extra move loss */
+		if ( number_percent() < 5 )  /* 5% chance per tick */
+		    send_to_char( "Your wet clothes slow you down.\n\r", ch );
+	    }
+	    }  /* End of outdoor weather effects */
 	}
 
 	if ( ch->position == POS_STUNNED )

@@ -158,6 +158,15 @@ move_char( CHAR_DATA *ch, int door, bool follow )
 	return;
     }
 
+    /* Check if room is entangled - blocks movement for all except caster */
+    if ( IS_SET( in_room->room_flags, ROOM_ENTANGLED ) 
+    &&   ( IS_NPC( ch ) || !IS_IMMORTAL( ch ) || !IS_SET( ch->act, PLR_HOLYLIGHT ) ) )
+    {
+	send_to_char( "Tangling roots and brambles block your way!\n\r", ch );
+	act( "$n struggles against the entangling roots.", ch, NULL, NULL, TO_ROOM );
+	return;
+    }
+
     if ( IS_DEAD( ch ) && in_room->area != to_room->area )
     {
 	send_to_char( "Alas, you cannot go that way.\n\r", ch );
@@ -1951,6 +1960,7 @@ do_stand( CHAR_DATA *ch, char *argument )
 	    send_to_char( "You wake and stand up.\n\r", ch );
 	    act( "$n wakes and stands up.", ch, NULL, NULL, TO_ROOM );
 	    ch->on = NULL;
+	    ch->furniture_in = NULL;
 	}
 	else if (IS_SET(obj->value[2],STAND_AT))
 	{
@@ -1977,6 +1987,7 @@ do_stand( CHAR_DATA *ch, char *argument )
 	    send_to_char( "You stand up.\n\r", ch );
 	    act( "$n stands up.", ch, NULL, NULL, TO_ROOM );
 	    ch->on = NULL;
+	    ch->furniture_in = NULL;
 	}
 	else if (IS_SET(obj->value[2],STAND_AT))
 	{
@@ -2098,6 +2109,12 @@ else
     	}
 
 	ch->on = obj;
+	
+	/* Set furniture_in for items that provide shelter (rest_in, sleep_in) */
+	if ( IS_SET(obj->value[2], REST_IN) || IS_SET(obj->value[2], SLEEP_IN) )
+	    ch->furniture_in = obj;
+	else
+	    ch->furniture_in = NULL;
     }
 
     switch ( ch->position )
@@ -2277,6 +2294,12 @@ else
 	}
 
 	ch->on = obj;
+	
+	/* Set furniture_in for items that provide shelter (sit_in) */
+	if ( IS_SET(obj->value[2], SIT_IN) )
+	    ch->furniture_in = obj;
+	else
+	    ch->furniture_in = NULL;
     }
     switch (ch->position)
     {
@@ -2447,6 +2470,13 @@ else
 	    }
 
 	    ch->on = obj;
+	    
+	    /* Set furniture_in for items that provide shelter (sleep_in) */
+	    if ( IS_SET(obj->value[2], SLEEP_IN) )
+		ch->furniture_in = obj;
+	    else
+		ch->furniture_in = NULL;
+	    
 	    if (IS_SET(obj->value[2],SLEEP_AT))
 	    {
 		act("You go to sleep at $p.",ch,obj,NULL,TO_CHAR);

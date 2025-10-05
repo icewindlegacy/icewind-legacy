@@ -187,11 +187,16 @@ struct	cmd_type	cmd_table	[] =
     { "show",		do_show,	POS_DEAD,	 0,  LOG_NORMAL, 0,4 },
     { "spells",		do_spells,	POS_DEAD,	 0,  LOG_NORMAL, 0,4 },
     { "story",		do_story,	POS_DEAD,	 0,  LOG_NORMAL, 0,4 },
+    { "target",		do_target,	POS_DEAD,	 0,  LOG_NORMAL, 1 },
     { "time",		do_time,	POS_DEAD,	 0,  LOG_NORMAL, 0,4 },
     { "triage",		do_triage,	POS_RESTING,	 0,  LOG_NORMAL, CMD_DEAD,4 },
     { "track",		do_track,	POS_RESTING,	 0,  LOG_NORMAL, CMD_DEAD,4 },
+    { "untarget",	do_untarget,	POS_DEAD,	 0,  LOG_NORMAL, 1 },
+    { "control",	do_control_animal, POS_RESTING,	 0,  LOG_NORMAL, 0,4 },
+    { "release",	do_release,	POS_DEAD,	 0,  LOG_NORMAL, 0,4 },
     { "typo",		do_typo,	POS_DEAD,	 0,  LOG_NORMAL, 0,4 },
     { "weather",	do_weather,	POS_RESTING,	 0,  LOG_NORMAL, 0,4 },
+    { "temperature",	do_temperature,	POS_RESTING,	 L8,  LOG_NORMAL, 0,4 },
     { "who",		do_who,		POS_DEAD,	 0,  LOG_NORMAL, 0,4 },
     { "idlers",        do_idle,     POS_DEAD,    0,  LOG_NORMAL, 0,4 },
     { "whois",		do_whois,	POS_DEAD,	L8,  LOG_NORMAL, 0,4 },
@@ -291,13 +296,33 @@ struct	cmd_type	cmd_table	[] =
     { "envenom",	do_envenom,	POS_RESTING,	 0,  LOG_NORMAL, CMD_DEAD|CMD_UNHIDE,5 },
     { "empty",		do_empty,		POS_RESTING,	 0,  LOG_NORMAL, CMD_DEAD|CMD_UNHIDE,5 },
     { "fill",		do_fill,	POS_RESTING,	 0,  LOG_NORMAL, CMD_DEAD|CMD_UNHIDE ,5},
+    { "forage",		do_forage,	POS_STANDING,	 0,  LOG_NORMAL, 0, 7},
+    { "hunt",		do_hunt,	POS_STANDING,	 0,  LOG_NORMAL, 0, 4},
+    { "fish",		do_fish,	POS_STANDING,	 0,  LOG_NORMAL, 0, 4},
+    { "cook",		do_cook,	POS_STANDING,	 0,  LOG_NORMAL, 0, 4},
+    { "campfire",	do_campfire,	POS_STANDING,	 0,  LOG_NORMAL, 0, 4},
+    { "gather",		do_gather,	POS_STANDING,	 0,  LOG_NORMAL, 0, 4},
+    { "build_shelter",	do_build_shelter,	POS_STANDING,	 0,  LOG_NORMAL, 0, 4},
+    { "blanket",		do_blanket,	POS_STANDING,	 0,  LOG_NORMAL, 0, 4},
+    { "phouse",		do_house,	POS_RESTING,	 0,  1,  LOG_NORMAL, 1 },
+    { "objbuy",		do_objbuy,	POS_RESTING,	 0,  1,  LOG_NORMAL, 1 },
+    { "mobbuy",		do_mobbuy,	POS_RESTING,	 0,  1,  LOG_NORMAL, 1 },
+    { "hdesc",		do_hdesc,	POS_RESTING,	 0,  1,  LOG_NORMAL, 1 },
+    { "invite",		do_invite,	POS_RESTING,	 0,  1,  LOG_NORMAL, 1 },
+    { "home",		do_home,	POS_RESTING,	 0,  1,  LOG_NORMAL, 1 },
+    { "hname",		do_hname,	POS_RESTING,	 0,  1,  LOG_NORMAL, 1 },
+    { "boot",           do_boot,        POS_RESTING,     0,  1,  LOG_NORMAL, 1 },
+    { "fire",		do_fire,	POS_STANDING,	 0,  LOG_NORMAL, 0, 4},
+    { "draw",		do_draw,	POS_STANDING,	 0,  LOG_NORMAL, 0, 4},
+    { "dislodge",	do_dislodge,	POS_STANDING,	 0,  LOG_NORMAL, 0, 4},
+    { "reload",		do_reload,	POS_STANDING,	 0,  LOG_NORMAL, 0, 4},
     { "give",		do_give,	POS_RESTING,	 0,  LOG_NORMAL, CMD_DEAD|CMD_UNHIDE ,5},
     { "give_money",	do_tender,	POS_RESTING,	 0,  LOG_NORMAL, CMD_DEAD|CMD_UNHIDE ,5},
     { "glance",		do_glance,	POS_RESTING,	 0,  LOG_NORMAL, CMD_DEAD,5 },
     { "heal",		do_heal,	POS_RESTING,	 0,  LOG_NORMAL, CMD_DEAD|CMD_UNHIDE,5 },
     { "hold",		do_wear,	POS_RESTING,	 0,  LOG_NORMAL, CMD_DEAD|CMD_UNHIDE,5 },
     { "invoke",		do_invoke,	POS_STANDING,	 0,  LOG_NORMAL, CMD_DEAD|CMD_UNHIDE,5 },
-    { "join",		do_join,	POS_RESTING,	 0,  LOG_NORMAL, CMD_DEAD|CMD_UNHIDE,5 },
+    { "hjoin",	do_house_join,	POS_RESTING,	 0,  LOG_NORMAL, CMD_DEAD|CMD_UNHIDE,5 },
     { "knock",		do_knock,	POS_RESTING,	 0,  LOG_NORMAL, CMD_DEAD,5 },
     { "list",		do_list,	POS_RESTING,	 0,  LOG_NORMAL, CMD_DEAD,5 },
     { "lock",		do_lock,	POS_RESTING,	 0,  LOG_NORMAL, CMD_DEAD|CMD_UNHIDE,5 },
@@ -342,9 +367,7 @@ struct	cmd_type	cmd_table	[] =
     { "dk",		    do_dirt,	POS_FIGHTING,	 0,  LOG_NORMAL, CMD_DEAD|CMD_UNHIDE,7 },
     { "disarm",		do_disarm,	POS_FIGHTING,	 0,  LOG_NORMAL, CMD_DEAD|CMD_UNHIDE,7 },
     { "engage",		do_engage,	POS_FIGHTING,	 0,  LOG_NORMAL, CMD_DEAD|CMD_UNHIDE,7 },
-  { "draw",		do_draw,	POS_STANDING,	 0,  LOG_NORMAL, CMD_DEAD|CMD_UNHIDE }, 
   { "nock",		do_nock,	POS_STANDING,	 0,  LOG_NORMAL, CMD_DEAD|CMD_UNHIDE }, 
-  { "reload",		do_nock,	POS_STANDING,	 0,  LOG_NORMAL, CMD_DEAD|CMD_UNHIDE }, 
   { "shoot",		do_shoot,	POS_STANDING,	 0,  LOG_NORMAL, CMD_DEAD|CMD_UNHIDE }, 
     { "flee",		do_flee,	POS_FIGHTING,	 0,  LOG_NORMAL, CMD_DEAD|CMD_UNHIDE,7 },
     { "kick",		do_kick,	POS_FIGHTING,	 0,  LOG_NORMAL, CMD_DEAD|CMD_UNHIDE ,7},
@@ -567,6 +590,7 @@ struct	cmd_type	cmd_table	[] =
     { "rebuild",	do_rebuild,	POS_DEAD,	ML,  LOG_ALWAYS, CMD_EXACT,0 },
     { "recent",		do_recent,	POS_DEAD,	L8,  LOG_NORMAL, 0,0 },
     { "redit",		do_redit,	POS_DEAD,	L6,  LOG_BUILD,  0,0 },
+    { "instaroom",	do_instaroom,	POS_DEAD,	L6,  LOG_BUILD,  0,0 },
     { "rename_char",	do_rename_char,	POS_DEAD,	ML,  LOG_ALWAYS, 0,0 },
     { "resets",		do_resets,	POS_DEAD,	L6,  LOG_NORMAL, 0,0 },
     { "restore",	do_restore,	POS_DEAD,	L4,  LOG_ALWAYS, 0,0 },
@@ -700,6 +724,13 @@ struct	cmd_type	cmd_table	[] =
 
 
 /*
+ * Target substitution by Whiskey of Myth!, with help from
+ * Blade of -E-
+ * $$ converts into ch->pcdata->target
+ */
+char * parse_target( CHAR_DATA *ch, char *oldstring );
+
+/*
  * The main entry point for executing commands.
  * Can be recursively called from 'at', 'order', 'force'.
  */
@@ -737,6 +768,14 @@ interpret( CHAR_DATA *ch, char *argument )
 	send_to_char( "You're totally frozen!\n\r", ch );
 	return;
     }
+
+    /*
+     * Target substitution by Whiskey of Myth!, with help from
+     * Blade of -E-
+     * $$ converts into ch->pcdata->target
+     */
+    if ( !IS_NPC(ch) && ch->pcdata->target[0] != '\0')
+    	argument = parse_target(ch, argument);
 
     /*
      * Grab the command word.
@@ -1766,6 +1805,53 @@ do_rnum( CHAR_DATA *ch, char *argument )
     page_to_char( buf_string( pBuf ), ch );
     free_buf( pBuf );
     return;
+}
+
+char * parse_target( CHAR_DATA *ch, char *oldstring )
+{  
+    	const 	char 	*str;
+    	int		count = 0;
+    	char 		*i = NULL; 
+    	char 		*point;
+    	char 		buf[ MAX_INPUT_LENGTH   ];
+    	
+        buf[0]  = '\0';
+        str     = oldstring;
+        point   = buf;
+        while( *str != '\0' )
+        {
+            if( *str != '$' )
+            {
+                count++;
+                *point++ = *str++;
+                continue;
+            }
+
+	    ++str;
+            if ( *str == '$' && ch->pcdata->target[0] != '\0' )
+            {
+               i = strdup(ch->pcdata->target); 
+            	++str;
+                while ( ( *point = *i ) != '\0' )
+                	{
+                	   ++point, ++i;
+                	   count++;
+                	   if (count > MAX_INPUT_LENGTH)
+	    		   {
+				send_to_char("Target substitution too long; not processed.\r\n",ch);
+				return oldstring;
+	    		   }
+			}
+            }
+            else 
+            {
+            	*point++ = '$'; 
+         	count++;
+            }
+         }
+    buf[count] = '\0';
+    oldstring = strdup( buf );
+    return oldstring;
 }
 
 void 

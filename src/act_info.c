@@ -103,6 +103,9 @@ char *	const	where_name	[] =
     "`P<`Gworn on ankle`P>    `X ",
     "`P<`Gworn on tail`P>   `X   ",
     "`P<`Gworn on horns`P>`X     ",
+    "`W(`Rlodged in a leg`W)`X   ",
+    "`W(`Rlodged in an arm`W)`X  ",
+    "`W(`Rlodged in a rib`W)`X   ",
 };
 
 /*
@@ -139,7 +142,7 @@ struct inventory_list_type inventory_table[] =
     {	ITEM_WAND,	NULL		},
     {	ITEM_PORTAL,	NULL		},
     {	ITEM_WARP_STONE,NULL		},
-
+    {	ITEM_FOOD,	"Cooking"		},
     {	ITEM_LIGHT,	"Misc"		},
     {	ITEM_TREASURE,	NULL		},
     {	ITEM_FURNITURE,	NULL		},
@@ -147,7 +150,6 @@ struct inventory_list_type inventory_table[] =
     {	ITEM_CONTAINER,	NULL		},
     {	ITEM_DRINK_CON,	NULL		},
     {	ITEM_KEY,	NULL		},
-    {	ITEM_FOOD,	NULL		},
     {	ITEM_MONEY,	NULL		},
     {	ITEM_BOAT,	NULL		},
     {	ITEM_CORPSE_NPC,NULL		},
@@ -166,6 +168,8 @@ struct inventory_list_type inventory_table[] =
     {	ITEM_BOOK,	NULL		},
     {   ITEM_TOKEN, "Tokens"},
     {   ITEM_INSTRUMENT, "Musical Instruments"},
+    {   ITEM_FISHING_ROD, "Fishing Rods"},
+    {   ITEM_FIREWOOD, "Materials"},
 
     {	-1,		NULL		}
 };
@@ -259,7 +263,16 @@ format_obj_to_char( OBJ_DATA *obj, CHAR_DATA *ch, bool fShort )
     if ( fShort )
     {
 	if ( obj->short_descr != NULL )
+	{
+	    /* Debug for firewood objects */
+	    if ( obj->pIndexData->vnum == OBJ_VNUM_FIREWOOD && IS_IMMORTAL(ch) )
+	    {
+		char debug_buf[MAX_STRING_LENGTH];
+		sprintf( debug_buf, "[DEBUG_FORMAT] Firewood short_descr: '%s'\n\r", obj->short_descr );
+		send_to_char( debug_buf, ch );
+	    }
 	    strcat( buf, obj->short_descr );
+	}
     }
     else
     {
@@ -1887,7 +1900,7 @@ void do_display(CHAR_DATA *ch, char *argument)
         { "Standard", "`R%h`rhp `P%m`pm `G%v`gmv `Ytnl: %X`X> "},
         { "Full Featured", "`R%h`w(`R%H`w)`Whitp `P%m`w(`P%M`w)`Wmana `G%v`w(`G%V`w)`Wmove `Ytnl: %X`X>`X "},
         { "Non Magic Featured", "`R%h`w(`R%H`w)`Whp `G%v`w(`G%V`w)`Wmv `Ytnl: %X`X> "},
-        { "Immortal Basic", "[%R - %r] [%e]%c [%z] "},
+        { "Immortal Basic", "[%R - %r] [%e]%c [%z] %o "},
         { "\n", "\n"}
     };
 
@@ -2227,6 +2240,105 @@ do_look( CHAR_DATA *ch, char *argument )
 //	    set_char_color( ch->in_room->area->color, ch );
 	    set_char_color( sector_data[ch->in_room->sector_type].room_color, ch );
 	    send_to_char( rdesc, ch );
+	    
+	    /* Add weather effects for outdoor rooms */
+	    if ( IS_OUTSIDE(ch) )
+	    {
+		char weather_desc[MAX_STRING_LENGTH];
+		char temp_desc[MAX_STRING_LENGTH];
+		
+		/* Temperature description */
+		if ( weather_info.temperature < 10 )
+		    strcpy( temp_desc, "`BThe air is bitterly cold.`X" );
+		else if ( weather_info.temperature < 20 )
+		    strcpy( temp_desc, "`bThe air is freezing cold.`X" );
+		else if ( weather_info.temperature < 32 )
+		    strcpy( temp_desc, "`cThe air is cold and crisp.`X" );
+		else if ( weather_info.temperature < 50 )
+		    strcpy( temp_desc, "`gThe air is cool and refreshing.`X" );
+		else if ( weather_info.temperature < 70 )
+		    strcpy( temp_desc, "`GThe air is pleasantly warm.`X" );
+		else if ( weather_info.temperature < 85 )
+		    strcpy( temp_desc, "`YThe air is warm and humid.`X" );
+		else if ( weather_info.temperature < 95 )
+		    strcpy( temp_desc, "`rThe air is hot and oppressive.`X" );
+		else
+		    strcpy( temp_desc, "`RThe air is scorching hot.`X" );
+		
+		/* Weather conditions */
+		switch ( weather_info.sky )
+		{
+		    case SKY_CLOUDLESS:
+			if ( weather_info.temperature > 80 )
+			    strcpy( weather_desc, "`WThe sun beats down mercilessly from a cloudless sky.`X" );
+			else if ( weather_info.temperature < 30 )
+			    strcpy( weather_desc, "`bThe sky is clear and bitterly cold.`X" );
+			else
+			    strcpy( weather_desc, "`wThe sky is clear and bright.`X" );
+			break;
+		    
+		    case SKY_CLOUDY:
+			strcpy( weather_desc, "`wThick gray clouds blanket the sky.`X" );
+			break;
+		    
+		    case SKY_RAINING:
+			if ( weather_info.temperature < 32 )
+			    strcpy( weather_desc, "`Bsleet falls from the dark clouds above.`X" );
+			else
+			    strcpy( weather_desc, "`bRain falls steadily from the overcast sky.`X" );
+			break;
+		    
+		    case SKY_LIGHTNING:
+			if ( weather_info.temperature < 32 )
+			    strcpy( weather_desc, "`BHeavy snow falls as lightning illuminates the storm clouds.`X" );
+			else
+			    strcpy( weather_desc, "`YLightning flashes across the stormy sky as rain pours down.`X" );
+			break;
+		    
+		    default:
+			strcpy( weather_desc, "" );
+			break;
+		}
+		
+		/* Wind effects */
+		if ( weather_info.wind_speed > 50 )
+		{
+		    char wind_desc[MAX_STRING_LENGTH];
+		    strcpy( wind_desc, "`wA fierce wind howls through the area.`X" );
+		    if ( strlen(weather_desc) > 0 )
+		    {
+			strcat( weather_desc, " " );
+			strcat( weather_desc, wind_desc );
+		    }
+		    else
+			strcpy( weather_desc, wind_desc );
+		}
+		else if ( weather_info.wind_speed > 25 )
+		{
+		    char wind_desc[MAX_STRING_LENGTH];
+		    strcpy( wind_desc, "`wA strong breeze blows through the area.`X" );
+		    if ( strlen(weather_desc) > 0 )
+		    {
+			strcat( weather_desc, " " );
+			strcat( weather_desc, wind_desc );
+		    }
+		    else
+			strcpy( weather_desc, wind_desc );
+		}
+		
+		/* Display weather descriptions */
+		if ( strlen(temp_desc) > 0 )
+		{
+		    send_to_char( "\n\r", ch );
+		    send_to_char( temp_desc, ch );
+		}
+		
+		if ( strlen(weather_desc) > 0 )
+		{
+		    send_to_char( "\n\r", ch );
+		    send_to_char( weather_desc, ch );
+		}
+	    }
 	}
 
         if ( !IS_NPC(ch) && IS_SET(ch->act, PLR_AUTOEXIT) )
@@ -2301,6 +2413,26 @@ do_look( CHAR_DATA *ch, char *argument )
 
 	    send_to_char( buf, ch );
 	    oprog_look_in_trigger( obj, ch );
+	    break;
+
+	case ITEM_QUIVER:
+	    if ( obj->value[0] <= 0 )
+	    {
+		send_to_char( "`WThe quiver is out of arrows.`X\n\r", ch );
+		break;
+	    }
+	    
+	    if (obj->value[0] == 1 )
+	    {
+		send_to_char( "`WThe quiver has 1 arrow remaining in it.`X\n\r", ch );
+		break;
+	    }
+	    
+	    if (obj->value[0] > 1 )
+	    {
+		sprintf( buf, "`WThe quiver has %d arrows in it.`X\n\r", obj->value[0]);
+	    }
+	    send_to_char( buf, ch);
 	    break;
 
 	case ITEM_CONTAINER:
@@ -3182,8 +3314,9 @@ void do_oldscore( CHAR_DATA *ch, char *argument )
     }
     else
     {
-        char multiclass_buf[MAX_STRING_LENGTH];
+        char multiclass_buf[500]; /* Smaller buffer to prevent overflow */
         get_multiclass_display( ch, multiclass_buf );
+        multiclass_buf[499] = '\0'; /* Ensure null termination */
         snprintf(buf, sizeof(buf), "Race: %s  Sex: %s  Class: %s\n\r",
             race_table[ch->race].name,
             ch->sex == 0 ? "sexless" : ch->sex == 1 ? "male" : "female",
@@ -3228,6 +3361,18 @@ void do_oldscore( CHAR_DATA *ch, char *argument )
 	"You have scored %d exp, and have %d gold, %d silver coins, %d copper coins and %d copper pieces.\n\r",
 	ch->exp,  ch->money.gold, ch->money.silver, ch->money.copper, ch->money.fract );
     send_to_char( buf, ch );
+
+    if ( !IS_NPC(ch) )
+    {
+    	if (ch->pcdata->target[0] != '\0' )
+    	{
+    		sprintf( buf,
+    		"Your current target is : %s.\n\r", ch->pcdata->target);
+    		send_to_char( buf, ch );
+    	}
+    	else 
+    	send_to_char( "You have no current target.\n\r", ch);
+    }
 
     /* RT shows exp to level */
     if (!IS_NPC(ch) && ch->level < LEVEL_HERO)
@@ -3863,6 +4008,23 @@ show_score( CHAR_DATA *vch, CHAR_DATA *ch )
 	if ( found )
 	    p = stpcpy( p, "\n\r" );
 
+	/* Weather conditions */
+	found = FALSE;
+	if ( IS_SET( vch->act2, PLR_WET ) )
+	{
+	    p = stpcpy( p, "`GYou are `Wwet`c.  " );
+	    found = TRUE;
+	}
+	if ( IS_SET( vch->act2, PLR_FREEZING ) )
+	{
+	    p = stpcpy( p, "`GYou are `Bfreezing`c.  " );
+	    found = TRUE;
+	}
+	
+	
+	if ( found )
+	    p = stpcpy( p, "\n\r" );
+
         percent = ( 100 * vch->pcdata->condition[COND_TIRED] / MAX_COND );
         if ( percent > 90 || percent < 0 || IS_IMMORTAL( vch ) )
             ;
@@ -4025,8 +4187,9 @@ do_new_score (CHAR_DATA * ch, char *argument)
     }
     else
     {
-        char multiclass_buf[MAX_STRING_LENGTH];
+        char multiclass_buf[500]; /* Smaller buffer to prevent overflow */
         get_multiclass_display( ch, multiclass_buf );
+        multiclass_buf[499] = '\0'; /* Ensure null termination */
         snprintf (buf, sizeof(buf), "    `g|`c Class:`C %-15s `g|`c   Mana:`C %4d `c/`C %-12d `g|`X\n\r",
                       multiclass_buf,
                       ch->mana, ch->max_mana);
@@ -4268,6 +4431,169 @@ do_weather( CHAR_DATA *ch, char *argument )
 	    strcpy( p, "A BROKEN WIND blows.\n\r" );
 	    break;
     };
+
+    send_to_char( buf, ch );
+
+    /* Add temperature information */
+    sprintf( buf, "The temperature is %d degrees.", weather_info.temperature );
+    if ( weather_info.temperature < 32 )
+        strcat( buf, " It's freezing cold!" );
+    else if ( weather_info.temperature < 50 )
+        strcat( buf, " It's quite chilly." );
+    else if ( weather_info.temperature < 70 )
+        strcat( buf, " It's cool." );
+    else if ( weather_info.temperature < 85 )
+        strcat( buf, " It's pleasant." );
+    else if ( weather_info.temperature < 100 )
+        strcat( buf, " It's warm." );
+    else
+        strcat( buf, " It's blistering hot!" );
+    strcat( buf, "\n\r" );
+    send_to_char( buf, ch );
+
+    return;
+}
+
+void
+do_temperature( CHAR_DATA *ch, char *argument )
+{
+    char buf[MAX_STRING_LENGTH];
+    int base_temp = 70;
+    int hour_mod = 0;
+    int season_mod = 0;
+    int final_temp;
+    char *season_name;
+    char *time_period;
+
+    if ( !IS_IMMORTAL(ch) )
+    {
+	send_to_char( "Only immortals can use this command.\n\r", ch );
+	return;
+    }
+
+    /* Get season name */
+    if ( time_info.month >= 0 && time_info.month < 12 )
+	season_name = month_name[time_info.month];
+    else
+	season_name = "Unknown";
+
+    /* Get time period */
+    if ( time_info.hour >= 6 && time_info.hour < 12 )
+	time_period = "morning";
+    else if ( time_info.hour >= 12 && time_info.hour < 18 )
+	time_period = "afternoon";
+    else if ( time_info.hour >= 18 && time_info.hour < 22 )
+	time_period = "evening";
+    else
+	time_period = "night";
+
+    /* Calculate seasonal modifiers */
+    switch ( time_info.month )
+    {
+	case 0:  /* Hammer - Winter, heavy snow */
+	    season_mod = -30;
+	    break;
+	case 1:  /* Alturiak - Winter, lighter snow, warming */
+	    season_mod = -20;
+	    break;
+	case 2:  /* Ches - Spring, warm days, cool nights */
+	    season_mod = 5;
+	    break;
+	case 3:  /* Tarsakh - Spring, frequent rain */
+	    season_mod = 10;
+	    break;
+	case 4:  /* Mirtul - Spring, warm days, cool nights */
+	    season_mod = 15;
+	    break;
+	case 5:  /* Kythorn - Summer, blistering hot days */
+	    season_mod = 25;
+	    break;
+	case 6:  /* Flamerule - Summer, hottest month */
+	    season_mod = 35;
+	    break;
+	case 7:  /* Eleasis - Summer, little cooling at night */
+	    season_mod = 30;
+	    break;
+	case 8:  /* Eleint - Fall, abrupt chill in evening */
+	    season_mod = 15;
+	    break;
+	case 9:  /* Marpenoth - Fall, colder through month */
+	    season_mod = 5;
+	    break;
+	case 10: /* Uktar - Fall, last month of fall, very chilly */
+	    season_mod = -15;
+	    break;
+	case 11: /* Nightal - Winter, low temperature, occasional snow */
+	    season_mod = -25;
+	    break;
+	default:
+	    season_mod = 0;
+	    break;
+    }
+
+    /* Calculate hour modifiers */
+    if ( time_info.hour >= 6 && time_info.hour <= 18 )
+    {
+	/* Daytime - warmer */
+	hour_mod = 10;
+    }
+    else
+    {
+	/* Nighttime - cooler */
+	hour_mod = -10;
+    }
+
+    /* Calculate final temperature */
+    final_temp = base_temp + season_mod + hour_mod;
+
+    /* Add randomness (same as weather_update) */
+    final_temp += dice(1, 10) - 5;
+
+    /* Weather effects (same as weather_update) */
+    if ( weather_info.sky == SKY_RAINING || weather_info.sky == SKY_LIGHTNING )
+	final_temp -= 5;  /* Rain makes it cooler */
+    else if ( weather_info.sky == SKY_CLOUDY )
+	final_temp -= 2;  /* Clouds make it cooler */
+    
+    /* Wind chill effect (same as weather_update) */
+    if ( weather_info.wind_speed >= WIND_STRONG )
+	final_temp -= weather_info.wind_speed;
+
+    /* Display information */
+    sprintf( buf, "=== Temperature Analysis ===\n\r" );
+    sprintf( buf + strlen(buf), "Current Time: %s, %s (%d:00)\n\r", 
+	     season_name, time_period, time_info.hour );
+    sprintf( buf + strlen(buf), "Base Temperature: %d degrees\n\r", base_temp );
+    sprintf( buf + strlen(buf), "Seasonal Modifier: %+d degrees (%s)\n\r", 
+	     season_mod, season_name );
+    sprintf( buf + strlen(buf), "Time Modifier: %+d degrees (%s)\n\r", 
+	     hour_mod, time_period );
+    
+    if ( weather_info.sky == SKY_RAINING || weather_info.sky == SKY_LIGHTNING )
+	sprintf( buf + strlen(buf), "Weather Modifier: -5 degrees (rain)\n\r" );
+    else if ( weather_info.sky == SKY_CLOUDY )
+	sprintf( buf + strlen(buf), "Weather Modifier: -2 degrees (clouds)\n\r" );
+    else
+	sprintf( buf + strlen(buf), "Weather Modifier: 0 degrees (clear)\n\r" );
+    
+    if ( weather_info.wind_speed >= WIND_STRONG )
+	sprintf( buf + strlen(buf), "Wind Chill: -%d degrees\n\r", weather_info.wind_speed );
+    
+    sprintf( buf + strlen(buf), "Final Temperature: %d degrees\n\r", final_temp );
+    
+    /* Add descriptive text */
+    if ( final_temp < 32 )
+	strcat( buf, "Effect: Freezing cold - risk of hypothermia!\n\r" );
+    else if ( final_temp < 50 )
+	strcat( buf, "Effect: Quite chilly - need warm clothing.\n\r" );
+    else if ( final_temp < 70 )
+	strcat( buf, "Effect: Cool weather - comfortable.\n\r" );
+    else if ( final_temp < 85 )
+	strcat( buf, "Effect: Pleasant weather - ideal conditions.\n\r" );
+    else if ( final_temp < 100 )
+	strcat( buf, "Effect: Warm weather - may cause thirst.\n\r" );
+    else
+	strcat( buf, "Effect: Blistering hot - heat exhaustion risk!\n\r" );
 
     send_to_char( buf, ch );
 
@@ -5094,7 +5420,7 @@ show_inventory( CHAR_DATA *ch, int item_type, BUFFER *buf, const char *hdr )
 	return 0;
 
     if ( hdr != NULL )
-	buf_printf( buf, "\n\r  (%s)\n\r", hdr );
+	buf_printf( buf, "\n\r  `P(`G%s`P)`X\n\r", hdr );
 
     prgpstrShow = (char **)alloc_mem( count * sizeof( char * ) );
     prgnShow	= (int *  )alloc_mem( count * sizeof( int    ) );
@@ -5152,7 +5478,7 @@ show_inventory( CHAR_DATA *ch, int item_type, BUFFER *buf, const char *hdr )
 	{
 	    if ( prgnShow[iShow] != 1 )
 	    {
-		buf_printf( buf, "(%2d)  ", prgnShow[iShow] );
+		buf_printf( buf, "`P(`G%2d`P)`X  ", prgnShow[iShow] );
 	    }
 	    else
 	    {
@@ -5791,38 +6117,84 @@ void do_practice (CHAR_DATA * ch, char *argument)
     if (argument[0] == '\0')                                                                                 
     {                                                                                                        
         int col;                                                                                             
-                                                                                                             
-        col = 0;
-      
-        send_to_char("`W+`P**************************************`G SPELLS `P***********************************`W+\n\r", ch);
-
+        int sn;
+        bool has_spells = FALSE;
+        bool has_skills = FALSE;
+        
+        /* First pass: check if we have any spells or skills */
         for (sn = 0; sn < top_skill; sn++)
         {
             if (skill_table[sn].name == NULL)
                 break;
-             if (ch->level < get_multiclass_skill_level(ch, sn)                                           
+            if (ch->level < get_multiclass_skill_level(ch, sn)                                           
                 || ch->pcdata->skill[sn].percent < 1  )                                    
-                continue; 
-            if ((skill_table[sn].spell_fun == spell_null) && (spn == 0))
-            {
-                spn++;
-                send_to_char("\n\r`W+`P**************************************`G SKILLS `P***********************************`W+\n\r", ch);
-                col = 0;
-            }
-
-
-            sprintf (buf, "  `W%-18s `G%3d%%  `X",
-                     skill_table[sn].name, ch->pcdata->skill[sn].percent);
-            send_to_char (buf, ch);
-
-
-            if (++col % 3 == 0)
-                send_to_char ("\n\r", ch);
-
+                continue;
+                
+            if (skill_table[sn].spell_fun != spell_null)
+                has_spells = TRUE;
+            else
+                has_skills = TRUE;
         }
+        
+        /* Display spells section */
+        if (has_spells)
+        {
+            col = 0;
+            send_to_char("`W+`P**************************************`G SPELLS `P***********************************`W+\n\r", ch);
+            
+            for (sn = 0; sn < top_skill; sn++)
+            {
+                if (skill_table[sn].name == NULL)
+                    break;
+                if (ch->level < get_multiclass_skill_level(ch, sn)                                           
+                    || ch->pcdata->skill[sn].percent < 1  )                                    
+                    continue;
+                    
+                /* Only show spells */
+                if (skill_table[sn].spell_fun == spell_null)
+                    continue;
+                    
+                sprintf (buf, "  `W%-18s `G%3d%%  `X",
+                         skill_table[sn].name, ch->pcdata->skill[sn].percent);
+                send_to_char (buf, ch);
 
-        if (col % 3 != 0)
-            send_to_char ("\n\r", ch);
+                if (++col % 3 == 0)
+                    send_to_char ("\n\r", ch);
+            }
+            
+            if (col % 3 != 0)
+                send_to_char ("\n\r", ch);
+        }
+        
+        /* Display skills section */
+        if (has_skills)
+        {
+            col = 0;
+            send_to_char("`W+`P**************************************`G SKILLS `P***********************************`W+\n\r", ch);
+            
+            for (sn = 0; sn < top_skill; sn++)
+            {
+                if (skill_table[sn].name == NULL)
+                    break;
+                if (ch->level < get_multiclass_skill_level(ch, sn)                                           
+                    || ch->pcdata->skill[sn].percent < 1  )                                    
+                    continue;
+                    
+                /* Only show skills */
+                if (skill_table[sn].spell_fun != spell_null)
+                    continue;
+                    
+                sprintf (buf, "  `W%-18s `G%3d%%  `X",
+                         skill_table[sn].name, ch->pcdata->skill[sn].percent);
+                send_to_char (buf, ch);
+
+                if (++col % 3 == 0)
+                    send_to_char ("\n\r", ch);
+            }
+            
+            if (col % 3 != 0)
+                send_to_char ("\n\r", ch);
+        }
 
         sprintf (buf, "`W+`B************************************** `CPractices`z: `R%-3d `B***************************`W+`X\n\r",
                  ch->practice);
@@ -6998,5 +7370,550 @@ web_who( int fd )
 
     return;
 }
+
+void
+do_forage( CHAR_DATA *ch, char *argument )
+{
+    const struct foraging_entry *table = NULL;
+    const struct foraging_entry *entry;
+    OBJ_DATA *obj;
+    OBJ_INDEX_DATA *pObjIndex;
+    int chance;
+    int count = 0;
+    int i;
+    int sn;
+
+    if ( IS_NPC(ch) )
+    {
+	send_to_char( "You don't know how to forage.\n\r", ch );
+	return;
+    }
+
+    sn = gsn_forage;
+    if ( (chance = get_skill(ch, sn)) == 0 )
+    {
+	send_to_char( "You don't know how to forage.\n\r", ch );
+	return;
+    }
+
+    /* Seasonal modifiers */
+    switch ( time_info.month )
+    {
+        case 2: case 3: case 4:  /* Spring - better foraging */
+            chance += 10;
+            break;
+        case 8: case 9: case 10: /* Fall - 10% more failure */
+            chance -= 10;
+            break;
+        case 0: case 1: case 11: /* Winter - extremely scarce */
+            chance -= 40;
+            break;
+    }
+
+    WAIT_STATE( ch, skill_table[gsn_forage].beats );
+
+    /* Determine which foraging table to use based on sector type */
+    switch ( ch->in_room->sector_type )
+    {
+	case SECT_FOREST:
+	    table = forest_foraging_table;
+	    break;
+	case SECT_DESERT:
+	    table = desert_foraging_table;
+	    break;
+	case SECT_FIELD:
+	    table = field_foraging_table;
+	    break;
+	case SECT_MOUNTAIN:
+	    table = mountain_foraging_table;
+	    break;
+	case SECT_HILLS:
+	    table = hills_foraging_table;
+	    break;
+	default:
+	    send_to_char( "You search around but find nothing of use here.\n\r", ch );
+	    return;
+    }
+
+    /* Count entries in the table */
+    for ( i = 0; table[i].name != NULL; i++ )
+	count++;
+
+    if ( count == 0 )
+    {
+	send_to_char( "You search around but find nothing of use here.\n\r", ch );
+	return;
+    }
+
+    /* Check skill success */
+    if ( number_percent() > chance )
+    {
+	send_to_char( "You search around but fail to find anything useful.\n\r", ch );
+	check_improve( ch, sn, FALSE, 1 );
+	return;
+    }
+
+    /* Select random entry from table */
+    entry = &table[number_range( 0, count - 1 )];
+
+    /* Create the foraged item */
+    pObjIndex = get_obj_index( OBJ_VNUM_FORAGED );
+    if ( pObjIndex == NULL )
+    {
+	send_to_char( "Something went wrong with foraging.\n\r", ch );
+	return;
+    }
+
+    obj = create_object( pObjIndex, 0 );
+    if ( obj == NULL )
+    {
+	send_to_char( "Something went wrong with foraging.\n\r", ch );
+	return;
+    }
+
+    /* Set object properties */
+    free_string( obj->name );
+    obj->name = str_dup( entry->name );
+    free_string( obj->short_descr );
+    obj->short_descr = str_dup( entry->short_descr );
+    free_string( obj->description );
+    obj->description = str_dup( entry->long_descr );
+
+    /* Set food values */
+    obj->value[0] = 1;  /* food value */
+    obj->value[1] = 3;  /* hours to decay */
+    obj->value[4] = 15; /* nutrition */
+
+    /* Give item to character */
+    obj_to_char( obj, ch );
+
+    /* Send messages */
+    act( "You forage around and find $p.", ch, obj, NULL, TO_CHAR );
+    act( "$n forages around and finds $p.", ch, obj, NULL, TO_ROOM );
+
+    /* Spring bonus - chance for extra item */
+    if ( (time_info.month >= 2 && time_info.month <= 4) && number_percent() < 15 )
+    {
+        obj = create_object( pObjIndex, 0 );
+        if ( obj != NULL )
+        {
+            free_string( obj->name );
+            obj->name = str_dup( entry->name );
+            free_string( obj->short_descr );
+            obj->short_descr = str_dup( entry->short_descr );
+            free_string( obj->description );
+            obj->description = str_dup( entry->long_descr );
+            obj->value[0] = 1;  /* food value */
+            obj->value[1] = 3;  /* hours to decay */
+            obj->value[4] = 15; /* nutrition */
+            obj_to_char( obj, ch );
+            send_to_char( "You find extra forage!\n\r", ch );
+        }
+    }
+
+    /* Improve skill */
+    check_improve( ch, sn, TRUE, 1 );
+
+    return;
+}
+
+/*
+ * Hunted animal table for spawning in forest areas
+ */
+const struct hunted_animal_entry hunted_animal_table[] =
+{
+    {"fox", "a red fox", "A red fox prowls here.\n\r", 0}, /* race_fox */
+    {"bear", "a brown bear", "A brown bear lumbers here.\n\r", 0}, /* race_bear */
+    {"wolf", "a gray wolf", "A gray wolf stalks here.\n\r", 0}, /* race_wolf */
+    {"rabbit", "a wild rabbit", "A wild rabbit hops here.\n\r", 0}, /* race_cat */
+    {"owl", "a great horned owl", "A great horned owl perches here.\n\r", 0}, /* race_bat */
+    {NULL, NULL, NULL, 0}
+};
+
+/*
+ * UK wood species table for firewood gathering
+ */
+const struct foraging_entry uk_wood_table[] =
+{
+    {"oak branches", "a bundle of oak branches", "A bundle of sturdy oak branches, perfect for a long-burning fire."},
+    {"ash branches", "a bundle of ash branches", "A bundle of ash branches, known for their excellent burning properties."},
+    {"birch branches", "a bundle of birch branches", "A bundle of birch branches, quick to ignite and burn brightly."},
+    {"beech branches", "a bundle of beech branches", "A bundle of beech branches, dense wood that burns slowly and hot."},
+    {"sycamore branches", "a bundle of sycamore branches", "A bundle of sycamore branches, good for kindling and quick fires."},
+    {"elm branches", "a bundle of elm branches", "A bundle of elm branches, though harder to split, burns well once dry."},
+    {"willow branches", "a bundle of willow branches", "A bundle of willow branches, burns quickly but produces good heat."},
+    {"hazel branches", "a bundle of hazel branches", "A bundle of hazel branches, excellent for starting fires and cooking."},
+    {"rowan branches", "a bundle of rowan branches", "A bundle of rowan branches, burns with a pleasant, aromatic smoke."},
+    {"holly branches", "a bundle of holly branches", "A bundle of holly branches, dense wood that burns long and steady."},
+    {"hawthorn branches", "a bundle of hawthorn branches", "A bundle of hawthorn branches, good for a hot, fast-burning fire."},
+    {"blackthorn branches", "a bundle of blackthorn branches", "A bundle of blackthorn branches, dense wood that burns slowly."},
+    {"elder branches", "a bundle of elder branches", "A bundle of elder branches, burns quickly but produces good heat."},
+    {"field maple branches", "a bundle of field maple branches", "A bundle of field maple branches, burns cleanly and evenly."},
+    {"wild cherry branches", "a bundle of wild cherry branches", "A bundle of wild cherry branches, burns with a sweet, pleasant aroma."},
+    {NULL, NULL, NULL}
+};
+
+void
+spawn_hunted_animal( CHAR_DATA *ch )
+{
+    const struct hunted_animal_entry *entry;
+    MOB_INDEX_DATA *pMobIndex;
+    CHAR_DATA *mob;
+    int chance = 5; /* Base 5% chance */
+    int count = 0;
+    int i;
+
+    /* Only spawn if character is hunting */
+    if ( !IS_SET(ch->act, PLR_HUNTING) )
+	return;
+
+    /* Only spawn in forest areas */
+    if ( ch->in_room->sector_type != SECT_FOREST )
+	return;
+
+    /* Seasonal modifiers */
+    switch ( time_info.month )
+    {
+        case 2: case 3: case 4:  /* Spring - animals spawn twice as often */
+            chance *= 2;
+            break;
+        case 8: case 9: case 10: /* Fall - 25% less often */
+            chance = chance * 3 / 4;
+            break;
+        case 0: case 1: case 11: /* Winter - no animals (hibernation) */
+            return; /* Don't spawn any animals in winter */
+    }
+
+    /* Don't spawn if there are already too many mobs in the room */
+    for ( mob = ch->in_room->people; mob != NULL; mob = mob->next_in_room )
+	if ( !IS_NPC(mob) )
+	    count++;
+    
+    if ( count > 3 ) /* Limit to 3+ players in room */
+	return;
+
+    /* Adjust chance based on affects */
+    if ( IS_AFFECTED(ch, AFF_INVISIBLE) )
+	chance += 10;
+    if ( IS_AFFECTED(ch, AFF_SNEAK) )
+	chance += 10;
+    if ( IS_AFFECTED(ch, AFF_FAERIE_FIRE) )
+	chance -= 15;
+
+    /* Ensure minimum chance */
+    if ( chance < 1 )
+	chance = 1;
+
+    /* Roll for spawn */
+    if ( number_percent() > chance )
+	return;
+
+    /* Count entries in table */
+    count = 0;
+    for ( i = 0; hunted_animal_table[i].name != NULL; i++ )
+	count++;
+
+    if ( count == 0 )
+	return;
+
+    /* Select random entry */
+    entry = &hunted_animal_table[number_range( 0, count - 1 )];
+
+    /* Safety check */
+    if ( entry->name == NULL )
+	return;
+
+    /* Create the mobile */
+    pMobIndex = get_mob_index( MOB_VNUM_HUNTED );
+    if ( pMobIndex == NULL )
+	return;
+
+    mob = create_mobile( pMobIndex );
+    if ( mob == NULL )
+	return;
+
+    /* Set race and level based on entry */
+    if ( !str_cmp( entry->name, "fox" ) )
+	mob->race = race_fox;
+    else if ( !str_cmp( entry->name, "bear" ) )
+	mob->race = race_bear;
+    else if ( !str_cmp( entry->name, "wolf" ) )
+	mob->race = race_wolf;
+    else if ( !str_cmp( entry->name, "rabbit" ) )
+	mob->race = race_cat; /* Using cat as closest to rabbit */
+    else if ( !str_cmp( entry->name, "owl" ) )
+	mob->race = race_bat; /* Using bat as closest to owl */
+    
+    mob->level = 1;
+    
+    /* Set stats using DICE_EASY */
+    set_mob_dice( mob->pIndexData, DICE_EASY );
+
+    /* Set mobile properties AFTER create_mobile and set_mob_dice */
+    free_string( mob->name );
+    mob->name = str_dup( entry->name );
+    free_string( mob->short_descr );
+    mob->short_descr = str_dup( entry->short_descr );
+    free_string( mob->long_descr );
+    mob->long_descr = str_dup( entry->long_descr );
+
+    /* Add to room */
+    char_to_room( mob, ch->in_room );
+
+    /* Send message to room */
+    act( "A $T appears in the area.", ch, NULL, entry->short_descr, TO_ROOM );
+
+    return;
+}
+
+void
+do_fish( CHAR_DATA *ch, char *argument )
+{
+    const struct fish_entry *table = NULL;
+    const struct fish_entry *entry;
+    OBJ_DATA *rod;
+    OBJ_DATA *fish;
+    OBJ_INDEX_DATA *pObjIndex;
+    int chance;
+    int count = 0;
+    int i;
+    int sn;
+
+    if ( IS_NPC(ch) )
+    {
+	send_to_char( "You don't know how to fish.\n\r", ch );
+	return;
+    }
+
+    sn = gsn_fishing;
+    if ( (chance = get_skill(ch, sn)) == 0 )
+    {
+	send_to_char( "You don't know how to fish.\n\r", ch );
+	return;
+    }
+
+    /* Seasonal modifiers */
+    switch ( time_info.month )
+    {
+        case 2: case 3: case 4:  /* Spring - 10% higher success rate */
+            chance += 10;
+            break;
+        case 8: case 9: case 10: /* Fall - 10% more failure */
+            chance -= 10;
+            break;
+        case 0: case 1: case 11: /* Winter - only in rivers and oceans (not frozen) */
+            if ( ch->in_room->sector_type != SECT_RIVER && ch->in_room->sector_type != SECT_OCEAN )
+            {
+                send_to_char( "The water is frozen over - you can only fish in rivers and oceans during winter.\n\r", ch );
+                return;
+            }
+            break;
+    }
+
+    /* Check if holding a fishing rod */
+    rod = get_eq_char( ch, WEAR_HOLD );
+    if ( rod == NULL || rod->item_type != ITEM_FISHING_ROD )
+    {
+	send_to_char( "You need to be holding a fishing rod to fish.\n\r", ch );
+	return;
+    }
+
+    /* Check if in a fishable area */
+    if ( ch->in_room->sector_type != SECT_RIVER &&
+	 ch->in_room->sector_type != SECT_LAKE &&
+	 ch->in_room->sector_type != SECT_OCEAN )
+    {
+	send_to_char( "You can only fish in rivers, lakes, or oceans.\n\r", ch );
+	return;
+    }
+
+    /* Add wait state */
+    if ( !IS_IMMORTAL(ch) )
+	WAIT_STATE( ch, skill_table[sn].beats );
+
+    /* Determine which fish table to use based on sector type */
+    switch ( ch->in_room->sector_type )
+    {
+	case SECT_RIVER:
+	    table = river_fish_table;
+	    break;
+	case SECT_LAKE:
+	    table = lake_fish_table;
+	    break;
+	case SECT_OCEAN:
+	    table = ocean_fish_table;
+	    break;
+	default:
+	    send_to_char( "You can't fish here.\n\r", ch );
+	    return;
+    }
+
+    /* Count entries in the table */
+    count = 0;
+    for ( i = 0; table[i].name != NULL; i++ )
+	count++;
+
+    if ( count == 0 )
+    {
+	send_to_char( "There don't seem to be any fish here.\n\r", ch );
+	return;
+    }
+
+    /* Cast line message */
+    act( "You cast your line into the water.", ch, NULL, NULL, TO_CHAR );
+    act( "$n casts $s fishing line into the water.", ch, NULL, NULL, TO_ROOM );
+
+    /* Check skill success */
+    if ( number_percent() > chance )
+    {
+	send_to_char( "You don't get any bites.\n\r", ch );
+	check_improve( ch, sn, FALSE, 1 );
+	return;
+    }
+
+    /* Select random fish from table */
+    entry = &table[number_range( 0, count - 1 )];
+
+    /* Check if fish size is too big for rod */
+    if ( entry->size > rod->value[0] )
+    {
+	send_to_char( "You feel a strong tug on your line!\n\r", ch );
+	send_to_char( "The fish is too strong and breaks your line!\n\r", ch );
+	send_to_char( "You quickly replace the line and cast again.\n\r", ch );
+	check_improve( ch, sn, FALSE, 1 );
+	return;
+    }
+
+    /* Create the fish */
+    pObjIndex = get_obj_index( OBJ_VNUM_FORAGED );
+    if ( pObjIndex == NULL )
+    {
+	send_to_char( "Something went wrong with fishing.\n\r", ch );
+	return;
+    }
+
+    fish = create_object( pObjIndex, 0 );
+    if ( fish == NULL )
+    {
+	send_to_char( "Something went wrong with fishing.\n\r", ch );
+	return;
+    }
+
+    /* Set fish properties */
+    free_string( fish->name );
+    fish->name = str_dup( entry->name );
+    free_string( fish->short_descr );
+    fish->short_descr = str_dup( entry->short_descr );
+    free_string( fish->description );
+    fish->description = str_dup( entry->long_descr );
+
+    /* Set food values */
+    fish->value[0] = 1;  /* food value */
+    fish->value[1] = 4;  /* hours to decay */
+    fish->value[4] = 20; /* nutrition */
+
+    /* Give fish to character */
+    obj_to_char( fish, ch );
+
+    /* Send messages */
+    act( "You reel in $p!", ch, fish, NULL, TO_CHAR );
+    act( "$n reels in $p!", ch, fish, NULL, TO_ROOM );
+
+    /* Improve skill */
+    check_improve( ch, sn, TRUE, 1 );
+
+    return;
+}
+
+void
+do_hunt( CHAR_DATA *ch, char *argument )
+{
+    if ( IS_NPC(ch) )
+    {
+	send_to_char( "You don't know how to hunt.\n\r", ch );
+	return;
+    }
+
+    if ( IS_SET(ch->act, PLR_HUNTING) )
+    {
+	REMOVE_BIT( ch->act, PLR_HUNTING );
+	send_to_char( "You stop hunting for animals.\n\r", ch );
+    }
+    else
+    {
+	SET_BIT( ch->act, PLR_HUNTING );
+	send_to_char( "You begin hunting for animals.\n\r", ch );
+    }
+
+    return;
+}
+
+void set_target( CHAR_DATA *ch, char *target )
+{
+    char buf[MAX_STRING_LENGTH];
+
+    strcpy( buf, target );
+
+    if (ch->pcdata->target[0] != '\0')
+     	free_string( ch->pcdata->target ); 
+    ch->pcdata->target = str_dup( buf );
+    return;
+}
+
+void do_target( CHAR_DATA *ch, char *argument)
+{
+  char arg[MAX_INPUT_LENGTH], buf[MAX_STRING_LENGTH];
+  
+  smash_tilde(argument);
+  one_argument( argument, arg );
+  
+  if ( IS_NPC(ch) )
+  {
+    send_to_char("Targets are for players!\n\r", ch);
+    return;
+  }
+  
+  if ( arg[0] == '\0' )
+  {
+  	
+  	if ( ch->pcdata->target[0] != '\0' ) 
+  	{
+  		sprintf( buf, "Your current target is : %s\n\r", ch->pcdata->target);
+  		send_to_char(buf,ch);
+  		return;
+  	}
+ 
+  	send_to_char("You have no current target.\n\r",ch);
+  	return;
+  	
+  }
+  else
+  {
+  	set_target( ch, arg );
+  	sprintf( buf, "Your new target is : %s\n\r", ch->pcdata->target);
+  	send_to_char( buf, ch );
+  	return;
+  }
+}
+
+void do_untarget(CHAR_DATA *ch, char *argument)
+{
+   if ( IS_NPC(ch) )
+   {
+   	send_to_char("Only players can have targets!\n\r", ch);
+   	return;
+   }
+   
+   if ( ch->pcdata->target[0] == '\0' )
+   {
+   	send_to_char("Your target is not defined at the moment.\n\r", ch);
+   	return;
+   }
+   
+   send_to_char("You remove your current target.\n\r", ch);
+   ch->pcdata->target = str_dup("");
+   return;
+}
+
 
 

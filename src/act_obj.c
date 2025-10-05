@@ -313,33 +313,33 @@ do_draw( CHAR_DATA *ch, char *argument )
 
     if ( ( quiver = get_eq_char( ch, WEAR_SHOULDER ) ) == NULL )
     {
-        send_to_char( "You aren't wearing a quiver where you can get to it.\n\r", ch );
+        send_to_char( "`WYou aren't wearing a quiver where you can get to it.`X\n\r", ch );
         return;
     }
 
     if ( quiver->item_type != ITEM_QUIVER )
     {
-        send_to_char( "You aren't wearing a quiver where you can get to it.\n\r", ch );
+        send_to_char( "`WYou can only draw arrows from a quiver.`X\n\r", ch );
         return;
     }
 
     if ( handcount( ch ) > 1 )
     {
-        send_to_char( "You need a free hand to draw an arrow.\n\r", ch );
+        send_to_char( "`WYou need a free hand to draw an arrow.`X\n\r", ch );
         return;
     }
 
     if ( get_eq_char( ch, WEAR_HOLD ) != NULL )
     {
-        send_to_char( "You are already holding something in your hand.\n\r", ch );
+        send_to_char( "`WYour hand is not empty!`X\n\r", ch );
         return;
     }
 
     if ( quiver->value[0] > 0 )
     {
         WAIT_STATE( ch, PULSE_VIOLENCE );
-        act_color( AT_ACTION, "You draw an arrow from $p.", ch, quiver, NULL, TO_CHAR, POS_RESTING );
-        act_color( AT_ACTION, "$n draws an arrow from $p.", ch, quiver, NULL, TO_ROOM, POS_RESTING );
+        act( "`WYou draw an arrow from $p`W.`X", ch, quiver, NULL, TO_CHAR );
+        act( "`W$n draws an arrow from $p`W.`X", ch, quiver, NULL, TO_ROOM );
 	quiver->value[0]--;
 	arrow = create_object( get_obj_index( OBJ_VNUM_ARROW ), 0 );
 	arrow->value[1] = quiver->value[1];
@@ -348,10 +348,10 @@ do_draw( CHAR_DATA *ch, char *argument )
 	obj_to_char( arrow, ch );
 	wear_obj( ch, arrow, TRUE );
 	if ( quiver->value[0] == 0 )
-	    act( "Your $p is now out of arrows, you need to find another one.", ch, quiver, NULL, TO_CHAR );
+	    act( "`WYour $p `Wis now out of arrows, you need to find another one.`X", ch, quiver, NULL, TO_CHAR );
     }
     else
-        act( "Your $p is now out of arrows, you need to find another one.", ch, quiver, NULL, TO_CHAR );
+        act( "`WYour $p `Wis now out of arrows, you need to find another one.`X", ch, quiver, NULL, TO_CHAR );
 }
 
 void do_nock(CHAR_DATA *ch, char *argument)
@@ -432,29 +432,98 @@ void do_oldnock(CHAR_DATA *ch, char *argument)
 }
 
 /* ----------------------------
-   do_reload: for crossbows only
+   do_reload: reload quiver with arrows
    ---------------------------- */
 void do_reload(CHAR_DATA *ch, char *argument)
 {
-    OBJ_DATA *crossbow = get_eq_char(ch, WEAR_WIELD);
+    char arg[MAX_INPUT_LENGTH];
+    OBJ_DATA *quiver;
+    OBJ_DATA *arrow;
+    int count = 0;
+    int max_arrows;
 
-    if (!crossbow || crossbow->value[0] != WEAPON_CROSSBOW)
+    one_argument(argument, arg);
+
+    /* Find quiver on shoulder */
+    if ((quiver = get_eq_char(ch, WEAR_SHOULDER)) == NULL)
     {
-        send_to_char("You aren’t wielding a crossbow.\n\r", ch);
+        send_to_char("`WYou aren't wearing a quiver on your shoulder.`X\n\r", ch);
         return;
     }
 
-    if (ch->crossbow_loaded)
+    if (quiver->item_type != ITEM_QUIVER)
     {
-        send_to_char("Your crossbow is already loaded and cocked.\n\r", ch);
+        send_to_char("`WYou can only load arrows into a quiver.`X\n\r", ch);
         return;
     }
 
-    WAIT_STATE(ch, PULSE_VIOLENCE * 2); // extra time for crossbows
-    ch->crossbow_loaded = TRUE;
+    /* Determine how many arrows to load */
+    if (arg[0] == '\0' || !str_cmp(arg, "all"))
+    {
+        count = -1; /* Load all available arrows */
+    }
+    else
+    {
+        count = atoi(arg);
+        if (count <= 0)
+        {
+            send_to_char("`WYou must specify a positive number of arrows to load.`X\n\r", ch);
+            return;
+        }
+    }
 
-    act("You reload and cock $p, ready to nock a bolt.", ch, crossbow, NULL, TO_CHAR);
-    act("$n reloads and cocks $p.", ch, crossbow, NULL, TO_ROOM);
+    /* Check how many arrows are already in the quiver */
+    max_arrows = 20; /* Default max arrows per quiver */
+    if (quiver->value[0] >= max_arrows)
+    {
+        send_to_char("`WYour quiver is already full.`X\n\r", ch);
+        return;
+    }
+
+    /* Count and load arrows from inventory */
+    for (arrow = ch->carrying; arrow != NULL; arrow = arrow->next_content)
+    {
+        if (arrow->item_type == ITEM_ARROW && arrow->wear_loc == WEAR_NONE)
+        {
+            int arrows_to_add = (count == -1) ? (max_arrows - quiver->value[0]) : count;
+            if (arrows_to_add <= 0) break;
+
+            quiver->value[0] += arrows_to_add;
+            if (quiver->value[0] > max_arrows)
+            {
+                arrows_to_add -= (quiver->value[0] - max_arrows);
+                quiver->value[0] = max_arrows;
+            }
+
+            extract_obj(arrow);
+            
+            if (arrows_to_add == 1)
+            {
+                act("`WYou load 1 arrow into $p`W.`X", ch, quiver, NULL, TO_CHAR);
+                act("`W$n loads 1 arrow into $p`W.`X", ch, quiver, NULL, TO_ROOM);
+            }
+            else
+            {
+                char buf[MAX_STRING_LENGTH];
+                sprintf(buf, "`WYou load %d arrows into $p`W.`X", arrows_to_add);
+                act(buf, ch, quiver, NULL, TO_CHAR);
+                sprintf(buf, "`W$n loads %d arrows into $p`W.`X", arrows_to_add);
+                act(buf, ch, quiver, NULL, TO_ROOM);
+            }
+
+            if (quiver->value[0] >= max_arrows)
+            {
+                send_to_char("`WYour quiver is now full.`X\n\r", ch);
+                return;
+            }
+            if (count != -1) break;
+        }
+    }
+
+    if (quiver->value[0] == 0)
+    {
+        send_to_char("`WYou don't have any loose arrows to load into your quiver.`X\n\r", ch);
+    }
 }
 
 void do_get( CHAR_DATA *ch, char *argument )
@@ -7334,4 +7403,952 @@ do_tender( CHAR_DATA *ch, char *argument )
     }
 
 }
+
+void
+do_campfire( CHAR_DATA *ch, char *argument )
+{
+    OBJ_DATA *flint = NULL;
+    OBJ_DATA *firesteel = NULL;
+    OBJ_DATA *firewood = NULL;
+    OBJ_DATA *campfire = NULL;
+    OBJ_DATA *obj;
+
+    if ( IS_NPC(ch) )
+    {
+	send_to_char( "You can't start a campfire.\n\r", ch );
+	return;
+    }
+
+    /* Check if there's already a campfire in the room */
+    for ( obj = ch->in_room->contents; obj != NULL; obj = obj->next_content )
+    {
+	if ( obj->item_type == ITEM_LIGHT && obj->pIndexData->vnum == OBJ_VNUM_CAMPFIRE )
+	{
+	    send_to_char( "There's already a campfire here.\n\r", ch );
+	    return;
+	}
+    }
+
+    /* Check for flint and steel in inventory */
+    for ( obj = ch->carrying; obj != NULL; obj = obj->next_content )
+    {
+	if ( obj->item_type == ITEM_FLINT )
+	    flint = obj;
+	else if ( obj->item_type == ITEM_FIRESTEEL )
+	    firesteel = obj;
+    }
+
+    if ( flint == NULL || firesteel == NULL )
+    {
+	send_to_char( "You need flint and steel to start a fire.\n\r", ch );
+	return;
+    }
+
+    /* Check for firewood */
+    firewood = get_obj_carry( ch, "firewood", ch );
+    if ( firewood == NULL )
+    {
+	send_to_char( "You need firewood to start a fire.\n\r", ch );
+	return;
+    }
+
+    /* Start the campfire */
+    act( "You strike the flint and steel together, igniting the firewood.", ch, NULL, NULL, TO_CHAR );
+    act( "$n strikes flint and steel together, starting a campfire.", ch, NULL, NULL, TO_ROOM );
+    
+    /* Consume firewood */
+    extract_obj( firewood );
+    
+    /* Create campfire */
+    campfire = create_object( get_obj_index( OBJ_VNUM_CAMPFIRE ), 0 );
+    obj_to_room( campfire, ch->in_room );
+    
+    send_to_char( "A warm campfire crackles to life.\n\r", ch );
+    act( "A warm campfire crackles to life.", ch, NULL, NULL, TO_ROOM );
+
+    return;
+}
+
+void
+do_cook( CHAR_DATA *ch, char *argument )
+{
+    char arg1[MAX_INPUT_LENGTH];
+    char arg2[MAX_INPUT_LENGTH];
+    char arg3[MAX_INPUT_LENGTH];
+    OBJ_DATA *campfire = NULL;
+    OBJ_DATA *ingredient1 = NULL;
+    OBJ_DATA *ingredient2 = NULL;
+    OBJ_DATA *ingredient3 = NULL;
+    OBJ_DATA *food = NULL;
+    OBJ_DATA *obj;
+    const struct recipe_entry *recipe = NULL;
+    int sn = gsn_cooking;
+    int chance;
+    int roll;
+    int i;
+    int ingredient_count = 0;
+    char *ingredient_types[3] = {NULL, NULL, NULL};
+    bool has_steak = FALSE;
+    bool has_fish = FALSE;
+    bool has_vegetable = FALSE;
+    bool has_liquid = FALSE;
+    bool has_herb = FALSE;
+
+    if ( IS_NPC(ch) )
+    {
+	send_to_char( "You can't cook.\n\r", ch );
+	return;
+    }
+
+    if ( (chance = get_skill(ch, sn)) == 0 )
+    {
+	send_to_char( "You don't know how to cook.\n\r", ch );
+	return;
+    }
+
+    /* Check if there's a campfire in the room */
+    for ( obj = ch->in_room->contents; obj != NULL; obj = obj->next_content )
+    {
+	if ( obj->item_type == ITEM_LIGHT && obj->pIndexData->vnum == OBJ_VNUM_CAMPFIRE )
+	{
+	    campfire = obj;
+	    break;
+	}
+    }
+
+    if ( campfire == NULL )
+    {
+	send_to_char( "You need a campfire to cook. Use 'campfire' to start one.\n\r", ch );
+	return;
+    }
+
+    argument = one_argument( argument, arg1 );
+    argument = one_argument( argument, arg2 );
+    argument = one_argument( argument, arg3 );
+
+    /* Parse ingredients - be more specific to avoid cooked food conflicts */
+    if ( arg1[0] != '\0' )
+    {
+	/* For steak, look for exact vnum match first */
+	if ( str_cmp( arg1, "steak" ) == 0 )
+	{
+	    for ( obj = ch->carrying; obj != NULL; obj = obj->next_content )
+	    {
+		if ( obj->pIndexData->vnum == OBJ_VNUM_STEAK )
+		{
+		    ingredient1 = obj;
+		    break;
+		}
+	    }
+	}
+	else
+	{
+	    ingredient1 = get_obj_carry( ch, arg1, ch );
+	}
+	
+	if ( ingredient1 == NULL )
+	{
+	    send_to_char( "You don't have that ingredient.\n\r", ch );
+	    return;
+	}
+	ingredient_count++;
+    }
+    
+    if ( arg2[0] != '\0' )
+    {
+	ingredient2 = get_obj_carry( ch, arg2, ch );
+	if ( ingredient2 == NULL )
+	{
+	    send_to_char( "You don't have that ingredient.\n\r", ch );
+	    return;
+	}
+	ingredient_count++;
+    }
+    
+    if ( arg3[0] != '\0' )
+    {
+	ingredient3 = get_obj_carry( ch, arg3, ch );
+	if ( ingredient3 == NULL )
+	{
+	    send_to_char( "You don't have that ingredient.\n\r", ch );
+	    return;
+	}
+	ingredient_count++;
+    }
+
+    if ( ingredient_count == 0 )
+    {
+	send_to_char( "Cook what? You need at least one ingredient.\n\r", ch );
+	return;
+    }
+
+    /* Analyze ingredients */
+    if ( ingredient1 != NULL )
+    {
+	if ( ingredient1->pIndexData->vnum == OBJ_VNUM_STEAK )
+	{
+	    has_steak = TRUE;
+	    ingredient_types[0] = "steak";
+	}
+	else if ( ingredient1->pIndexData->vnum == OBJ_VNUM_FORAGED )
+	{
+	    /* Check if it's fish by looking at the name or short_descr */
+	    if ( strstr( ingredient1->name, "fish" ) != NULL || 
+		 strstr( ingredient1->short_descr, "fish" ) != NULL ||
+		 strstr( ingredient1->name, "perch" ) != NULL ||
+		 strstr( ingredient1->name, "bluegill" ) != NULL ||
+		 strstr( ingredient1->name, "sunfish" ) != NULL ||
+		 strstr( ingredient1->name, "bass" ) != NULL ||
+		 strstr( ingredient1->name, "catfish" ) != NULL ||
+		 strstr( ingredient1->name, "walleye" ) != NULL ||
+		 strstr( ingredient1->name, "trout" ) != NULL ||
+		 strstr( ingredient1->name, "steelhead" ) != NULL ||
+		 strstr( ingredient1->name, "pike" ) != NULL ||
+		 strstr( ingredient1->name, "muskie" ) != NULL ||
+		 strstr( ingredient1->name, "sturgeon" ) != NULL ||
+		 strstr( ingredient1->name, "mackerel" ) != NULL ||
+		 strstr( ingredient1->name, "herring" ) != NULL ||
+		 strstr( ingredient1->name, "anchovy" ) != NULL ||
+		 strstr( ingredient1->name, "cod" ) != NULL ||
+		 strstr( ingredient1->name, "haddock" ) != NULL ||
+		 strstr( ingredient1->name, "halibut" ) != NULL ||
+		 strstr( ingredient1->name, "salmon" ) != NULL ||
+		 strstr( ingredient1->name, "tuna" ) != NULL ||
+		 strstr( ingredient1->name, "swordfish" ) != NULL ||
+		 strstr( ingredient1->name, "marlin" ) != NULL ||
+		 strstr( ingredient1->name, "shark" ) != NULL )
+	    {
+		has_fish = TRUE;
+		ingredient_types[0] = "fish";
+	    }
+	    else if ( strstr( ingredient1->name, "mushroom" ) != NULL || 
+		      strstr( ingredient1->name, "herb" ) != NULL ||
+		      strstr( ingredient1->name, "spice" ) != NULL || 
+		      strstr( ingredient1->name, "seasoning" ) != NULL )
+	    {
+		has_herb = TRUE;
+		ingredient_types[0] = "herb";
+	    }
+	    else
+	    {
+		has_vegetable = TRUE;
+		ingredient_types[0] = "vegetable";
+	    }
+	}
+	else if ( ingredient1->item_type == ITEM_DRINK_CON )
+	{
+	    has_liquid = TRUE;
+	    ingredient_types[0] = "liquid";
+	}
+    }
+
+    if ( ingredient2 != NULL )
+    {
+	if ( ingredient2->pIndexData->vnum == OBJ_VNUM_STEAK )
+	{
+	    has_steak = TRUE;
+	    ingredient_types[1] = "steak";
+	}
+	else if ( ingredient2->pIndexData->vnum == OBJ_VNUM_FORAGED )
+	{
+	    /* Check if it's fish by looking at the name or short_descr */
+	    if ( strstr( ingredient2->name, "fish" ) != NULL || 
+		 strstr( ingredient2->short_descr, "fish" ) != NULL ||
+		 strstr( ingredient2->name, "perch" ) != NULL ||
+		 strstr( ingredient2->name, "bluegill" ) != NULL ||
+		 strstr( ingredient2->name, "sunfish" ) != NULL ||
+		 strstr( ingredient2->name, "bass" ) != NULL ||
+		 strstr( ingredient2->name, "catfish" ) != NULL ||
+		 strstr( ingredient2->name, "walleye" ) != NULL ||
+		 strstr( ingredient2->name, "trout" ) != NULL ||
+		 strstr( ingredient2->name, "steelhead" ) != NULL ||
+		 strstr( ingredient2->name, "pike" ) != NULL ||
+		 strstr( ingredient2->name, "muskie" ) != NULL ||
+		 strstr( ingredient2->name, "sturgeon" ) != NULL ||
+		 strstr( ingredient2->name, "mackerel" ) != NULL ||
+		 strstr( ingredient2->name, "herring" ) != NULL ||
+		 strstr( ingredient2->name, "anchovy" ) != NULL ||
+		 strstr( ingredient2->name, "cod" ) != NULL ||
+		 strstr( ingredient2->name, "haddock" ) != NULL ||
+		 strstr( ingredient2->name, "halibut" ) != NULL ||
+		 strstr( ingredient2->name, "salmon" ) != NULL ||
+		 strstr( ingredient2->name, "tuna" ) != NULL ||
+		 strstr( ingredient2->name, "swordfish" ) != NULL ||
+		 strstr( ingredient2->name, "marlin" ) != NULL ||
+		 strstr( ingredient2->name, "shark" ) != NULL )
+	    {
+		has_fish = TRUE;
+		ingredient_types[1] = "fish";
+	    }
+    else if ( strstr( ingredient2->name, "mushroom" ) != NULL || 
+	      strstr( ingredient2->name, "herb" ) != NULL ||
+	      strstr( ingredient2->name, "spice" ) != NULL || 
+	      strstr( ingredient2->name, "seasoning" ) != NULL )
+    {
+	has_herb = TRUE;
+	ingredient_types[1] = "herb";
+    }
+    else
+    {
+	has_vegetable = TRUE;
+	ingredient_types[1] = "vegetable";
+    }
+	}
+	else if ( ingredient2->item_type == ITEM_DRINK_CON )
+	{
+	    has_liquid = TRUE;
+	    ingredient_types[1] = "liquid";
+	}
+    }
+
+    if ( ingredient3 != NULL )
+    {
+	if ( ingredient3->pIndexData->vnum == OBJ_VNUM_STEAK )
+	{
+	    has_steak = TRUE;
+	    ingredient_types[2] = "steak";
+	}
+	else if ( ingredient3->pIndexData->vnum == OBJ_VNUM_FORAGED )
+	{
+	    /* Check if it's fish by looking at the name or short_descr */
+	    if ( strstr( ingredient3->name, "fish" ) != NULL || 
+		 strstr( ingredient3->short_descr, "fish" ) != NULL ||
+		 strstr( ingredient3->name, "perch" ) != NULL ||
+		 strstr( ingredient3->name, "bluegill" ) != NULL ||
+		 strstr( ingredient3->name, "sunfish" ) != NULL ||
+		 strstr( ingredient3->name, "bass" ) != NULL ||
+		 strstr( ingredient3->name, "catfish" ) != NULL ||
+		 strstr( ingredient3->name, "walleye" ) != NULL ||
+		 strstr( ingredient3->name, "trout" ) != NULL ||
+		 strstr( ingredient3->name, "steelhead" ) != NULL ||
+		 strstr( ingredient3->name, "pike" ) != NULL ||
+		 strstr( ingredient3->name, "muskie" ) != NULL ||
+		 strstr( ingredient3->name, "sturgeon" ) != NULL ||
+		 strstr( ingredient3->name, "mackerel" ) != NULL ||
+		 strstr( ingredient3->name, "herring" ) != NULL ||
+		 strstr( ingredient3->name, "anchovy" ) != NULL ||
+		 strstr( ingredient3->name, "cod" ) != NULL ||
+		 strstr( ingredient3->name, "haddock" ) != NULL ||
+		 strstr( ingredient3->name, "halibut" ) != NULL ||
+		 strstr( ingredient3->name, "salmon" ) != NULL ||
+		 strstr( ingredient3->name, "tuna" ) != NULL ||
+		 strstr( ingredient3->name, "swordfish" ) != NULL ||
+		 strstr( ingredient3->name, "marlin" ) != NULL ||
+		 strstr( ingredient3->name, "shark" ) != NULL )
+	    {
+		has_fish = TRUE;
+		ingredient_types[2] = "fish";
+	    }
+    else if ( strstr( ingredient3->name, "mushroom" ) != NULL || 
+	      strstr( ingredient3->name, "herb" ) != NULL ||
+	      strstr( ingredient3->name, "spice" ) != NULL || 
+	      strstr( ingredient3->name, "seasoning" ) != NULL )
+    {
+	has_herb = TRUE;
+	ingredient_types[2] = "herb";
+    }
+    else
+    {
+	has_vegetable = TRUE;
+	ingredient_types[2] = "vegetable";
+    }
+	}
+	else if ( ingredient3->item_type == ITEM_DRINK_CON )
+	{
+	    has_liquid = TRUE;
+	    ingredient_types[2] = "liquid";
+	}
+    }
+
+    /* Find matching recipe */
+    for ( i = 0; recipe_table[i].name != NULL; i++ )
+    {
+	if ( recipe_table[i].ingredient_count == ingredient_count )
+	{
+	    bool matches = TRUE;
+	    int j, k;
+	    bool used_types[3] = {FALSE, FALSE, FALSE};
+	    
+	    /* Debug: Show recipe being checked */
+	    char debug_recipe[256];
+	    snprintf( debug_recipe, sizeof(debug_recipe), 
+		      "Checking recipe: %s, types=[%s][%s][%s]", 
+		      recipe_table[i].name,
+		      recipe_table[i].ingredient_types[0] ? recipe_table[i].ingredient_types[0] : "NULL",
+		      recipe_table[i].ingredient_types[1] ? recipe_table[i].ingredient_types[1] : "NULL",
+		      recipe_table[i].ingredient_types[2] ? recipe_table[i].ingredient_types[2] : "NULL" );
+	    send_to_char( debug_recipe, ch );
+	    send_to_char( "\n\r", ch );
+	    
+	    /* Check if all recipe ingredient types can be matched to our ingredients */
+	    for ( j = 0; j < ingredient_count; j++ )
+	    {
+		if ( recipe_table[i].ingredient_types[j] == NULL )
+		    continue;
+		    
+		bool found_match = FALSE;
+		for ( k = 0; k < ingredient_count; k++ )
+		{
+		    if ( !used_types[k] && ingredient_types[k] != NULL &&
+		         str_cmp( recipe_table[i].ingredient_types[j], ingredient_types[k] ) == 0 )
+		    {
+			used_types[k] = TRUE;
+			found_match = TRUE;
+			break;
+		    }
+		}
+		
+		if ( !found_match )
+		{
+		    matches = FALSE;
+		    break;
+		}
+	    }
+	    
+	    if ( matches )
+	    {
+		recipe = &recipe_table[i];
+		break;
+	    }
+	}
+    }
+
+    /* If no specific recipe found, use mystery stew for 3+ ingredients */
+    if ( recipe == NULL && ingredient_count >= 3 )
+    {
+	for ( i = 0; recipe_table[i].name != NULL; i++ )
+	{
+	    if ( str_cmp( recipe_table[i].name, "mystery stew" ) == 0 )
+	    {
+		recipe = &recipe_table[i];
+		break;
+	    }
+	}
+    }
+
+    /* Default to basic recipes if no match */
+    if ( recipe == NULL )
+    {
+	if ( has_steak && ingredient_count == 1 )
+	{
+	    for ( i = 0; recipe_table[i].name != NULL; i++ )
+	    {
+		if ( str_cmp( recipe_table[i].name, "pan seared steak" ) == 0 )
+		{
+		    recipe = &recipe_table[i];
+		    break;
+		}
+	    }
+	}
+	else if ( has_fish && ingredient_count == 1 )
+	{
+	    for ( i = 0; recipe_table[i].name != NULL; i++ )
+	    {
+		if ( str_cmp( recipe_table[i].name, "pan seared fish" ) == 0 )
+		{
+		    recipe = &recipe_table[i];
+		    break;
+		}
+	    }
+	}
+    }
+
+    if ( recipe == NULL )
+    {
+	/* Debug: Show what ingredients were detected */
+	char debug_msg[256];
+	snprintf( debug_msg, sizeof(debug_msg), 
+		  "Debug: Count=%d, Types=[%s][%s][%s], Has: steak=%d fish=%d veg=%d liq=%d", 
+		  ingredient_count,
+		  ingredient_types[0] ? ingredient_types[0] : "NULL",
+		  ingredient_types[1] ? ingredient_types[1] : "NULL", 
+		  ingredient_types[2] ? ingredient_types[2] : "NULL",
+		  has_steak, has_fish, has_vegetable, has_liquid );
+	send_to_char( debug_msg, ch );
+	send_to_char( "\n\r", ch );
+	send_to_char( "You don't know how to cook that combination.\n\r", ch );
+	return;
+    }
+
+    WAIT_STATE( ch, skill_table[sn].beats );
+
+    act( "You begin cooking over the campfire.", ch, NULL, NULL, TO_CHAR );
+    act( "$n begins cooking over the campfire.", ch, NULL, NULL, TO_ROOM );
+
+    /* Cooking skill check */
+    roll = number_percent();
+    if ( roll > chance )
+    {
+	/* Cooking failed */
+	if ( roll > chance + 30 )
+	{
+	    /* Overcooked - inedible */
+	    act( "You burn the food to a crisp! It's completely inedible.", ch, NULL, NULL, TO_CHAR );
+	    act( "$n burns the food to a crisp!", ch, NULL, NULL, TO_ROOM );
+	}
+	else
+	{
+	    /* Undercooked - poisoned */
+	    act( "The food is undercooked and potentially dangerous to eat.", ch, NULL, NULL, TO_CHAR );
+	    act( "$n produces undercooked food.", ch, NULL, NULL, TO_ROOM );
+	    
+	    /* Create poisoned food */
+	    food = create_object( get_obj_index( OBJ_VNUM_FORAGED ), 0 );
+	    free_string( food->name );
+	    food->name = str_dup( "undercooked food" );
+	    free_string( food->short_descr );
+	    food->short_descr = str_dup( "undercooked food" );
+	    free_string( food->description );
+	    food->description = str_dup( "Undercooked food that looks dangerous to eat." );
+	    food->value[0] = 1;
+	    food->value[1] = 4;
+	    food->value[4] = 10; /* Reduced hunger value */
+	    
+	    obj_to_char( food, ch );
+	}
+
+	/* Consume ingredients */
+	if ( ingredient1 != NULL && ingredient1->carried_by == ch )
+	{
+	    if ( ingredient1->item_type == ITEM_DRINK_CON && ingredient1->value[1] > 0 )
+	    {
+		ingredient1->value[1]--;
+		if ( ingredient1->value[1] <= 0 )
+		{
+		    ingredient1->value[1] = 0;
+		    ingredient1->value[2] = 0;
+		    free_string( ingredient1->short_descr );
+		    ingredient1->short_descr = str_dup( "an empty container" );
+		}
+	    }
+	    else
+	    {
+		extract_obj( ingredient1 );
+	    }
+	}
+	if ( ingredient2 != NULL && ingredient2->carried_by == ch )
+	{
+	    if ( ingredient2->item_type == ITEM_DRINK_CON && ingredient2->value[1] > 0 )
+	    {
+		ingredient2->value[1]--;
+		if ( ingredient2->value[1] <= 0 )
+		{
+		    ingredient2->value[1] = 0;
+		    ingredient2->value[2] = 0;
+		    free_string( ingredient2->short_descr );
+		    ingredient2->short_descr = str_dup( "an empty container" );
+		}
+	    }
+	    else
+	    {
+		extract_obj( ingredient2 );
+	    }
+	}
+	if ( ingredient3 != NULL && ingredient3->carried_by == ch )
+	{
+	    if ( ingredient3->item_type == ITEM_DRINK_CON && ingredient3->value[1] > 0 )
+	    {
+		ingredient3->value[1]--;
+		if ( ingredient3->value[1] <= 0 )
+		{
+		    ingredient3->value[1] = 0;
+		    ingredient3->value[2] = 0;
+		    free_string( ingredient3->short_descr );
+		    ingredient3->short_descr = str_dup( "an empty container" );
+		}
+	    }
+	    else
+	    {
+		extract_obj( ingredient3 );
+	    }
+	}
+
+	check_improve( ch, sn, FALSE, 1 );
+	return;
+    }
+
+    /* Cooking successful */
+    food = create_object( get_obj_index( OBJ_VNUM_FORAGED ), 0 );
+    free_string( food->name );
+    food->name = str_dup( recipe->name );
+    free_string( food->short_descr );
+    food->short_descr = str_dup( recipe->short_descr );
+    free_string( food->description );
+    food->description = str_dup( recipe->long_descr );
+
+    /* Set food values based on recipe and quality */
+    food->value[0] = 1;
+    food->value[1] = 4;
+    food->value[4] = recipe->hunger_value + recipe->quality_bonus;
+
+    obj_to_char( food, ch );
+
+    act( "You successfully cook $p!", ch, food, NULL, TO_CHAR );
+    act( "$n successfully cooks $p!", ch, food, NULL, TO_ROOM );
+
+    /* Consume ingredients */
+    if ( ingredient1 != NULL && ingredient1->carried_by == ch )
+    {
+	if ( ingredient1->item_type == ITEM_DRINK_CON && ingredient1->value[1] > 0 )
+	{
+	    ingredient1->value[1]--;
+	    if ( ingredient1->value[1] <= 0 )
+	    {
+		ingredient1->value[1] = 0;
+		ingredient1->value[2] = 0;
+		free_string( ingredient1->short_descr );
+		ingredient1->short_descr = str_dup( "an empty container" );
+	    }
+	}
+	else
+	{
+	    extract_obj( ingredient1 );
+	}
+    }
+    if ( ingredient2 != NULL && ingredient2->carried_by == ch )
+    {
+	if ( ingredient2->item_type == ITEM_DRINK_CON && ingredient2->value[1] > 0 )
+	{
+	    ingredient2->value[1]--;
+	    if ( ingredient2->value[1] <= 0 )
+	    {
+		ingredient2->value[1] = 0;
+		ingredient2->value[2] = 0;
+		free_string( ingredient2->short_descr );
+		ingredient2->short_descr = str_dup( "an empty container" );
+	    }
+	}
+	else
+	{
+	    extract_obj( ingredient2 );
+	}
+    }
+    if ( ingredient3 != NULL && ingredient3->carried_by == ch )
+    {
+	if ( ingredient3->item_type == ITEM_DRINK_CON && ingredient3->value[1] > 0 )
+	{
+	    ingredient3->value[1]--;
+	    if ( ingredient3->value[1] <= 0 )
+	    {
+		ingredient3->value[1] = 0;
+		ingredient3->value[2] = 0;
+		free_string( ingredient3->short_descr );
+		ingredient3->short_descr = str_dup( "an empty container" );
+	    }
+	}
+	else
+	{
+	    extract_obj( ingredient3 );
+	}
+    }
+
+    check_improve( ch, sn, TRUE, 1 );
+    return;
+}
+
+
+
+/* Bowfire code -- Used to dislodge an arrow already lodged */
+void do_dislodge( CHAR_DATA *ch, char *argument )
+{
+    OBJ_DATA * arrow = NULL;
+    int dam = 0;
+    
+    if (argument[0] == '\0') /* empty */
+    {
+        send_to_char ("`WDislodge what?`X\n\r",ch);
+        return;
+    }	
+    
+    if ( get_eq_char(ch, WEAR_LODGE_RIB) != NULL)
+    {
+        arrow = get_eq_char( ch, WEAR_LODGE_RIB );
+        act( "`WWith a wrenching pull, you dislodge $p `Wfrom your chest.`X", ch, arrow, NULL, TO_CHAR );
+        unequip_char( ch, arrow );
+        arrow->extra_flags = arrow->extra_flags - 134217728;
+        dam      =  dice((3 * arrow->value[1]), (3 * arrow->value[2]));
+        damage( ch, ch, dam, gsn_bow, DAM_SLASH, TRUE );
+        return;
+    }	
+    
+    else
+    if (get_eq_char(ch,WEAR_LODGE_ARM) != NULL)
+    {
+        arrow = get_eq_char( ch, WEAR_LODGE_ARM );
+        act( "`WWith a tug you dislodge $p `Wfrom your arm.`X", ch, arrow, NULL, TO_CHAR );
+        unequip_char( ch, arrow );
+        arrow->extra_flags = arrow->extra_flags - 134217728;
+        dam      =  dice((3 * arrow->value[1]), (2 * arrow->value[2]));
+        damage( ch, ch, dam, gsn_bow, DAM_SLASH, TRUE );
+        return;
+    }	
+    
+    else
+    if (get_eq_char(ch,WEAR_LODGE_LEG) != NULL)  
+    {
+        arrow = get_eq_char( ch, WEAR_LODGE_LEG );
+        act( "`WWith a tug you dislodge $p `Wfrom your leg.`X", ch, arrow, NULL, TO_CHAR );
+        unequip_char( ch, arrow );
+        arrow->extra_flags = arrow->extra_flags - 134217728;
+        dam      =  dice((2 * arrow->value[1]), (2 * arrow->value[2]));
+        damage( ch, ch, dam, gsn_bow, DAM_SLASH, TRUE );
+        return;
+    }
+    else
+    {	
+        send_to_char("`WYou have nothing lodged in your body.`X\n\r", ch);
+        return;
+    }
+}
+
+/* Gather firewood from forest areas */
+void do_gather( CHAR_DATA *ch, char *argument )
+{
+    const struct foraging_entry *entry;
+    OBJ_DATA *obj;
+    OBJ_INDEX_DATA *pObjIndex;
+    int chance;
+    int count = 0;
+    int i;
+    
+    if ( ch->in_room == NULL )
+    {
+        send_to_char( "You are nowhere.\n\r", ch );
+        return;
+    }
+    
+    if ( ch->in_room->sector_type != SECT_FOREST )
+    {
+        send_to_char( "You can only gather firewood in forests.\n\r", ch );
+        return;
+    }
+    
+    if ( ch->move < 10 )
+    {
+        send_to_char( "You are too tired to gather firewood.\n\r", ch );
+        return;
+    }
+    
+    /* Use move points */
+    ch->move -= 10;
+    
+    /* Base chance of success */
+    chance = 60;
+    
+    /* Seasonal modifiers */
+    switch ( time_info.month )
+    {
+        case 2: case 3: case 4:  /* Spring - better gathering */
+            chance += 10;
+            break;
+        case 8: case 9: case 10: /* Fall - worse gathering */
+            chance -= 10;
+            break;
+        case 0: case 1: case 11: /* Winter - very scarce */
+            chance -= 30;
+            break;
+    }
+    
+    /* Count entries in the table */
+    for ( i = 0; uk_wood_table[i].name != NULL; i++ )
+        count++;
+    
+    if ( count == 0 )
+    {
+        send_to_char( "You search around but find nothing of use here.\n\r", ch );
+        return;
+    }
+    
+    if ( number_percent() < chance )
+    {
+        /* Select random entry from table */
+        entry = &uk_wood_table[number_range( 0, count - 1 )];
+        
+        /* Create the firewood item */
+        pObjIndex = get_obj_index( OBJ_VNUM_FIREWOOD );
+        if ( pObjIndex == NULL )
+        {
+            send_to_char( "Something went wrong with gathering.\n\r", ch );
+            return;
+        }
+        
+        obj = create_object( pObjIndex, 0 );
+        if ( obj == NULL )
+        {
+            send_to_char( "Something went wrong with gathering.\n\r", ch );
+            return;
+        }
+        
+        /* Set object properties */
+        free_string( obj->name );
+        obj->name = str_dup( entry->name );
+        free_string( obj->short_descr );
+        obj->short_descr = str_dup( entry->short_descr );
+        free_string( obj->description );
+        obj->description = str_dup( entry->long_descr );
+        
+        /* Set as firewood (trash type) */
+        obj->item_type = ITEM_FIREWOOD;
+        
+        /* Give item to character */
+        obj_to_char( obj, ch );
+        
+        /* Send messages */
+        act( "You gather $p from the forest.", ch, obj, NULL, TO_CHAR );
+        act( "$n gathers $p from the forest.", ch, obj, NULL, TO_ROOM );
+        
+        /* Spring bonus - chance for extra wood */
+        if ( (time_info.month >= 2 && time_info.month <= 4) && number_percent() < 20 )
+        {
+            obj = create_object( pObjIndex, 0 );
+            if ( obj != NULL )
+            {
+                free_string( obj->name );
+                obj->name = str_dup( entry->name );
+                free_string( obj->short_descr );
+                obj->short_descr = str_dup( entry->short_descr );
+                free_string( obj->description );
+                obj->description = str_dup( entry->long_descr );
+                obj->item_type = ITEM_FIREWOOD;
+                obj_to_char( obj, ch );
+                send_to_char( "You find extra firewood!\n\r", ch );
+            }
+        }
+    }
+    else
+    {
+        send_to_char( "You search but find no suitable firewood.\n\r", ch );
+    }
+    
+    return;
+}
+
+/* Build a temporary shelter */
+void do_build_shelter( CHAR_DATA *ch, char *argument )
+{
+    OBJ_DATA *firewood;
+    OBJ_DATA *shelter;
+    int move_cost = 50;
+    
+    if ( ch->in_room == NULL )
+    {
+        send_to_char( "You are nowhere.\n\r", ch );
+        return;
+    }
+    
+    if ( ch->move < move_cost )
+    {
+        send_to_char( "You are too tired to build a shelter.\n\r", ch );
+        return;
+    }
+    
+    /* Check for firewood (any wood branches) */
+    firewood = get_obj_carry( ch, "branches", ch );
+    if ( firewood == NULL )
+    {
+        send_to_char( "You need wood branches to build a shelter.\n\r", ch );
+        return;
+    }
+    
+    /* Check if there's already a shelter in the room */
+    for ( shelter = ch->in_room->contents; shelter != NULL; shelter = shelter->next_content )
+    {
+        if ( shelter->pIndexData->vnum == OBJ_VNUM_SHELTER )
+        {
+            send_to_char( "There is already a shelter here.\n\r", ch );
+            return;
+        }
+    }
+    
+    /* Use move points */
+    ch->move -= move_cost;
+    
+    /* Remove firewood */
+    extract_obj( firewood );
+    
+    /* Create shelter */
+    {
+        OBJ_INDEX_DATA *obj_index = get_obj_index( OBJ_VNUM_SHELTER );
+        if ( obj_index == NULL )
+        {
+            send_to_char( "You cannot build a shelter here.\n\r", ch );
+            return;
+        }
+        shelter = create_object( obj_index, 0 );
+    }
+    
+    obj_to_room( shelter, ch->in_room );
+    
+    act( "You build a temporary shelter from the firewood.", ch, NULL, NULL, TO_CHAR );
+    act( "$n builds a temporary shelter from firewood.", ch, NULL, NULL, TO_ROOM );
+    
+    return;
+}
+
+void do_blanket( CHAR_DATA *ch, char *argument )
+{
+    OBJ_DATA *skin1, *skin2;
+    OBJ_DATA *blanket;
+    OBJ_INDEX_DATA *pObjIndex;
+    
+    if ( ch->in_room == NULL )
+    {
+	send_to_char( "You are nowhere.\n\r", ch );
+	return;
+    }
+    
+    if ( ch->move < 15 )
+    {
+	send_to_char( "You are too tired to make a blanket.\n\r", ch );
+	return;
+    }
+    
+    /* Find first skin */
+    for ( skin1 = ch->carrying; skin1 != NULL; skin1 = skin1->next_content )
+    {
+	if ( skin1->pIndexData->vnum == OBJ_VNUM_SKIN )
+	    break;
+    }
+    if ( skin1 == NULL )
+    {
+	send_to_char( "You need 2 skins to make a blanket.\n\r", ch );
+	return;
+    }
+    
+    /* Find second skin */
+    for ( skin2 = ch->carrying; skin2 != NULL; skin2 = skin2->next_content )
+    {
+	if ( skin2->pIndexData->vnum == OBJ_VNUM_SKIN && skin2 != skin1 )
+	    break;
+    }
+    if ( skin2 == NULL )
+    {
+	send_to_char( "You need 2 skins to make a blanket.\n\r", ch );
+	return;
+    }
+    
+    ch->move -= 15;
+    
+    /* Remove both skins */
+    extract_obj( skin1 );
+    extract_obj( skin2 );
+    
+    /* Create blanket */
+    pObjIndex = get_obj_index( OBJ_VNUM_BLANKET );
+    if ( pObjIndex == NULL )
+    {
+	bug( "do_blanket: OBJ_VNUM_BLANKET not found", 0 );
+	send_to_char( "You cannot make a blanket right now.\n\r", ch );
+	return;
+    }
+    
+    blanket = create_object( pObjIndex, 0 );
+    obj_to_char( blanket, ch );
+    
+    act( "You make a warm blanket from two skins.", ch, NULL, NULL, TO_CHAR );
+    act( "$n makes a warm blanket from two skins.", ch, NULL, NULL, TO_ROOM );
+    
+    return;
+}
+
 

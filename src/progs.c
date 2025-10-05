@@ -1706,6 +1706,8 @@ mprog_driver ( char *com_list, CHAR_DATA *mob, CHAR_DATA *actor,
      */
 
     count = 0;
+    if ( mob->in_room == NULL )
+        return;
     for ( vch = mob->in_room->people; vch; vch = vch->next_in_room )
     {
 	if ( !IS_NPC( vch )

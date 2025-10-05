@@ -528,6 +528,7 @@ const struct flag_type extra_flags[] =
     {	"aquest",		ITEM_QUESTOBJ,		TRUE	},
     {	"nolist",		ITEM_NOLIST,		TRUE	},
     {	"noidentify",		ITEM_NOIDENTIFY,	TRUE	},
+    {	"lodged",		ITEM_LODGED,		TRUE	},
     //{	"quest",		ITEM_QUESTOBJ,	TRUE	},
     
     {	NULL,			0,			0	}
@@ -686,6 +687,10 @@ const struct flag_type		item_types	[]	=
     {   "token",    ITEM_TOKEN,     TRUE},
     {   "instrument",    ITEM_INSTRUMENT,     TRUE},
     {   "manual",    ITEM_MANUAL,     TRUE},
+    {   "fishing_rod",    ITEM_FISHING_ROD,     TRUE},
+    {   "flint",          ITEM_FLINT,           TRUE},
+    {   "firesteel",      ITEM_FIRESTEEL,       TRUE},
+    {   "firewood",       ITEM_FIREWOOD,        TRUE},
     {	NULL,		0,		0	}
 };
 
@@ -770,6 +775,7 @@ const struct flag_type material_types[] =
     {	"leather",	MAT_LEATHER,	TRUE	},
     {	"marble",	MAT_MARBLE,	TRUE	},
     {	"mercury",	MAT_MERCURY,	TRUE	},
+    {	"mithril",	MAT_MITHRIL,	TRUE	},
     {	"obsidian",	MAT_OBSIDIAN,	TRUE	},
     {	"oil",		MAT_OIL,	TRUE	},
     {	"paper",	MAT_PAPER,	TRUE	},
@@ -1524,6 +1530,9 @@ const struct flag_type wear_loc_types[] =
     {	"rpatch",	WEAR_RPATCH,	TRUE	},
     {	"tail",	        WEAR_TAIL,	TRUE	},
      {	"horns",	        WEAR_HORNS,	TRUE	},
+    {	"lodge_leg",	WEAR_LODGE_LEG,	TRUE	},
+    {	"lodge_arm",	WEAR_LODGE_ARM,	TRUE	},
+    {	"lodge_rib",	WEAR_LODGE_RIB,	TRUE	},
     {	NULL,		0,		0	}
 };
 
@@ -1573,53 +1582,200 @@ const int spell_slots[MAX_CHAR_LEVEL+1][MAX_SPELL_LEVEL+1] = {
  /*20*/{ 0, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6 }
 };
 
+/*
+ * Foraging tables for different sector types
+ */
+
+const struct foraging_entry forest_foraging_table[] =
+{
+    {"wild strawberry", "a small wild strawberry", "A small, ripe wild strawberry lies here."},
+    {"serviceberry", "a plump serviceberry", "A plump serviceberry is here, ready to be picked."},
+    {"wild mushroom", "a wild mushroom", "A wild mushroom grows here among the fallen leaves."},
+    {"blackberry", "a handful of blackberries", "A small cluster of ripe blackberries hangs here."},
+    {"wild herb", "a sprig of wild herb", "A fragrant sprig of wild herb grows here."},
+    {"acorn", "a large acorn", "A large, healthy acorn lies here on the forest floor."},
+    {"pine nuts", "some pine nuts", "A small collection of pine nuts rests here."},
+    {"wild onion", "a wild onion", "A small wild onion bulb has been unearthed here."},
+    {NULL, NULL, NULL}
+};
+
+const struct foraging_entry desert_foraging_table[] =
+{
+    {"prickly pear", "a ripe prickly pear", "A ripe prickly pear rests on the ground."},
+    {"desert broomrape root", "a desert broomrape root", "A desert broomrape root lies here, unearthed from the sand."},
+    {"cactus apple", "a cactus apple", "A sweet cactus apple has been plucked from a nearby cactus."},
+    {"desert herb", "a desert herb", "A hardy desert herb grows here among the rocks."},
+    {"mesquite pods", "some mesquite pods", "A few mesquite pods lie scattered here."},
+    {"agave heart", "an agave heart", "The tender heart of an agave plant lies here."},
+    {"desert sage", "a sprig of desert sage", "A sprig of aromatic desert sage is here."},
+    {"barrel cactus fruit", "a barrel cactus fruit", "A juicy barrel cactus fruit has been harvested here."},
+    {NULL, NULL, NULL}
+};
+
+const struct foraging_entry field_foraging_table[] =
+{
+    {"wild carrot", "a wild carrot", "A wild carrot has been pulled from the earth here."},
+    {"common mallow", "a bunch of common mallow leaves", "A bunch of common mallow leaves are scattered here."},
+    {"dandelion greens", "some dandelion greens", "Fresh dandelion greens have been gathered here."},
+    {"wild lettuce", "a wild lettuce leaf", "A tender wild lettuce leaf lies here."},
+    {"chicory root", "a chicory root", "A bitter chicory root has been dug up here."},
+    {"wild radish", "a wild radish", "A small wild radish has been harvested here."},
+    {"plantain leaves", "some plantain leaves", "Broad plantain leaves have been collected here."},
+    {"wild garlic", "a wild garlic bulb", "A pungent wild garlic bulb lies here."},
+    {NULL, NULL, NULL}
+};
+
+const struct foraging_entry mountain_foraging_table[] =
+{
+    {"field eryngo root", "a field eryngo root", "A field eryngo root lies here, freshly dug up."},
+    {"wild leek", "a wild leek", "A wild leek is here, its green leaves swaying gently."},
+    {"mountain herb", "a mountain herb", "A hardy mountain herb clings to the rocky soil here."},
+    {"alpine strawberry", "an alpine strawberry", "A small alpine strawberry grows here among the rocks."},
+    {"wild rhubarb", "a wild rhubarb stalk", "A tart wild rhubarb stalk has been harvested here."},
+    {"mountain tea", "some mountain tea leaves", "Aromatic mountain tea leaves have been gathered here."},
+    {"wild parsley", "a sprig of wild parsley", "A fresh sprig of wild parsley grows here."},
+    {"rock cress", "some rock cress", "Tender rock cress leaves have been collected here."},
+    {NULL, NULL, NULL}
+};
+
+const struct foraging_entry hills_foraging_table[] =
+{
+    {"shepherd purse", "a sprig of shepherd's purse", "A sprig of shepherd's purse lies here, its tiny pods rattling in the breeze."},
+    {"white bladder campion", "a white bladder campion", "A white bladder campion stands here, its delicate flowers open to the sun."},
+    {"wild thyme", "a sprig of wild thyme", "A fragrant sprig of wild thyme grows here."},
+    {"hills berry", "a hills berry", "A sweet hills berry has been picked here."},
+    {"wild oregano", "some wild oregano", "Aromatic wild oregano has been gathered here."},
+    {"hill herb", "a hill herb", "A resilient hill herb grows here on the slope."},
+    {"wild marjoram", "a sprig of wild marjoram", "A sprig of wild marjoram lies here."},
+    {"hills flower", "a hills flower", "A colorful hills flower has been plucked here."},
+    {NULL, NULL, NULL}
+};
+
 const   struct  god_type       god_table      []           = 
 {
-    {"Lord Ao"}, 
-	{"Akadi"}, 
-	{"Asmodeus"},
-    {"Auril"}, 
-    {"Azuth"},
-	{"Bahamut"}, 
-	{"Bane"},
-    {"Beshaba"},
-    {"Bhaal"}, 
-    {"Chauntea"}, 
-	{"Cyric"}, 
-    {"Deneir"},
-    {"Eldath"},
-    {"Gond"},
-	{"Grumbar"},  
-	{"Helm"}, 
-	{"Ilmater"},
-	{"Istishia"},
-	{"Kelemvor"}, 
-	{"Kossuth"}, 
-	{"Lathander"}, 
-    {"Lliira"}, 
-	{"Lolth"},
-    {"Loviatar"}, 
-    {"Lurue"}, 
-	{"Mask"}, 
-    {"Malar"}, 
-	{"Mielikki"},
-    {"Milil"}, 
-	{"Mystra"}, 
-	{"Oghma"}, 
-	{"Selune"}, 
-	{"Shar"},
-    {"Shaundakul"}, 
-	{"Silvanus"}, 
-	{"Sune"}, 
-    {"Talona"},
-	{"Talos"}, 
-    {"Tchazzar"},
-	{"Tempus"},
-    {"Tiamat"},
-	{"Torm"},
-    {"Tymora"}, 
-	{"Tyr"}, 
-	{"Ubtao"}, 
-	{"Umberlee"}, 
-	{"Waukeen"}, 
+    {"Lord Ao", "0", "0"}, 
+	{"Akadi", "0", "0"}, 
+	{"Asmodeus", "1000", "-1000"},
+    {"Auril", "0", "-1000"}, 
+    {"Azuth", "1000", "0"},
+	{"Bahamut", "1000", "1000"}, 
+	{"Bane", "1000", "-1000"},
+    {"Beshaba", "-1000", "-1000"},
+    {"Bhaal", "1000", "-1000"}, 
+	{"Chauntea", "0", "1000"}, 
+	{"Cyric", "-1000", "-1000"}, 
+    {"Deneir", "0", "1000"},
+    {"Eldath", "0", "1000"},
+    {"Gond", "0", "0"},
+	{"Grumbar", "0", "0"},  
+	{"Helm", "1000", "0"}, 
+	{"Ilmater", "1000", "1000"},
+	{"Istishia", "0", "0"},
+	{"Kelemvor", "1000", "0"}, 
+	{"Kossuth", "0", "0"}, 
+	{"Lathander", "0", "1000"}, 
+    {"Lliira", "-1000", "1000"}, 
+	{"Lolth", "-1000", "-1000"},
+    {"Loviatar", "1000", "-1000"}, 
+    {"Lurue", "-1000", "1000"}, 
+	{"Mask", "0", "-1000"}, 
+    {"Malar", "-1000", "-1000"}, 
+	{"Mielikki", "0", "1000"},
+    {"Milil", "0", "1000"}, 
+	{"Mystra", "0", "1000"}, 
+	{"Oghma", "0", "0"}, 
+	{"Selune", "-1000", "1000"}, 
+	{"Shar", "0", "-1000"},
+    {"Shaundakul", "-1000", "0"}, 
+	{"Silvanus", "0", "0"}, 
+	{"Sune", "0", "1000"}, 
+    {"Talona", "-1000", "-1000"},
+	{"Talos", "-1000", "-1000"}, 
+    {"Tchazzar", "-1000", "-1000"},
+	{"Tempus", "-1000", "0"},
+    {"Tiamat", "1000", "-1000"},
+	{"Torm", "1000", "1000"},
+    {"Tymora", "-1000", "1000"}, 
+	{"Tyr", "1000", "1000"}, 
+	{"Ubtao", "0", "0"}, 
+	{"Umberlee", "-1000", "-1000"}, 
+	{"Waukeen", "0", "0"}, 
 	};
+
+/*
+ * Fish tables for fishing system
+ */
+const struct fish_entry river_fish_table[] =
+{
+    {"perch", "a small yellow perch", "A small yellow perch swims here.", 1},
+    {"bluegill", "a bluegill", "A bluegill darts through the water.", 1},
+    {"sunfish", "a sunfish", "A sunfish glides through the current.", 1},
+    {"smallmouth bass", "a smallmouth bass", "A smallmouth bass lurks in the shadows.", 2},
+    {"catfish", "a channel catfish", "A channel catfish patrols the river bottom.", 2},
+    {"walleye", "a walleye", "A walleye swims with predatory grace.", 2},
+    {"rainbow trout", "a rainbow trout", "A rainbow trout leaps from the water.", 3},
+    {"brown trout", "a brown trout", "A large brown trout holds in the current.", 3},
+    {"steelhead", "a steelhead", "A powerful steelhead fights the current.", 3},
+    {NULL, NULL, NULL, 0}
+};
+
+const struct fish_entry lake_fish_table[] =
+{
+    {"bluegill", "a bluegill", "A bluegill swims lazily in the shallows.", 1},
+    {"crappie", "a crappie", "A crappie darts between the weeds.", 1},
+    {"perch", "a yellow perch", "A yellow perch cruises near the bottom.", 1},
+    {"smallmouth bass", "a smallmouth bass", "A smallmouth bass lurks near the rocks.", 2},
+    {"walleye", "a walleye", "A walleye hunts in the deeper water.", 2},
+    {"largemouth bass", "a largemouth bass", "A largemouth bass waits in the weeds.", 2},
+    {"northern pike", "a northern pike", "A northern pike stalks its prey.", 3},
+    {"muskie", "a muskie", "A large muskie lurks in the depths.", 3},
+    {"lake trout", "a lake trout", "A lake trout swims in the cold depths.", 4},
+    {"sturgeon", "a lake sturgeon", "A massive lake sturgeon glides by.", 4},
+    {NULL, NULL, NULL, 0}
+};
+
+const struct fish_entry ocean_fish_table[] =
+{
+    {"mackerel", "a mackerel", "A mackerel swims in the school.", 1},
+    {"herring", "a herring", "A herring darts through the waves.", 1},
+    {"anchovy", "an anchovy", "An anchovy swims in the shallows.", 1},
+    {"cod", "a cod", "A cod swims near the ocean floor.", 2},
+    {"haddock", "a haddock", "A haddock glides through the water.", 2},
+    {"halibut", "a halibut", "A halibut rests on the sandy bottom.", 2},
+    {"salmon", "a salmon", "A salmon swims with determination.", 3},
+    {"tuna", "a tuna", "A tuna streaks through the water.", 3},
+    {"swordfish", "a swordfish", "A swordfish cuts through the waves.", 4},
+    {"marlin", "a blue marlin", "A magnificent blue marlin leaps from the water.", 5},
+    {"shark", "a small shark", "A small shark patrols the depths.", 5},
+    {NULL, NULL, NULL, 0}
+};
+
+const struct recipe_entry recipe_table[] =
+{
+    /* Single ingredient recipes */
+    {"pan seared steak", "pan seared steak", "A perfectly cooked pan seared steak.", 1, 15, 0, {"steak", NULL, NULL}},
+    {"pan seared fish", "pan seared fish", "A delicious pan seared fish fillet.", 1, 12, 0, {"fish", NULL, NULL}},
+    
+    /* Two ingredient recipes */
+    {"steak and vegetables", "steak and vegetables", "Tender steak served with fresh vegetables.", 2, 20, 1, {"steak", "vegetable", NULL}},
+    {"fish stew", "fish stew", "A hearty fish stew with vegetables.", 2, 25, 2, {"fish", "liquid", NULL}},
+    {"fish and vegetables", "fish and vegetables", "Fresh fish served with seasonal vegetables.", 2, 22, 1, {"fish", "vegetable", NULL}},
+    
+    /* Three ingredient recipes */
+    {"surf and turf", "surf and turf", "An exquisite combination of steak and fish.", 3, 35, 3, {"steak", "fish", "herb"}},
+    {"fish stir fry", "fish stir fry", "A flavorful fish stir fry with vegetables.", 3, 30, 2, {"fish", "vegetable", "herb"}},
+    {"steak stir fry", "steak stir fry", "A delicious steak stir fry with vegetables.", 3, 32, 2, {"steak", "vegetable", "herb"}},
+    {"mystery stew", "mystery stew", "A hearty stew with unknown ingredients.", 3, 28, 1, {"meat", "vegetable", "liquid"}},
+    
+    {NULL, NULL, NULL, 0, 0, 0, {NULL, NULL, NULL}}
+};
+
+/* House furniture table */
+const struct  house_item  house_table [] =
+{
+    /* Name */   /* Cost */  /* Vnum */    /* Type */
+  {   "Couch",      200,        1200,      OBJ_VNUM    },
+  {   "Chest",      200,        1201,      OBJ_VNUM    },
+  {   "Healer",     500,        1200,      MOB_VNUM    },
+  {   NULL,          0,         0,          0,          }
+};

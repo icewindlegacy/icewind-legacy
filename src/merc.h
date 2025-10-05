@@ -111,6 +111,10 @@ typedef	unsigned int			bitvector;
 typedef struct	affect_data		AFFECT_DATA;
 typedef struct	alias_data		ALIAS_DATA;
 typedef struct	area_data		AREA_DATA;
+typedef struct	foraging_entry		FORAGING_ENTRY;
+typedef struct	hunted_animal_entry	HUNTED_ANIMAL_ENTRY;
+typedef struct	fish_entry		FISH_ENTRY;
+typedef struct	recipe_entry		RECIPE_ENTRY;
 typedef struct	avatar_data		AVATAR_DATA;
 typedef struct	ban_data		BAN_DATA;
 typedef struct	bank_data		BANK_DATA;
@@ -150,6 +154,7 @@ typedef struct	project_data		PROJECT_DATA;
 typedef struct	reset_data		RESET_DATA;
 typedef struct	room_index_data		ROOM_INDEX_DATA;
 typedef struct	shop_data		SHOP_DATA;
+typedef struct	house_data		HOUSE_DATA;
 typedef struct	social_data		SOCIAL_DATA;
 typedef struct	strlist_data		STRLIST_DATA;
 typedef struct	text_data		TEXT_DATA;
@@ -416,6 +421,40 @@ struct extended_bitvector
     unsigned int		bits[XBI];
 };
 
+struct foraging_entry
+{
+    char *name;
+    char *short_descr;
+    char *long_descr;
+};
+
+struct hunted_animal_entry
+{
+    char *name;
+    char *short_descr;
+    char *long_descr;
+    int race;
+};
+
+struct fish_entry
+{
+    char *name;
+    char *short_descr;
+    char *long_descr;
+    int size;
+};
+
+struct recipe_entry
+{
+    char *name;
+    char *short_descr;
+    char *long_descr;
+    int ingredient_count;
+    int hunger_value;
+    int quality_bonus;
+    char *ingredient_types[3]; /* Types of ingredients required */
+};
+
 
 /*
  * Animal structure, for spell animal summoning
@@ -659,6 +698,8 @@ struct	weather_data
     int		sunlight;
     int		wind_dir;
     int		wind_speed;
+    int		temperature;	/* Current temperature in degrees */
+    int		temp_change;	/* Temperature change rate */
 };
 
 
@@ -912,6 +953,31 @@ struct	shop_data
     sh_int	close_hour;		/* First closing hour		*/
 };
 
+struct house_item
+{
+    char *name;
+    int cost;
+    int vnum;
+    int type;
+};
+
+struct control_animal_type
+{
+    char *name;
+    int race;
+};
+
+struct house_data
+{
+    HOUSE_DATA *        next;
+    char *              oname;
+    char *              objname;
+    char *              mobname;
+    int                 ovalue;
+    int                 mvalue;
+    bool                valid;
+};
+
 
 /*
  * Skill info, used to determine how well a player knows a skill.
@@ -961,7 +1027,9 @@ extern const int spell_slots[MAX_CHAR_LEVEL + 1][MAX_SPELL_LEVEL + 1];
 
 struct god_type
 {
-     char *      name;      
+     char *      name;  
+     char *      ethos;
+     char *      alignment;    
 };
 
 struct	class_type
@@ -1233,7 +1301,7 @@ struct	kill_data
 #define MOB_VNUM_SKELETON      26
 #define MOB_VNUM_CITYGUARD	 3060
 #define MOB_VNUM_VAMPIRE	 3404
-
+#define MOB_VNUM_HUNTED      27
 #define MOB_VNUM_PATROLMAN	   2106
 #define GROUP_VNUM_TROLLS	   2100
 #define GROUP_VNUM_OGRES	   2101
@@ -1277,6 +1345,7 @@ struct	kill_data
 #define cc			268435456
 #define dd			536870912
 #define ee			1073741824
+#define ff			2147483648
 
 #define BV00			( 1 << 00 )
 #define BV01			( 1 << 01 )
@@ -1709,6 +1778,7 @@ struct	kill_data
 #define OBJ_VNUM_ARROW		     45
 #define OBJ_VNUM_BLOODSTAIN	     46
 
+
 /* More body parts */
 #define OBJ_VNUM_TAIL		     47
 #define OBJ_VNUM_WINGS		     48
@@ -1746,11 +1816,18 @@ struct	kill_data
 #define OBJ_VNUM_SCHOOL_SHIRT	   914
 #define OBJ_VNUM_SCHOOL_PANTS	   915
 #define OBJ_VNUM_MAP		       916
+#define OBJ_VNUM_SCHOOL_FLINT	   616
+#define OBJ_VNUM_SCHOOL_FAGGOT	   617
 
 /* Skinning and butchering */
 #define OBJ_VNUM_STEAK 50
 #define OBJ_VNUM_SKIN  51
-
+#define OBJ_VNUM_FORAGED 54
+#define OBJ_VNUM_FEATHERS 55
+#define OBJ_VNUM_CAMPFIRE 56
+#define OBJ_VNUM_FIREWOOD 57
+#define OBJ_VNUM_SHELTER 58
+#define OBJ_VNUM_BLANKET 59
 /* Doonation pit */
 #define OBJ_VNUM_PIT 944
 
@@ -1804,7 +1881,11 @@ struct	kill_data
 #define ITEM_SHEATH		     46
 #define ITEM_TOKEN           47
 #define ITEM_INSTRUMENT      48
-#define ITEM_MANUAL          49
+#define ITEM_FISHING_ROD     49
+#define ITEM_MANUAL          50
+#define ITEM_FLINT           51
+#define ITEM_FIRESTEEL       52
+#define ITEM_FIREWOOD        53
 
 
 /*
@@ -1917,7 +1998,8 @@ struct	kill_data
 #define ITEM_QUESTOBJ		(cc)
 #define ITEM_NOLIST		(dd)
 #define ITEM_NOIDENTIFY		(ee)
-//#define ITEM_QUESTOBJ       (ff)
+#define ITEM_LODGED		(ff)
+//#define ITEM_QUESTOBJ       (hh)
 
 /*
  * Extra2 Flags
@@ -2148,6 +2230,7 @@ struct	kill_data
 #define ROOM_SILENT		(Z)
 #define ROOM_UNFINISHED		(aa)
 #define ROOM_NOSCAN		(bb)
+#define ROOM_ENTANGLED		(cc)
 
 
 /*
@@ -2253,6 +2336,7 @@ struct	kill_data
 /* Definitions for EVENT_OWNER_ROOM events */
 #define EVENT_ROOM_MPDELAY	 2
 #define EVENT_ROOM_SAIL		 3
+#define EVENT_ROOM_ENTANGLE	 4
 
 
 /*
@@ -2372,7 +2456,10 @@ struct	kill_data
 #define WEAR_ANKLE_R		28
 #define WEAR_TAIL		29
 #define WEAR_HORNS              30
-#define MAX_WEAR		31
+#define WEAR_LODGE_LEG          31
+#define WEAR_LODGE_ARM          32
+#define WEAR_LODGE_RIB          33
+#define MAX_WEAR		34
 
 
 
@@ -2446,12 +2533,15 @@ struct	kill_data
 #define PLR_QUESTOR		(dd)
 #define PLR_NOEXP               (ee)
 #define PLR_MENDED      (B)
+#define PLR_HUNTING             (I)
+#define PLR_WET                 (ff)
 /*
  * ACT2 bits for players
  */
 #define CODER			(A)
 #define HBUILDER		(B)
 #define PLR_FMETER		(C)
+#define PLR_FREEZING		(S)
 #define PLR_SEE_COL_CODE	(D)
 #define PLR_PEEK		(E)
 #define PLR_AUTOCHANNEL		(F)
@@ -2750,6 +2840,7 @@ struct	char_data
     NOTE_DATA *		pnote;
     OBJ_DATA *		carrying;
     OBJ_DATA *		on;
+    OBJ_DATA *		furniture_in;	/* furniture character is sitting/sleeping/resting IN */
     ROOM_INDEX_DATA *	in_room;
     int			was_in_room;
     int			room_vnum;
@@ -2881,6 +2972,7 @@ struct	pc_data
     char *		bamfout;
     char *		lname;
     char *		title;
+    char *		target;
     char *		hair_color;
     char *      hair_adj;
     char *		eye_color;
@@ -2928,6 +3020,13 @@ struct	pc_data
     int	timesplayed;
     /* Multiclass system */
     bool		pending_class_choice;	/* True when character needs to choose class */
+    
+    /* House system */
+    int                 h_vnum;
+    int                 hinvite;
+    sh_int              horesets;
+    sh_int              hmresets;
+    bool                hchange;
 
 };
 
@@ -3171,6 +3270,7 @@ struct	exit_data
 struct	reset_data
 {
     RESET_DATA *	next;
+    RESET_DATA *	prev;
     char		command;
     int		arg1;
     int		arg2;
@@ -3334,6 +3434,8 @@ struct	room_index_data
     EXIT_DATA * 	old_exit[MAX_DIR];
     RESET_DATA *	reset_first;
     RESET_DATA *	reset_last;
+    RESET_DATA *	last_mob_reset;
+    RESET_DATA *	last_obj_reset;
     OREPROG_DATA *	rprogs;
     EVENT_DATA *	event_first;
     EVENT_DATA *	event_last;
@@ -3807,6 +3909,17 @@ extern int     gsn_breath;
 extern int     gsn_engage;
 extern int     gsn_purify;
 extern int     gsn_music;
+extern int     gsn_forage;
+extern int     gsn_fishing;
+extern int     gsn_cooking;
+extern int     gsn_control_animal;
+extern int     gsn_flare;
+extern int     gsn_guidance;
+extern int     gsn_resistance;
+extern int     gsn_virtue;
+extern int     gsn_entangle;
+extern int     gsn_weapon_focus;
+extern int     gsn_weapon_finesse;
 
 /*
  * race values
@@ -3984,13 +4097,23 @@ void	ext_toggle_bits		args( ( EXT_BV *var, EXT_BV *bits) );
 #define IS_CHAOTIC(ch)     (ch->ethos <= -350)
 #define IS_TRUE_NEUTRAL(ch)      (!IS_NEUTRAL(ch) && !IS_LAWFUL(ch) && !IS_CHAOTIC(ch))
 #define IS_AWAKE(ch)		(ch->position > POS_SLEEPING)
+
+/* House system defines */
+#define HAS_HOME(ch)        (!IS_NPC(ch) && ch->pcdata->h_vnum != 0 )
+#define IS_HOME(ch)        ( ( ch->pcdata->h_vnum != 0 && (ch->in_room->vnum >= ch->pcdata->h_vnum) && (ch->in_room->vnum < ch->pcdata->h_vnum + 5 ) ) )
+
+/* vnum types */
+#define OBJ_VNUM  1
+#define MOB_VNUM  2
 #define GET_AC(ch,type)		((ch)->armor[type]			    \
 		        + ( IS_AWAKE(ch)			    \
 			? dex_app[get_curr_stat(ch,STAT_DEX)].defensive : 0 ))
 #define GET_HITROLL(ch)	\
-		((ch)->hitroll+str_app[get_curr_stat(ch,STAT_STR)].tohit)
+		((ch)->hitroll+str_app[get_curr_stat(ch,STAT_STR)].tohit + \
+		 (IS_NPC(ch) ? 0 : get_skill(ch, gsn_weapon_focus) / 10))
 #define GET_DAMROLL(ch) \
-		((ch)->damroll+str_app[get_curr_stat(ch,STAT_STR)].todam)
+		((ch)->damroll+str_app[get_curr_stat(ch,STAT_STR)].todam + \
+		 (IS_NPC(ch) ? 0 : get_skill(ch, gsn_weapon_focus) / 10))
 #define GET_SPEED(ch) (get_curr_stat (ch, STAT_DEX) + ch->level)
 #define IS_OUTSIDE(ch)		((ch)->in_room->sector_type != SECT_UNDERGROUND	\
 				    && !IS_SET((ch)->in_room->room_flags, \
@@ -4241,9 +4364,22 @@ extern		char *	const		week_name	[];
 extern		int			wear_order	[];
 extern	const	struct	wis_app_type	wis_app		[26];
 extern	const	struct	wiznet_type	wiznet_table	[];
+extern  const   struct  house_item      house_table     [];
+extern  const   struct  control_animal_type control_animal_table [];
 extern  char *const    tick_table[];
 extern  const   struct  song_type   song_table      [MAX_SONGS];
 extern    const    struct    god_type        god_table       [MAX_GOD];
+extern	const	struct	foraging_entry	forest_foraging_table[];
+extern	const	struct	foraging_entry	desert_foraging_table[];
+extern	const	struct	foraging_entry	field_foraging_table[];
+extern	const	struct	foraging_entry	mountain_foraging_table[];
+extern	const	struct	foraging_entry	hills_foraging_table[];
+extern	const	struct	foraging_entry	uk_wood_table[];
+extern	const	struct	hunted_animal_entry	hunted_animal_table[];
+extern	const	struct	fish_entry	river_fish_table[];
+extern	const	struct	fish_entry	lake_fish_table[];
+extern	const	struct	fish_entry	ocean_fish_table[];
+extern	const	struct	recipe_entry	recipe_table[];
 
 /*
  * Global variables, in global.c
@@ -4265,6 +4401,7 @@ extern		time_t			boot_time;
 extern		char			bug_buf		[];
 
 extern		CHAR_DATA	  *	char_list;
+extern          HOUSE_DATA         *     house_list;
 extern		bool			changed_boards;
 extern		bool			changed_clan;
 extern		bool			changed_command;
@@ -4431,6 +4568,7 @@ extern      int         reboot_counter;
 #define AREA_LIST_BP	"areaBP.lst"	/* List of areas if not game port */
 #define BADNAME_FILE	"badnames.txt"	/* List of disallowed names for new chars */
 #define BAN_FILE	"ban.txt"
+#define HOUSE_FILE      "../data/house.txt"
 #define BOARDS_FILE	"boards.txt"	/* List of available note boards */
 #define BOOTTIME_FILE	"boottime.txt"	/* time the mud started up (coldboot) */
 #define BUG_FILE        "bugs.txt"	/* For 'bug' and bug() */
@@ -5012,6 +5150,25 @@ void	handle_multiclass_levelup	args( ( CHAR_DATA *ch, int choice ) );
 void	get_multiclass_display	args( ( CHAR_DATA *ch, char *buf ) );
 void	do_levelup	args( ( CHAR_DATA *ch, char *argument ) );
 void	do_multiclass	args( ( CHAR_DATA *ch, char *argument ) );
+void	do_forage	args( ( CHAR_DATA *ch, char *argument ) );
+void	do_hunt		args( ( CHAR_DATA *ch, char *argument ) );
+void	do_fish		args( ( CHAR_DATA *ch, char *argument ) );
+void	do_cook		args( ( CHAR_DATA *ch, char *argument ) );
+void	do_campfire	args( ( CHAR_DATA *ch, char *argument ) );
+void	do_fire		args( ( CHAR_DATA *ch, char *argument ) );
+void	do_house	args( ( CHAR_DATA *ch, char *argument ) );
+void	do_objbuy	args( ( CHAR_DATA *ch, char *argument ) );
+void	do_mobbuy	args( ( CHAR_DATA *ch, char *argument ) );
+void	do_hname	args( ( CHAR_DATA *ch, char *argument ) );
+void	do_hdesc	args( ( CHAR_DATA *ch, char *argument ) );
+void	do_home		args( ( CHAR_DATA *ch, char *argument ) );
+void	do_invite	args( ( CHAR_DATA *ch, char *argument ) );
+void	do_house_join	args( ( CHAR_DATA *ch, char *argument ) );
+void	do_boot		args( ( CHAR_DATA *ch, char *argument ) );
+void	do_draw		args( ( CHAR_DATA *ch, char *argument ) );
+void	do_dislodge	args( ( CHAR_DATA *ch, char *argument ) );
+void	spawn_hunted_animal	args( ( CHAR_DATA *ch ) );
+bool	set_mob_dice	args( ( MOB_INDEX_DATA *pMob, int difficulty ) );
 
 /* music.c */
 int song_lookup args( ( CHAR_DATA *ch, const char *name) );

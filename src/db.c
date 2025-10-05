@@ -157,6 +157,7 @@ void	load_specials	args( ( FILE *fp ) );
 void	load_whoborder	args( ( void ) );
 void    load_donation_pits args((void));
 void    load_tokens args((void));
+void    load_house args((void));
 void	bad_reset	args( ( AREA_DATA *pArea, RESET_DATA *pReset,
 				int c, char *txt ) );
 void	fix_exits	args( ( void ) );
@@ -227,6 +228,10 @@ boot_db( void )
 	/* We'll want to randomize this a bit */
 	weather_info.wind_dir = DIR_EAST;
 	weather_info.wind_speed = WIND_MODERATE;
+	
+	/* Initialize temperature based on season */
+	weather_info.temperature = 70;  /* Base temperature */
+	weather_info.temp_change = 0;
 
 	switch( time_info.month )
 	{
@@ -464,6 +469,7 @@ boot_db( void )
     load_whoborder( );
     load_donation_pits();
     load_tokens();
+    load_house( );
 
     /*
      * Check all rooms for boot progs
@@ -2016,6 +2022,11 @@ create_object( OBJ_INDEX_DATA *pObjIndex, int level )
         //if (!pObjIndex->new_format )
           //  obj->value[0]       = number_fuzzy( number_fuzzy( obj->value[0]) );
         break;
+    case ITEM_FISHING_ROD:
+    case ITEM_FLINT:
+    case ITEM_FIRESTEEL:
+    case ITEM_FIREWOOD:
+        break;
     }
 
     for (paf = pObjIndex->affected; paf != NULL; paf = paf->next) 
@@ -2106,6 +2117,7 @@ void clear_char( CHAR_DATA *ch )
     ch->move			= 100;
     ch->max_move		= 100;
     ch->on			= NULL;
+    ch->furniture_in		= NULL;
     for (i = 0; i < MAX_STATS; i ++)
     {
 	ch->perm_stat[i] = 13; 

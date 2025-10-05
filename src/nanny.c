@@ -60,6 +60,7 @@
 #include "interp.h"
 #include "recycle.h"
 
+
 /*
  * Socket and TCP/IP stuff
  */
@@ -985,30 +986,94 @@ write_to_buffer( d, "\n\r`P"
         wiznet( log_buf, NULL, NULL, WIZ_SITES, 0, get_trust( ch ) );
 	update_recent( 0, log_buf );
 */
-        write_to_buffer( d, "\n\r`P"
-"---------------------------------------------------------------------------\n\r"
-"`GYou may now select your class.  The following classes are available \n\r"
-"`YBarbarian - brutal fighters who can rage to decimate their enemies \n\r"
-"`GBard - expressive companions who cast spells through song and verse \n\r"
-"`YCleric - holy warriors, able to protect and heal their companions \n\r"
-"`GDruid - can summon animals and draw on powerful magic from nature \n\r"
-"`YFighter - Basic fighters and warriors \n\r"
-"`GMage - powerful spell casters \n\r"
-"`YMonk - masters of martial arts, able to unleash devesatating unarmed attacks \n\r"
-"`GPaladin - knights sworn to uphold the law and tenents of their deity \n\r"
-"`YRanger - Stealthy forest protectors that have an animal companion \n\r"
-"`GRogue - able to sneak in the shadows and steal your gold then slip away unseen \n\r"
-"`YYou may type HELP class for a more detailed description. \n\r`P"
-"---------------------------------------------------------------------------\n\r`X"
+write_to_buffer( d, "\n\r`P"
+    "---------------------------------------------------------------------------\n\r"
+    "`GYou may now select your class.  Classes are restricted by alignment and race `X\n\r"
+    "`GBarbarian `W- All races, Any non-Lawful alignment.`X\n\r"
+    "`GBard `W- All races except Drow, Any non-Lawful alignment.`X \n\r"
+    "`GCleric `W- All races, Drow - Female only. Any alignment.`X \n\r"
+    "`GDruid `W- All races except Drow, Neutral alignments only.`X \n\r"
+    "`GFighter `W- All races, All alignments.`X \n\r"
+    "`GMage `W- All races, All alignments.`X \n\r"
+    "`GMonk `W- All races except Drow, Lawful alignments only.`X\n\r"
+    "`GPaladin `W- All races except Drow, Lawful Good only.`X \n\r"
+    "`GRanger `W- All races except Drow, All alignments.`X \n\r"
+    "`GRogue `W- All races, All alignments.`X \n\r"   
+    "`YYou may type HELP class for a more detailed description. `X\n\r`P"
+    "---------------------------------------------------------------------------\n\r`X"
         , 0 );
 
 strcpy (buf, "Select a class [");
+            
+            /* Build list of available classes based on race/alignment restrictions */
+            int first_class = 1;
             for (iClass = 0; iClass < MAX_CLASS; iClass++)
             {
-             	if (iClass > 0)
-                    strcat (buf, " ");
-                strcat (buf, class_table[iClass].name);
+                bool class_available = TRUE;
+                
+                /* Check alignment restrictions */
+                if (iClass == class_barbarian || iClass == class_bard)
+                {
+                    /* Barbarians and Bards cannot be lawful (ethos must be 0 to -1000) */
+                    if (ch->ethos >= 0)
+                        class_available = FALSE;
+                }
+                else if (iClass == class_druid)
+                {
+                    /* Druids must be neutral (alignment must be 0) */
+                    if (ch->alignment != 0)
+                        class_available = FALSE;
+                }
+                else if (iClass == class_monk)
+                {
+                    /* Monks must be lawful (ethos must be 1000) */
+                    if (ch->ethos != 1000)
+                        class_available = FALSE;
+                }
+                else if (iClass == class_paladin)
+                {
+                    /* Paladins must be lawful good (ethos 1000, alignment 1000) */
+                    if (ch->ethos <= 350 || ch->alignment <= 350)
+                        class_available = FALSE;
+                }
+                
+                /* Check Drow race restrictions */
+                if (ch->race == 13) /* race_drow */
+                {
+                    /* Drow cannot be Bard or Ranger */
+                    if (iClass == class_bard || iClass == class_ranger)
+                    {
+                        class_available = FALSE;
+                    }
+                    else
+                    {
+                        if (ch->sex == SEX_FEMALE)
+                        {
+                            /* Female Drow: Barbarian, Cleric, Fighter, Mage, Rogue only */
+                            if (iClass != class_barbarian && iClass != class_cleric && 
+                                iClass != class_fighter && iClass != class_mage && 
+                                iClass != class_rogue)
+                                class_available = FALSE;
+                        }
+                        else
+                        {
+                            /* Male Drow: Barbarian, Fighter, Mage, Rogue only (no Cleric) */
+                            if (iClass != class_barbarian && iClass != class_fighter && 
+                                iClass != class_mage && iClass != class_rogue)
+                                class_available = FALSE;
+                        }
+                    }
+                }
+                
+                if (class_available)
+                {
+                    if (!first_class)
+                        strcat (buf, " ");
+                    strcat (buf, class_table[iClass].name);
+                    first_class = 0;
+                }
             }
+            
             strcat (buf, "]: ");
             write_to_buffer (d, buf, 0);
             d->connected = CON_GET_NEW_CLASS;
@@ -1022,6 +1087,87 @@ case CON_GET_NEW_CLASS:
             {
                 write_to_buffer (d, "That's not a class.\n\rWhat IS your class? ",
                               0);
+                return;
+            }
+            
+            /* Check alignment restrictions */
+            bool class_allowed = TRUE;
+            char restriction_msg[256] = "";
+            
+            if (iClass == class_barbarian || iClass == class_bard)
+            {
+                /* Barbarians and Bards cannot be lawful (ethos must be 0 to -1000) */
+                if (ch->ethos >= 0)
+                {
+                    class_allowed = FALSE;
+                    strcpy(restriction_msg, "Barbarians and Bards cannot be lawful.");
+                }
+            }
+            else if (iClass == class_druid)
+            {
+                /* Druids must be neutral (alignment must be 0) */
+                if (ch->alignment != 0)
+                {
+                    class_allowed = FALSE;
+                    strcpy(restriction_msg, "Druids must be neutral.");
+                }
+            }
+            else if (iClass == class_monk)
+            {
+                /* Monks must be lawful (ethos must be 1000) */
+                if (ch->ethos != 1000)
+                {
+                    class_allowed = FALSE;
+                    strcpy(restriction_msg, "Monks must be lawful.");
+                }
+            }
+            else if (iClass == class_paladin)
+            {
+                /* Paladins must be lawful good (ethos 1000, alignment 1000) */
+                if (ch->ethos <= 350 || ch->alignment <= 350)
+                {
+                    class_allowed = FALSE;
+                    strcpy(restriction_msg, "Paladins must be lawful good.");
+                }
+            }
+            
+            /* Check Drow race restrictions */
+            if (ch->race == 13) /* race_drow */
+            {
+                /* Drow cannot be Bard or Ranger */
+                if (iClass == class_bard || iClass == class_ranger)
+                {
+                    class_allowed = FALSE;
+                    strcpy(restriction_msg, "Drow cannot be Bard or Ranger.");
+                }
+                else if (ch->sex == SEX_FEMALE)
+                {
+                    /* Female Drow: Barbarian, Cleric, Fighter, Mage, Rogue only */
+                    if (iClass != class_barbarian && iClass != class_cleric && 
+                        iClass != class_fighter && iClass != class_mage && 
+                        iClass != class_rogue)
+                    {
+                        class_allowed = FALSE;
+                        strcpy(restriction_msg, "Female Drow can only be Barbarian, Cleric, Fighter, Mage, or Rogue.");
+                    }
+                }
+                else
+                {
+                    /* Male Drow: Barbarian, Fighter, Mage, Rogue only (no Cleric) */
+                    if (iClass != class_barbarian && iClass != class_fighter && 
+                        iClass != class_mage && iClass != class_rogue)
+                    {
+                        class_allowed = FALSE;
+                        strcpy(restriction_msg, "Male Drow can only be Barbarian, Fighter, Mage, or Rogue.");
+                    }
+                }
+            }
+            
+            if (!class_allowed)
+            {
+                write_to_buffer(d, "That class is not available for your race and alignment.\n\r", 0);
+                write_to_buffer(d, restriction_msg, 0);
+                write_to_buffer(d, "\n\rWhat IS your class? ", 0);
                 return;
             }
 
@@ -1154,15 +1300,156 @@ break;
           group_add (ch, "rom basics", TRUE);
           group_add (ch, class_table[ch->class].base_group, TRUE);
 
+/* Helper function to display gods in a simple list format */
+void display_gods_list(DESCRIPTOR_DATA *d, const char *header, int *god_indices, int count)
+{
+    if (count == 0) return;
+    
+    write_to_buffer(d, header, 0);
+    write_to_buffer(d, ":\n\r", 0);
+    
+    char buffer[200];
+    strcpy(buffer, "  ");
+    
+    for (int i = 0; i < count; i++)
+    {
+        if (i > 0) strcat(buffer, ", ");
+        strcat(buffer, god_table[god_indices[i]].name);
+        
+        /* Start new line if buffer gets too long */
+        if (strlen(buffer) > 60)
+        {
+            strcat(buffer, "\n\r");
+            write_to_buffer(d, buffer, 0);
+            strcpy(buffer, "  ");
+        }
+    }
+    
+    /* Write remaining buffer */
+    if (strlen(buffer) > 2)
+    {
+        strcat(buffer, "\n\r");
+        write_to_buffer(d, buffer, 0);
+    }
+    
+    write_to_buffer(d, "\n\r", 0);
+}
+
 /* instead of going straight to CON_DEFAULT_CHOICE, prompt for god */
 write_to_buffer(d, "\n\r`P"
         "---------------------------------------------------------------------------\n\r\n\r"
-        "`WThe following gods are available:\n\r  ", 0);
-for (god = 0; god_table[god].name != NULL; god++)
+        "`WThe following gods are available:\n\r\n\r", 0);
+        
+/* Get character's alignment */
+int ch_align = ch->alignment;
+
+/* Debug output */
+char debug_msg[200];
+sprintf(debug_msg, "[DEBUG] Character alignment: %d\n\r", ch_align);
+write_to_buffer(d, debug_msg, 0);
+
+/* Get gods for each alignment category */
+int lg_gods[20], ng_gods[20], cg_gods[20];  /* Good gods */
+int ln_gods[20], nn_gods[20], cn_gods[20];  /* Neutral gods */
+int le_gods[20], ne_gods[20], ce_gods[20];  /* Evil gods */
+int lg_count = 0, ng_count = 0, cg_count = 0;
+int ln_count = 0, nn_count = 0, cn_count = 0;
+int le_count = 0, ne_count = 0, ce_count = 0;
+
+/* Collect gods by alignment and ethos */
+for (int i = 0; god_table[i].name != NULL; i++)
 {
-    write_to_buffer(d, god_table[god].name, 0);
-    write_to_buffer(d, " ", 1);
+    int god_ethos = atoi(god_table[i].ethos);
+    int god_align = atoi(god_table[i].alignment);
+    
+    /* Good gods (alignment > 350) */
+    if (god_align > 350)
+    {
+        if (god_ethos == 1000)  /* Lawful Good */
+        {
+            lg_gods[lg_count] = i;
+            lg_count++;
+        }
+        else if (god_ethos == 0)  /* Neutral Good */
+        {
+            ng_gods[ng_count] = i;
+            ng_count++;
+        }
+        else if (god_ethos == -1000)  /* Chaotic Good */
+        {
+            cg_gods[cg_count] = i;
+            cg_count++;
+        }
+    }
+    /* Neutral gods (alignment -349 to 349) */
+    else if (god_align >= -349 && god_align <= 349)
+    {
+        if (god_ethos == 1000)  /* Lawful Neutral */
+        {
+            ln_gods[ln_count] = i;
+            ln_count++;
+        }
+        else if (god_ethos == 0)  /* True Neutral */
+        {
+            nn_gods[nn_count] = i;
+            nn_count++;
+        }
+        else if (god_ethos == -1000)  /* Chaotic Neutral */
+        {
+            cn_gods[cn_count] = i;
+            cn_count++;
+        }
+    }
+    /* Evil gods (alignment < -350) */
+    else if (god_align < -350)
+    {
+        if (god_ethos == 1000)  /* Lawful Evil */
+        {
+            le_gods[le_count] = i;
+            le_count++;
+        }
+        else if (god_ethos == 0)  /* Neutral Evil */
+        {
+            ne_gods[ne_count] = i;
+            ne_count++;
+        }
+        else if (god_ethos == -1000)  /* Chaotic Evil */
+        {
+            ce_gods[ce_count] = i;
+            ce_count++;
+        }
+    }
 }
+
+/* Display gods based on character's alignment */
+if (ch_align > 350)  /* Good character - show good gods */
+{
+    sprintf(debug_msg, "[DEBUG] Showing good gods: LG=%d, NG=%d, CG=%d\n\r", lg_count, ng_count, cg_count);
+    write_to_buffer(d, debug_msg, 0);
+    
+    display_gods_list(d, "`WLawful `YGood`X", lg_gods, lg_count);
+    display_gods_list(d, "`wNeutral `YGood`X", ng_gods, ng_count);
+    display_gods_list(d, "`CChaotic `YGood`X", cg_gods, cg_count);
+}
+else if (ch_align < -350)  /* Evil character - show evil gods */
+{
+    sprintf(debug_msg, "[DEBUG] Showing evil gods: LE=%d, NE=%d, CE=%d\n\r", le_count, ne_count, ce_count);
+    write_to_buffer(d, debug_msg, 0);
+    
+    display_gods_list(d, "`WLawful `REvil`X", le_gods, le_count);
+    display_gods_list(d, "`wNeutral `REvil`X", ne_gods, ne_count);
+    display_gods_list(d, "`CChaotic `REvil`X", ce_gods, ce_count);
+}
+else  /* Neutral character - show neutral gods */
+{
+    sprintf(debug_msg, "[DEBUG] Showing neutral gods: LN=%d, NN=%d, CN=%d\n\r", ln_count, nn_count, cn_count);
+    write_to_buffer(d, debug_msg, 0);
+    
+    display_gods_list(d, "`WLawful `wNeutral`X", ln_gods, ln_count);
+    display_gods_list(d, "`wTrue `wNeutral`X", nn_gods, nn_count);
+    display_gods_list(d, "`CChaotic `wNeutral`X", cn_gods, cn_count);
+}
+
 write_to_buffer( d, "\n\r`P"
 "---------------------------------------------------------------------------\n\r\n\r`X"
     , 0 );
@@ -1173,16 +1460,132 @@ break;
 
 case CON_GET_NEW_GOD:
     god = god_lookup(argument);
+    
+    /* Debug output for god lookup */
+    char debug_msg3[200];
+    sprintf(debug_msg3, "[DEBUG] Looking for god: '%s', found index: %d\n\r", argument, god);
+    write_to_buffer(d, debug_msg3, 0);
+    if (god > 0 && god_table[god].name)
+    {
+        sprintf(debug_msg3, "[DEBUG] Found god: '%s'\n\r", god_table[god].name);
+        write_to_buffer(d, debug_msg3, 0);
+    }
 
     if (god == 0 || !god_table[god].name)
     {
         write_to_buffer(d, "That is not a valid god.\n\r", 0);
-        write_to_buffer(d, "The following gods are available:\n\r  ", 0);
-        for (god = 0; god_table[god].name != NULL; god++)
+        write_to_buffer(d, "The following gods are available:\n\r\n\r", 0);
+        
+        /* Get character's alignment */
+        int ch_align = ch->alignment;
+        
+        /* Debug output */
+        char debug_msg2[200];
+        sprintf(debug_msg2, "[DEBUG] Character alignment: %d\n\r", ch_align);
+        write_to_buffer(d, debug_msg2, 0);
+        
+        /* Get gods for each alignment category */
+        int lg_gods[20], ng_gods[20], cg_gods[20];  /* Good gods */
+        int ln_gods[20], nn_gods[20], cn_gods[20];  /* Neutral gods */
+        int le_gods[20], ne_gods[20], ce_gods[20];  /* Evil gods */
+        int lg_count = 0, ng_count = 0, cg_count = 0;
+        int ln_count = 0, nn_count = 0, cn_count = 0;
+        int le_count = 0, ne_count = 0, ce_count = 0;
+        
+        /* Collect gods by alignment and ethos */
+        for (int i = 0; god_table[i].name != NULL; i++)
         {
-            write_to_buffer(d, god_table[god].name, 0);
-            write_to_buffer(d, " ", 1);
+            int god_ethos = atoi(god_table[i].ethos);
+            int god_align = atoi(god_table[i].alignment);
+            
+            /* Good gods (alignment > 350) */
+            if (god_align > 350)
+            {
+                if (god_ethos == 1000)  /* Lawful Good */
+                {
+                    lg_gods[lg_count] = i;
+                    lg_count++;
+                }
+                else if (god_ethos == 0)  /* Neutral Good */
+                {
+                    ng_gods[ng_count] = i;
+                    ng_count++;
+                }
+                else if (god_ethos == -1000)  /* Chaotic Good */
+                {
+                    cg_gods[cg_count] = i;
+                    cg_count++;
+                }
+            }
+            /* Neutral gods (alignment -349 to 349) */
+            else if (god_align >= -349 && god_align <= 349)
+            {
+                if (god_ethos == 1000)  /* Lawful Neutral */
+                {
+                    ln_gods[ln_count] = i;
+                    ln_count++;
+                }
+                else if (god_ethos == 0)  /* True Neutral */
+                {
+                    nn_gods[nn_count] = i;
+                    nn_count++;
+                }
+                else if (god_ethos == -1000)  /* Chaotic Neutral */
+                {
+                    cn_gods[cn_count] = i;
+                    cn_count++;
+                }
+            }
+            /* Evil gods (alignment < -350) */
+            else if (god_align < -350)
+            {
+                if (god_ethos == 1000)  /* Lawful Evil */
+                {
+                    le_gods[le_count] = i;
+                    le_count++;
+                }
+                else if (god_ethos == 0)  /* Neutral Evil */
+                {
+                    ne_gods[ne_count] = i;
+                    ne_count++;
+                }
+                else if (god_ethos == -1000)  /* Chaotic Evil */
+                {
+                    ce_gods[ce_count] = i;
+                    ce_count++;
+                }
+            }
         }
+        
+        /* Display gods based on character's alignment */
+        if (ch_align > 350)  /* Good character - show good gods */
+        {
+            sprintf(debug_msg2, "[DEBUG] Showing good gods: LG=%d, NG=%d, CG=%d\n\r", lg_count, ng_count, cg_count);
+            write_to_buffer(d, debug_msg2, 0);
+            
+            display_gods_list(d, "`WLawful Good", lg_gods, lg_count);
+            display_gods_list(d, "`wNeutral Good", ng_gods, ng_count);
+            display_gods_list(d, "`CChaotic Good", cg_gods, cg_count);
+        }
+        else if (ch_align < -350)  /* Evil character - show evil gods */
+        {
+            sprintf(debug_msg2, "[DEBUG] Showing evil gods: LE=%d, NE=%d, CE=%d\n\r", le_count, ne_count, ce_count);
+            write_to_buffer(d, debug_msg2, 0);
+            
+            display_gods_list(d, "`WLawful Evil", le_gods, le_count);
+            display_gods_list(d, "`wNeutral Evil", ne_gods, ne_count);
+            display_gods_list(d, "`CChaotic Evil", ce_gods, ce_count);
+        }
+        else  /* Neutral character - show neutral gods */
+        {
+            sprintf(debug_msg2, "[DEBUG] Showing neutral gods: LN=%d, NN=%d, CN=%d\n\r", ln_count, nn_count, cn_count);
+            write_to_buffer(d, debug_msg2, 0);
+            
+            display_gods_list(d, "`WLawful Neutral", ln_gods, ln_count);
+            display_gods_list(d, "`wTrue Neutral", nn_gods, nn_count);
+            display_gods_list(d, "`CChaotic Neutral", cn_gods, cn_count);
+        }
+        
         write_to_buffer(d, "\n\r", 0);
         write_to_buffer(d, "What is your god? (help for more information) ", 0);
         break;
