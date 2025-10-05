@@ -13,7 +13,7 @@ Recall      900
 Flags       0
 Color       7
 ExitSize    medium
-Changed     1759314309 Wed Oct  1 06:25:09 2025
+Changed     1759648070 Sun Oct  5 03:07:50 2025
 Resetmsg    A Simon and Garfunkel song comes to mind, then fades.~
 End
 
@@ -974,19 +974,141 @@ word of recall	transports the caster to safety in Gandora
 `Y----------------------------------------------------------------`X
 ~
 -1 Seraphim WEATHER~
-`Y----------------------------------------------------------------`X
-These spells allow the caster to manipulate local weather
-conditions, as well as summon certain weather phenomena.  These
-spells are usable by all classes:
+`P ---------------------------------------------------------------- 
+`GWEATHER CONDITIONS AND YOU`X
+`P----------------------------------------------------------------`X 
+Welcome to the wonderful world of weather that can absolutely kill 
+you dead. That's right. Stone dead. How, you ask? Well the same 
+way it would IRL!
+ 
+You see, here in Icewind Legacy, winter gets VERY cold and summer 
+gets VERY hot. That means freezing to death in one, and sweating 
+out all of your fluids until you die a slow miserable death by 
+dehydration in the other!
+ 
+But there are ways to protect yourself! 
+ 
+First, you can go indoors. That's... that's it. Just go inside.
+ 
+Second, if going indoors isn't your thing, you can go into the 
+woods and 'gather' some wood. Once you've done that, you can 
+either build a 'campfire' (provided you have a flint and steel 
+handy. Did you check your newbie satchel?) or you can 'build' a
+shelter for warmth in the winter and shade in the summer! But 
+make sure you have plenty of provisions in your pack, because 
+when it's really cold out, your limbs begin to freeze and 
+movement becomes difficult, and in extreme heat the exertion 
+will speed up dehydration via sweat as well as increase your 
+chance of heat exhaustion, so if you're caught in the 
+wilderness when inclement weather strikes, you had better 
+have all the supplies you need to keep warm/cool, dry,
+fed, and hydrated.. otherwise mother nature will make short 
+work of you!
+ 
+But fret not! In the more mild seasons of spring and fall, 
+you can 'forage' for food, 'hunt' game, go 'fish' up a meal 
+at a nearby river or lake, and if you have a 'campfire' you 
+can even 'cook' the food you've gathered. And if you do 
+'hunt' some game, remember to 'butcher' the corpse for some
+meat!
 
-call lightning  calls bolts from above, if conditions are right
-control weather changes weather in manner desired by caster
-faerie fire	surrounds the target in a glowing aura
-faerie fog	reveals all hidden creatures in the room
-lightning bolt	sends a bolt of electricity into the target
+And if you're freezing, you can even 'skin' the game and 
+make a blanket from their pelts to keep warm if you don't 
+have the supplies to 'build' a shelter or start a 'campfire'!  
+`P(`GSee `Yhelp `W'gather', 'campfire', 'build shelter', 'fish', 
+'forage', 'hunt' and 'cooking'`P)`X
+`P----------------------------------------------------------------`X
+~
+-1 Seraphim SURVIVALISM COOKING HUNT FORAGE FISHING FISH CAMPIFIRE GATHER 'BUILD SHELTER'~
+`P----------------------------------------------------------------`X
+  SURVIVAL SKILLS
+`P----------------------------------------------------------------`X
 
-[weather command shows local weather conditions & is unrelated]
-`Y----------------------------------------------------------------`X
+	Build Shelter
+	`GSyntax:`Y build_shelter`X
+
+Create a simple shelter from gathered and harvested wood from the
+forest.
+`GRequires:`X firewood
+
+	Campfire 
+	`GSyntax:`Y campfire`X
+
+Creates a campfire that can keep you warm and can be used for cooking.
+`GRequires:`X Flint and steel, firewood.
+
+	Cooking
+	`GSyntax:`Y cook <item 1>
+		cook <item 1> <item 2>
+		cook <item 1> <item 2> <item 3>`X
+
+Cooks food ingredients from hunting, foraging and butchering.
+You can combine up to three ingredients, experiment and discover
+new recipes!
+`GRequires:`X Food items, campfire
+
+	Fishing
+	`GSyntax:`Y fish`X
+
+You can take your trusty fishing pole to any river, stream, lake, or ocean
+and cast your line into the water to catch some tasty fish! However, if 
+your line isn't strong enough, it may snap! If that happens often, try
+fishing somewhere else, or seek out a better fishing pole.
+`GRequires:`X Fishing pole, body of water
+
+	Forage
+	`GSyntax:`Y forage`X
+
+Pick mushrooms, pluck berries, dig up tubers, and collect herbs.
+If you're in a field or forest, you can forage for nature's bounty.
+Just remember that very little grows in winter.
+`GRequires:`X Forest or field
+
+	Gather
+	`GSyntax:`Y gather`X
+
+When in the forest, you can collect branches, twigs, saplings, and logs
+as fuel for your campfire, or materials to build a shelter.
+`GRequires:`X Forest
+
+	Hunt
+`G	Syntax: `Yhunt`X
+
+Hunting causes you to creep quietly, move downwind, and stalk prey in the
+forest, eventually flushing out game to take down and skin/butcher. 
+Sneaking and being invisible increase your chances of hunting game
+while Faerie Fire alerts the animals to your presence and makes it
+extremely difficult to hide from the animals.
+`GRequires:`X Forest 
+
+`P----------------------------------------------------------------`X
+~
+-1 Seraphim BUTCHER SKIN BLANKET~
+`P----------------------------------------------------------------`X
+	`GBUTCHER, SKIN and BLANKET
+`P----------------------------------------------------------------`X
+	Butcher
+	`GSyntax: `Ybutcher <corpse>`X
+
+Butchers the corpse of a slain creature and creates steaks of the
+creature's meat.
+
+	Skin
+	`GSyntax: `Yskin <corpse>`X
+
+Skins a corpse for its hide.
+
+	Blanket
+`G	Syntax:`Y blanket``x
+
+Creates a blanket from hides collected from slain creatures. This
+blanket is not very sturdy as the hides have not been properly
+dried or tanned, but you can wrap it around yourself and not freeze
+to death if you find yourself in the cold and out of firewood to
+build a fire or shelter. This blanket will fall apart after a short
+while, but hopefully it'll at least keep you alive until sunrise.
+
+`P----------------------------------------------------------------`X
 ~
 -1 Seraphim BACKSTAB~
 `c-------------------------------------------------------------------------------
@@ -4211,13 +4333,13 @@ and frost can break objects, while acid damages armor.
 `B                          *.::'***`C//`O|___|`C\\`B*****'.*
 `B                          .:'  **`C/##`O|___|`C##\`B**    .
 `B                         .    `z(`Rv`z(`RVVV`z)`O___`z(`RVVV`z)`Rv`z)`X Collage by John Lawrence
-`C         .mm              '        ]     .                       
-`B          ]   m,  m, ,  ,.m  ..,  md     ]    m,  mm  m,  m, . . 
+`C          .mm              '        ]     .                       
+`B           ]   m,  m, ,  ,.m  ..,  md     ]    m,  mm  m,  m, . . 
 `C           ]  ]'' ]'] \..' ]  ]'] ]'T     ]   ]'] ]'T ' ] ]'' ',/ 
 `B           ]  ]   ]"" ]dd  ]  ] ] ] ]     ]   ]"" ] ] ."T ]    b[ 
 `C          .dm 'b/ 'b/  [[ .dm ] ] 'bW     ]mm,'b/ 'bT 'mT 'b/  T  
-`B                                ,]          / 
-`C                               ''         ''  
+`B                                                  ,]          / 
+`C                                                 ''         ''  
 `Y[`R*`Y]`W==================================================`Y[`R*`Y]`W==================`Y[`R*`Y]`X
 `Y[`R*`Y]`GOriginal DikuMUD by Hans Staerfeldt, Katja Nyboe, `Y[`R*`Y]`G   Icewind Legacy `Y[`R*`Y]
 `Y[`R*`Y]`GTom Madsen, Michael Seifert, and Sebastian Hammer `Y[`R*`Y]`G   Copyright 2025 `Y[`R*`Y]
@@ -9422,6 +9544,96 @@ the chance of learning a skill or spell.
 e.g. studying a scroll with scrolls at 75% greatly increases your 
 chances over studying the scroll with only 1% scroll skill.
 ~
+1 Seraphim HOMES 'PLAYER HOMES' 'PLAYER HOUSING' HOUSING~
+Homes can be purchased by players for 25,000 gold coins. Homes may only
+be purchased in a designated area, in designated rooms.
+
+Type HOUSE to see a list of arguments.
+Type HOUSE BUY to purchase a home. If a home is currently owned, or you are not in
+a valid home room, you will be notified at that time. You must be carrying 25,000
+gold coins on your person at the time of purchase. If the sale is sucessful, the
+coins will be extracted from you, and you will be notified of your purchase.
+Type HOUSE SELL to sell your home. You must be standing in your home in order to
+perform this command. You will be reimbursed one half the cost of the home, not
+including any items that were in the home at the time of sale.
+
+Type OBJBUY to see a list of items available to furnish your home with. The
+items are permanat fixtures, and cannot be removed from the home. Certain items,
+such as lamps and lanterns, will expire over time, and new ones must be bought.
+To purchase an item, type OBJBUY buy <item name>, where item name is the name
+on the far left of the OBJBUY list.
+
+Type MOBBUY to see a list of mobiles available to furnish your home with. The
+mobiles are permanat fixtures, and cannot be removed from the home. Certain mobs,
+such as healers can heal you of illnesses, curses and wounds, so they're very useful
+To purchase an item, type MOBBUY buy <item name>, where item name is the name
+on the far left of the MOBBUY list.
+
+Type HOUSE DESCRIBE to supply a description for your home. Home Describe employs
+the OLC room editor, which uses the following command format:
+
+String help (commands on blank line):   
+
+'/c               - clear string so far '
+'/d n             - delete line number n'
+'/d n1 n2         - delete lines n1 through n2'
+'/f               - format (word wrap) string  '
+'/f n1 [n2]       - word wrap just lines n1 - n2'
+'/h or /?         - get help (this info)'
+'/i n             - insert blank line before line n'
+'/i n <string>    - insert string before line n'
+'/l               - list string with line numbers'
+'/r 'old' 'new'   - replace a substring (recognizes '', "")'
+'                   
+ matches end of line, use to split/merge lines'
+'/r n 'old' 'new' - same, except begin search at line n'
+'/s               - show string so far  '
+'/&               - toggle display of color codes'
+'//               - perform a regular command'
+'@                - done, exit string editor'
+You may use a period (".") in place of a slash in the above commands
+(eg .r 'old' 'new' etc)
+
+Other HOUSE commands may be added as the code progresses.
+~
+1 Seraphim TARGET~
+`P-------------------------------------------------------------------------------`X
+`G    TARGET`X
+`P-------------------------------------------------------------------------------`X
+Syntax :   `Gtarget`X
+           `Gtarget <name>`X
+           `Guntarget`X
+
+Typing target alone will tell you what your current target is. Typing
+untarget will remove whatever target you have; and typing target followed by
+anything will set your target to whatever you typed.
+
+The mud will replace a double dollar sign ('$$') with whatever your target
+is, provided that you have a target. 
+
+Example : untarget
+          'Your current target has been removed.'
+          alias 1 backstab $$
+          '1 is now aliased to backstab $$.'
+          target anthalas
+          'Your current target is now anthalas.'
+          1
+          '<computer reads 1 as 'backstab $$', then reads $$ as 'anthalas'>'  
+          'Your legendary backstab lightly tickles Anthalas.'
+
+Note that you'll have to untarget before you can go moggy with aliases, or
+you'll simply hardcode your aliases to whatever the computer reads $$ as.
+
+Target code provided by Whiskey of Myth! with help from Blade of -E-
+`P-------------------------------------------------------------------------------`X
+~
+1 Seraphim VIRTUE~
+VIRTUE
+Classes: Cleric 1, Druid 1, Paladin 1
+Syntax: `Gc cast virtue`X
+ 
+Virtue grants temporary hitpoints to the caster.
+~
 
 0 0 $~
 
@@ -9648,6 +9860,58 @@ AG 0 0 0 0 0 1
 DEO 0 EI 0
 stand stand neutral 0
 0 0 large 0 noset ''
+#24
+zombie~
+(no short description)~
+(no long description)
+~
+~
+zombie~
+AGO 0 0 0 0 0 0
+0 0 1d4+0 0d0+0 0d0+0 none
+0 0 0 0
+O 0 0 0
+stand stand neutral 0
+0 0 medium 0 medium ''
+#25
+mummy~
+(no short description)~
+(no long description)
+~
+~
+zombie~
+AGO 0 0 0 0 0 0
+0 0 1d4+0 0d0+0 0d0+0 none
+0 0 0 0
+O 0 0 0
+stand stand neutral 0
+0 0 medium 0 medium ''
+#26
+skeleton~
+(no short description)~
+(no long description)
+~
+~
+undead~
+AGO 0 0 0 0 0 0
+0 0 1d4+0 0d0+0 0d0+0 none
+0 0 0 0
+O 0 0 0
+stand stand neutral 0
+0 0 medium 0 medium ''
+#27
+hunted animal~
+(no short description)~
+(no long description)
+~
+~
+rabbit~
+AMW 0 0 0 0 0 0
+0 0 1d4+5 1d1+94 1d3+0 none
+20 19 20 20
+FH 0 0 0
+stand stand neutral 0
+0 0 small 0 medium ''
 #80
 no name~
 a peasant~
@@ -10121,7 +10385,7 @@ trash 0 0 0
 0 0 0 0
 0 0 0 0 0
 #50
-steak~
+butchered steak~
 a butchered steak~
 A slab of raw meat~
 ~
@@ -10160,6 +10424,66 @@ arrow 0 0 AO
 0 0 0 0 P
 0 0 0 0
 0 0 0 0 0
+#54
+foraged~
+(no short description)~
+(no description)~
+~
+food 0 0 A
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#55
+feathers ~
+(no short description)~
+(no description)~
+~
+trash 0 0 A
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#56
+campfire cooking fire~
+a small `Rca`Ym`Op`rf`Yi`Rre`X~
+A small `Rca`Ym`Op`rf`Yi`Rre`X burns brightly~
+~
+light A 0 0
+0 0 20 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 10 10
+#57
+firewood~
+branches and saplings~
+Some branches and saplings, good for building a shelter or a fire~
+wood~
+firewood 0 0 A
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#58
+small wooden shelter leanto lean-to~
+a small wooden lean-to~
+A wooden lean-to made of long branches and saplings lashed together~
+~
+furniture 0 0 0
+2 0 FIL 150 150 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 30 30
+#59
+warm fragile blanket brittle~
+a fragile hide blanket~
+A hide blanket hastily sewn together from skins and sinew looks as if it's falling apart~
+flesh~
+furniture 0 0 A
+1 0 FIL 100 100 0
+0 20 0 0 P
+0 0 0 0
+0 0 0 10 10
 #0
 
 #ROOMS

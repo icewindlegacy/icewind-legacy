@@ -303,6 +303,29 @@ const 	struct attack_type	attack_table	[MAX_DAMAGE_MESSAGE]	=
     {   NULL,		NULL,		0		}
 };
 
+/* control animal table - races that can be controlled by druids */
+const struct control_animal_type control_animal_table[] =
+{
+    { "badger",       1  },  /* badger is at index 1 */
+    { "bat",          2  },  /* bat is at index 2 */
+    { "bear",         3  },  /* bear is at index 3 */
+    { "cat",          5  },  /* cat is at index 5 */
+    { "dog",          12 },  /* dog is at index 12 */
+    { "fido",         14 },  /* fido is at index 14 */
+    { "fox",          15 },  /* fox is at index 15 */
+    { "horse",        18 },  /* horse is at index 18 */
+    { "lizard",       19 },  /* lizard is at index 19 */
+    { "monkey",       20 },  /* monkey is at index 20 */
+    { "owl",          21 },  /* owl is at index 21 */
+    { "pig",          22 },  /* pig is at index 22 */
+    { "rabbit",       23 },  /* rabbit is at index 23 */
+    { "snake",        24 },  /* snake is at index 24 */
+    { "song bird",    25 },  /* song bird is at index 25 */
+    { "water fowl",   26 },  /* water fowl is at index 26 */
+    { "wolf",         27 },  /* wolf is at index 27 */
+    { NULL,           0  }
+};
+
 /* race table */
 struct	race_type	race_table	[]		=
 {
@@ -462,7 +485,7 @@ struct	race_type	race_table	[]		=
 	0,		{{0}}, 		{{0}},
 	0, 		0,		0,
 	A|H|M|V,	A|B|C|D|E|F|G|H|I|J|K|Q|W,
-	-350,	-1000,-350,	-1000,	SIZE_MEDIUM,	&race_dragonborn,
+	1000,	-1000,-350,	-1000,	SIZE_MEDIUM,	&race_dragonborn,
 	16000, 40000,	0,	{ },
 	{ "" },
 	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
@@ -721,7 +744,7 @@ struct	race_type	race_table	[]		=
 	{ FALSE, TRUE, FALSE, TRUE, TRUE, FALSE, TRUE, TRUE }
     },
     {
-	"money",	"Monkey",	FALSE,
+	"monkey",	"Monkey",	FALSE,
 	0,		{{J}},		{{0}},
 	0,		RES_POISON,	VULN_MAGIC,
 	A|B|H|M|V,	A|B|C|D|E|F|G|H|I|J|K|Q,
@@ -890,7 +913,7 @@ struct	race_type	race_table	[]		=
 	0,		{{0}}, 		{{0}},
 	0, 		0,		0,
 	A|H|M|V,	A|B|C|D|E|F|G|H|I|J|K|Q|W,
-	-350,	-1000,-350,	-1000,	SIZE_MEDIUM,	&race_tiefling,
+	1000,	-1000,-350,	-1000,	SIZE_MEDIUM,	&race_tiefling,
 	16000, 40000,	0,	{ },
 	{ "" },
 	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
@@ -2593,6 +2616,9 @@ int	wear_order	[] =
     WEAR_FLOAT,
     WEAR_TAIL,
     WEAR_HORNS,
+    WEAR_LODGE_LEG,
+    WEAR_LODGE_ARM,
+    WEAR_LODGE_RIB,
 };
 
 

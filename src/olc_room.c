@@ -120,6 +120,333 @@ static	bitvector wear_bit	args( ( int loc ) );
 static	bool	validate_reset	args( ( CHAR_DATA *ch, int num, char rtype ) );
 
 
+/* Instaroom code by Kyndig
+ * Allows resets to be placed on a room, according to current
+ * mob/obj/container/exit placement of that room.
+ * Syntax: instaroom
+ */
+
+/* double-linked list handling macros -Thoric (already defined in merc.h) */
+
+/* Locals */
+void wipe_resets( ROOM_INDEX_DATA *pRoom );
+void instaroom( ROOM_INDEX_DATA *pRoom );
+void reset_instaroom( CHAR_DATA *ch, char *argument );
+
+/* make_reset called by add_new_reset in order to create a blank
+ * reset to load data into the reset_list 
+ */
+RESET_DATA *make_reset( char letter, int arg1, int arg2, int arg3, int arg4 )
+{
+        RESET_DATA *pReset;
+
+        pReset          = new_reset_data();
+        pReset->command = letter;
+        pReset->arg1    = arg1;
+        pReset->arg2    = arg2;
+        pReset->arg3    = arg3;
+        pReset->arg4    = arg4;
+        return pReset;
+}
+
+/* add_new_reset called from several places below, it adds in the actual pReset
+ * arguments to the reset_list..tricky footwork here 
+ */
+RESET_DATA *add_new_reset( ROOM_INDEX_DATA *pRoom, char letter, int arg1, int arg2, int arg3, int arg4 )
+{
+    RESET_DATA *pReset;
+
+    if ( !pRoom )
+    {
+        bug( "add_reset: NULL area!", 0 );
+        return NULL;
+    }
+
+    letter = UPPER(letter);
+    pReset = make_reset( letter, arg1, arg2, arg3, arg4 );
+    switch( letter )
+    {
+        case 'M':  pRoom->last_mob_reset = pReset;      break;
+        case 'E':  case 'G':  case 'P':
+        case 'O':  pRoom->last_obj_reset = pReset;      break;
+            break;
+    }
+
+    /* LINK code from the SMAUG server */
+    LINK( pReset, pRoom->reset_first, pRoom->reset_last, next, prev );
+    return pReset;
+}
+
+/* Separate function for recursive purposes */
+void delete_reset( ROOM_INDEX_DATA *pRoom, RESET_DATA *pReset, int insert_loc, bool wipe_all)
+{
+
+  if( !pRoom->reset_first )
+  {
+     return;
+  }
+
+  if ( insert_loc-1 <= 0 )
+  {
+       pReset = pRoom->reset_first;
+       pRoom->reset_first = pRoom->reset_first->next;
+       if ( !pRoom->reset_first )
+           pRoom->reset_last = NULL;
+   }
+   else
+   {
+       int iReset = 0;
+       RESET_DATA *prev = NULL;
+
+       for ( pReset = pRoom->reset_first;
+             pReset;
+             pReset = pReset->next )
+       {
+             if ( ++iReset == insert_loc )
+                    break;
+             prev = pReset;
+       }
+
+       if ( !pReset )
+       {
+           return;
+       }
+
+        if ( prev )
+            prev->next = prev->next->next;
+        else
+            pRoom->reset_first = pRoom->reset_first->next;
+
+        for ( pRoom->reset_last = pRoom->reset_first;
+              pRoom->reset_last->next;
+              pRoom->reset_last = pRoom->reset_last->next );
+   }/*else*/
+
+   if ( pReset == pRoom->last_mob_reset )
+    pRoom->last_mob_reset = NULL;
+  if ( pReset == pRoom->last_obj_reset )
+    pRoom->last_obj_reset = NULL;
+
+   free_reset_data( pReset );
+
+   /* TRUE/FALSE call on delete_reset here, so we can delete all resets or just one */
+   if( wipe_all )
+   {
+     if( ( pReset = pRoom->reset_first)  != NULL)
+       delete_reset( pRoom, pReset, 1, TRUE );
+   }
+}
+
+void wipe_resets( ROOM_INDEX_DATA *pRoom )
+{
+  RESET_DATA *pReset;
+  RESET_DATA *pNext;
+  
+  for ( pReset = pRoom->reset_first; pReset != NULL; pReset = pNext )
+  {
+    pNext = pReset->next;
+    free_reset_data( pReset );
+  }
+  
+  pRoom->reset_first = NULL;
+  pRoom->reset_last = NULL;
+  pRoom->last_mob_reset = NULL;
+  pRoom->last_obj_reset = NULL;
+  return;
+}
+
+/* Called from instaroom */
+void add_obj_reset( ROOM_INDEX_DATA *pRoom, char cm, OBJ_DATA *obj, int v2, int v3, int v4 )
+{
+  add_new_reset( pRoom, cm, obj->pIndexData->vnum, v2, v3, v4 );
+
+  if(obj->contains)
+  {
+    OBJ_INDEX_DATA **objList;
+    OBJ_DATA *inObj;
+    int *objCount;
+    int count;
+    int itemCount;
+
+    for(inObj = obj->contains, itemCount = 0; inObj; inObj = inObj->next_content) itemCount++;
+
+    /* Now have count objects in obj, allocate space for lists */
+    objList = alloc_mem(itemCount * sizeof(OBJ_INDEX_DATA *));
+    objCount = alloc_mem(itemCount * sizeof(int));
+    
+    /* Initialize Memory */
+    memset(objList, 0, itemCount * sizeof(OBJ_INDEX_DATA *));
+    memset(objCount, 0, itemCount * sizeof(int));
+
+    /* Figure out how many of each obj is in the container */
+    for(inObj = obj->contains; inObj; inObj = inObj->next_content)
+    {
+      for(count = 0; objList[count] && objList[count] != inObj->pIndexData; count++);
+      if(!objList[count]) objList[count] = inObj->pIndexData;
+      objCount[count]++;
+    }    
+
+    /* Create the resets */
+    for(count = 0; objList[count]; count++)
+      add_new_reset(pRoom, 'P', objList[count]->vnum, objCount[count], obj->pIndexData->vnum, objCount[count]);
+
+    /* Free the memory */
+    free_mem(objList, itemCount * sizeof(OBJ_INDEX_DATA *));
+    free_mem(objCount, itemCount * sizeof(int));
+  }
+  /* And Done */
+  return;
+}
+
+void instaroom( ROOM_INDEX_DATA *pRoom )
+{
+  CHAR_DATA *rch;
+  OBJ_DATA *obj;
+  
+  for ( rch = pRoom->people; rch; rch = rch->next_in_room )
+  {
+    if ( !IS_NPC(rch) )
+      continue;
+    add_new_reset( pRoom, 'M',rch->pIndexData->vnum, rch->pIndexData->count, pRoom->vnum, 3 );
+    for ( obj = rch->carrying; obj; obj = obj->next_content )
+    {
+      if ( obj->wear_loc == WEAR_NONE )
+        add_obj_reset( pRoom, 'G', obj, 1, 0, 3 );
+      else
+        add_obj_reset( pRoom, 'E', obj, 1, obj->wear_loc, 3 );
+    }
+  }
+  for ( obj = pRoom->contents; obj; obj = obj->next_content )
+  {
+    add_obj_reset( pRoom, 'O', obj, 1, pRoom->vnum, 1 );
+  }
+  return;
+}
+
+/* called from do_instaroom further below */
+void reset_instaroom( CHAR_DATA *ch, char *argument )
+{
+  ROOM_INDEX_DATA     *pRoom;
+  CHAR_DATA           *mob;
+  OBJ_DATA            *obj, *inobj;
+
+  pRoom = ch->in_room;
+
+  /* Containers can NOT be closed when doing an 'instaroom'. Thus a builder will have to close
+   * the container after the reset is installed
+   */
+
+  /* lets go through a mob first */
+  for ( mob = ch->in_room->people; mob; mob = mob->next_in_room )
+  {
+     if ( IS_NPC( mob ) )
+     {
+         /* only mobs with this areas vnums are allowed */
+        if ( mob->pIndexData->area != pRoom->area )
+        {
+           send_to_char( "There is a mob in this room that is not part of your area, resets not set.\n\r", ch );
+           return;
+        }
+    
+        for ( obj = mob->carrying; obj; obj = obj->next_content )
+        {
+           if( obj->pIndexData->area != pRoom->area )
+           {
+               send_to_char( "There is an object in a MOB that is not part of your area, resets not set.\n\r", ch );
+              return;
+           }
+      
+           if ( IS_SET( obj->value[1], CONT_CLOSED ) )
+           {
+              send_to_char( "There is a container in a MOB I can't see inside of. Get the container from the mob, open\n\r"
+                            "it up, give it _back_ to your mob, then do an instaroom.\n\r" 
+                            "AFTER you have set the container to load into the mob,\n\r"
+                            "you can then get the container from him again, close/lock it, and return it....In other words\n\r"
+                            "A container must be open first, the reset installed, after that, you can close/lock it.\n\r",ch);
+              return;
+           }
+
+           if ( obj->contains )
+           {
+               for (inobj = obj->contains; inobj; inobj = inobj->next_content )
+               {
+                   if ( inobj->pIndexData->area != pRoom->area )
+                   {
+                      send_to_char("There is an object in a container which a MOB in this room has, which is not\n\r"
+                                   "a vnum for this area. RESETS NOT SET.\n\r",ch);
+                      return;
+                   }
+               }
+           }
+        }
+     }
+  }/* done looking at mobs and their eq/inv */
+
+
+  /* lets take a look at objects in the room and their contents */ 
+  for ( obj = pRoom->contents; obj != NULL; obj = obj->next_content )
+  {
+      if( obj->pIndexData->area != pRoom->area )
+      {
+          send_to_char( "There is an object in this room that is not a vnum of your area, resets not set.\n\r", ch );
+          return;
+      }
+  
+      if ( IS_SET( obj->value[1], CONT_CLOSED ) )
+      {
+          send_to_char( "There is a container in this room I can't see inside of. Open it up first, do the\n\r"
+                        "instaroom command, THEN you can close/lock the container.\n\r",ch);
+          return;
+      }
+
+      if ( obj->contains )
+      {
+         for (inobj = obj->contains; inobj; inobj = inobj->next_content )
+         {
+            if ( inobj->pIndexData->area != pRoom->area )
+            {
+               send_to_char("There is an object in a container that does not a vnum in this area. No resets set.\n\r",ch);
+               return;
+            }
+         }
+      }
+  }
+
+  if ( pRoom->reset_first )
+    wipe_resets(pRoom);  
+  instaroom( pRoom );
+
+  send_to_char( "Room resets installed.\n\r", ch );
+  return;
+}
+
+void do_instaroom( CHAR_DATA *ch, char *argument )
+{
+  ROOM_INDEX_DATA *pRoom = ch->in_room;
+  char arg[MAX_INPUT_LENGTH];
+
+  if ( IS_NPC( ch ) )
+  {
+    send_to_char( "Mobs dont build, they are built!\n\r", ch );
+    return;
+  }
+
+  if ( !IS_BUILDER( ch, pRoom->area ) )
+  {
+    send_to_char( "Instaroom: Invalid security for editing this area.\n\r", ch );
+    return;
+  }
+
+  argument = one_argument(argument, arg);
+
+  if ( pRoom->reset_first )
+    wipe_resets(pRoom);  
+  instaroom( pRoom );
+
+  SET_BIT( pRoom->area->area_flags, AREA_CHANGED );
+  send_to_char( "Room resets installed.\n\r", ch );
+}
+
 /* Entry point for editing room_index_data. */
 void
 do_redit( CHAR_DATA *ch, char *argument )
@@ -1276,6 +1603,12 @@ redit_show( CHAR_DATA *ch, char *argument )
 
     EDIT_ROOM( ch, pRoom );
 
+    if ( pRoom == NULL )
+    {
+        send_to_char( "You are not in a room.\n\r", ch );
+        return FALSE;
+    }
+
     pBuf = new_buf( );
     show_room_info( ch, pRoom, pBuf );
     page_to_char( buf_string( pBuf ), ch );
@@ -1412,6 +1745,7 @@ redit_west( CHAR_DATA *ch, char *argument )
     }
     return ( change_exit( ch, argument, DIR_WEST ) );
 }
+
 
 
 /************************************************************************/
@@ -1904,56 +2238,6 @@ rpedit_show( CHAR_DATA *ch, char *argument )
 }
 
 
-void
-do_instaroom( CHAR_DATA *ch, char *argument )
-{
-    ROOM_INDEX_DATA *	pRoom;
-
-    if ( IS_NPC( ch ) )
-    {
-	send_to_char( "Mobs dont build, they are built!\n\r", ch );
-	return;
-    }
-
-    if ( *argument == '\0' )
-	pRoom = ch->in_room;
-    else
-	pRoom = find_location( ch, argument );
-
-    if ( pRoom == NULL )
-    {
-	send_to_char( "Room not found\n\r", ch );
-	return;
-    }
-
-    if ( IS_SET( pRoom->room_flags, ROOM_VIRTUAL ) )
-    {
-        send_to_char( "Room is virtual and cannot have resets.\n\r", ch );
-        return;
-    }
-
-    if ( !IS_BUILDER( ch, pRoom->area ) )
-    {
-	send_to_char( "Instaroom: Invalid security for editing this area.\n\r",
-                      ch );
-	return;
-    }
-
-   // if ( !IS_SET( pRoom->area->area_flags, AREA_PROTOTYPE ) )
-   // {
-//	send_to_char( "Room is not in a prototype area.\n\r", ch );
-//	return;
- //   }
-
-    instaroom( ch, pRoom );
-    SET_BIT( pRoom->area->area_flags, AREA_CHANGED );
-    if ( pRoom->reset_first == NULL )
-	send_to_char( "Resets cleared.\n\r", ch );
-    else
-	send_to_char( "Resets created.\n\r", ch );
-
-    return;
-}
 
 
 void
@@ -3782,173 +4066,6 @@ get_rprog_data( ROOM_INDEX_DATA *pRoom, int vnum )
 }
 
 
-/*****************************************************************************
- Name:		instaroom
- Purpose:	Creates resets for room based on current contents
- Called by:	TBD
- ****************************************************************************/
-void
-instaroom( CHAR_DATA *ch, ROOM_INDEX_DATA *pRoom )
-{
-    RESET_DATA *	pReset;
-    RESET_DATA *	pContainerReset;
-    CHAR_DATA *		pMob;
-    CHAR_DATA *		pMob2;
-    OBJ_DATA *		pObj;
-    OBJ_DATA *		pObj2;
-    OBJ_DATA *		inObj;
-    AREA_DATA *		pOther;
-    int			count;
-    int			mobinroom;
-    int			mobinworld;
-
-    /* Delete current resets */
-    while ( pRoom->reset_first != NULL )
-    {
-        pReset = pRoom->reset_first;
-        pRoom->reset_first = pRoom->reset_first->next;
-        free_reset_data( pReset );
-    }
-    pRoom->reset_last = NULL;
-    SET_BIT( pRoom->area->area_flags, AREA_CHANGED );
-
-    for ( pMob = pRoom->people; pMob != NULL; pMob = pMob->next_in_room )
-    {
-        if ( !IS_NPC( pMob ) || pMob->master != NULL )
-            continue;
-
-        /* See if we already have a reset for this mob */
-        for ( pReset = pRoom->reset_first; pReset != NULL; pReset = pReset->next )
-            if ( pReset->command == 'M' && pReset->arg1 == pMob->pIndexData->vnum )
-                break;
-        if ( pReset != NULL )
-            continue;
-
-        /* Okay, we have a mob in the room that we don't already have a reset for */
-
-	if ( ( pOther = pMob->pIndexData->area ) != pRoom->area
-	&&   IS_SET( pOther->area_flags, AREA_PROTOTYPE )
-	&&   !IS_BUILDER( ch, pOther ) )
-	{
-	    ch_printf( ch, "Instaroom: cannot load mob #%d from another area.\n\r",
-	               pMob->pIndexData->vnum );
-	    continue;
-	}
-
-        /* Count how many are in the world */
-        mobinworld = 0;
-        for ( pMob2 = char_list; pMob2 != NULL; pMob2 = pMob2->next )
-            if ( pMob2->pIndexData == pMob->pIndexData )
-                mobinworld++;
-
-        /* Count how many are in the room */
-        mobinroom = 0;
-        for ( pMob2 = pRoom->people; pMob2 != NULL; pMob2 = pMob2->next_in_room )
-            if ( pMob2->pIndexData == pMob->pIndexData )
-                mobinroom++;
-
-        /* Create the reset for the mob */
-        pReset = new_reset_data( );
-        pReset->command = 'M';
-        pReset->arg1 = pMob->pIndexData->vnum;
-        pReset->arg2 = mobinworld;
-        pReset->arg3 = pRoom->vnum;
-        pReset->arg4 = mobinroom;
-        add_reset( pRoom, pReset, 0 );
-
-        /* Add the mob's inventory/equipment */
-        for ( pObj = pMob->carrying; pObj != NULL; pObj = pObj->next_content )
-        {
-	    if ( ( pOther = pObj->pIndexData->area ) != pRoom->area
-	    &&   IS_SET( pOther->area_flags, AREA_PROTOTYPE )
-	    &&   !IS_BUILDER( ch, pOther ) )
-	    {
-		ch_printf( ch, "Instaroom: cannot load object #%d from another area.\n\r",
-			   pObj->pIndexData->vnum );
-		continue;
-	    }
-
-            pReset = new_reset_data( );
-            pReset->command = pObj->wear_loc == WEAR_NONE ? 'G' : 'E';
-            pReset->arg1 = pObj->pIndexData->vnum;
-            pReset->arg2 = -1;
-            pReset->arg3 = pObj->wear_loc;
-            pReset->arg4 = 0;
-            add_reset( pRoom, pReset, 0 );
-            for ( inObj = pObj->contains; inObj != NULL; inObj = inObj->next_content )
-            {
-                if ( ( pOther = inObj->pIndexData->area ) != pRoom->area
-                &&   IS_SET( pOther->area_flags, AREA_PROTOTYPE )
-                &&   !IS_BUILDER( ch, pOther ) )
-                {
-                    ch_printf( ch, "Instaroom: cannot load object #%d from another area.\n\r",
-                               inObj->pIndexData->vnum );
-                    continue;
-                }
-
-                pReset = new_reset_data( );
-                pReset->command = 'P';
-                pReset->arg1 = inObj->pIndexData->vnum;
-                pReset->arg2 = 0;
-                pReset->arg3 = pObj->pIndexData->vnum;
-                pReset->arg4 = 99;
-                add_reset( pRoom, pReset, 0 );
-            }
-        }
-    }
-
-    /* Now do the objects in the room */
-    for ( pObj = pRoom->contents; pObj != NULL; pObj = pObj->next_content )
-    {
-	if ( ( pOther = pObj->pIndexData->area ) != pRoom->area
-	&&   IS_SET( pOther->area_flags, AREA_PROTOTYPE )
-	&&   !IS_BUILDER( ch, pOther ) )
-	{
-	    ch_printf( ch, "Instaroom: cannot load object #%d from another area.\n\r",
-	               pObj->pIndexData->vnum );
-	    continue;
-	}
-
-        pReset = new_reset_data( );
-        pReset->command = 'O';
-        pReset->arg1 = pObj->pIndexData->vnum;
-        pReset->arg2 = -1;
-        pReset->arg3 = pRoom->vnum;
-        pReset->arg4 = 0; /* unused */
-        add_reset( pRoom, pReset, 0 );
-
-        for ( pObj2 = pObj->contains; pObj2 != NULL; pObj2 = pObj2->next_content )
-        {
-	    if ( ( pOther = pObj2->pIndexData->area ) != pRoom->area
-	    &&   IS_SET( pOther->area_flags, AREA_PROTOTYPE )
-	    &&   !IS_BUILDER( ch, pOther ) )
-	    {
-		ch_printf( ch, "Instaroom: cannot load object #%d from another area.\n\r",
-			   pObj2->pIndexData->vnum );
-		continue;
-	    }
-
-            count = 0;
-            for ( pContainerReset = pRoom->reset_first; pContainerReset != NULL; pContainerReset = pContainerReset->next )
-            {
-		if ( pContainerReset->command == 'P'
-		&&   pContainerReset->arg1 == pObj2->pIndexData->vnum
-		&&   pContainerReset->arg3 == pObj->pIndexData->vnum )
-		    count++;
-            }
-            if ( count > 0 )
-                continue;
-            pReset = new_reset_data( );
-            pReset->command = 'P';
-            pReset->arg1 = pObj2->pIndexData->vnum;
-            pReset->arg2 = count_obj_list( pObj2->pIndexData, pObj->contains );
-            pReset->arg3 = pObj->pIndexData->vnum;
-            pReset->arg4 = 99;
-            add_reset( pRoom, pReset, 0 );
-        }
-    }
-    return;
-}
 
 
 /*****************************************************************************
@@ -3972,29 +4089,43 @@ show_room_info( CHAR_DATA *ch, ROOM_INDEX_DATA *pRoom, BUFFER *pBuf )
     bool		edesc;
     bool		ndesc;
 
-    buf_printf( pBuf, "`WDescription`w:\n\r%s`X", pRoom->description );
+    if ( pRoom == NULL )
+    {
+        add_buf( pBuf, "Room data is NULL.\n\r" );
+        return;
+    }
 
-    if ( !IS_NULLSTR( pRoom->smell ) )
+    if ( pRoom->description != NULL )
+        buf_printf( pBuf, "`WDescription`w:\n\r%s`X", pRoom->description );
+
+    if ( pRoom->smell != NULL && !IS_NULLSTR( pRoom->smell ) )
         buf_printf( pBuf, "`WSmell`w:\n\r%s`X", pRoom->smell );
-    if ( !IS_NULLSTR( pRoom->sound ) )
+    if ( pRoom->sound != NULL && !IS_NULLSTR( pRoom->sound ) )
         buf_printf( pBuf, "`WSound`w:\n\r%s`X", pRoom->sound );
 
-    buf_printf( pBuf, "Name:       [%s`X]\n\r", pRoom->name );
-    buf_printf( pBuf, "Area:       [%5d] %s\n\r",
-	    pRoom->area->vnum, pRoom->area->name );
+    if ( pRoom->name != NULL )
+        buf_printf( pBuf, "Name:       [%s`X]\n\r", pRoom->name );
+    if ( pRoom->area != NULL )
+        buf_printf( pBuf, "Area:       [%5d] %s\n\r",
+	        pRoom->area->vnum, pRoom->area->name );
+    else
+        buf_printf( pBuf, "Area:       [NULL]\n\r" );
     buf_printf( pBuf, "Vnum:       [%5d]  ", pRoom->vnum );
     buf_printf( pBuf, "Heal rate: [%d%%]  ", pRoom->heal_rate );
     buf_printf( pBuf, "Mana rate: [%d%%]\n\r", pRoom->mana_rate );
-    buf_printf( pBuf, "Sector:     [%s]\n\r",
-	    flag_string( sector_types, pRoom->sector_type ) );
+    if ( pRoom->sector_type >= 0 && pRoom->sector_type < 100 )
+        buf_printf( pBuf, "Sector:     [%s]\n\r",
+	        flag_string( sector_types, pRoom->sector_type ) );
+    else
+        buf_printf( pBuf, "Sector:     [invalid: %d]\n\r", pRoom->sector_type );
     buf_printf( pBuf, "Room flags: [%s]\n\r",
 	    flag_string( room_flags, pRoom->room_flags ) );
     buf_printf( pBuf, "Affects:    [%s]\n\r",
 	    flag_string( room_aff_flags, pRoom->affect_flags ) );
 
-    mdesc = !IS_NULLSTR( pRoom->morning_desc );
-    edesc = !IS_NULLSTR( pRoom->evening_desc );
-    ndesc = !IS_NULLSTR( pRoom->night_desc );
+    mdesc = pRoom->morning_desc != NULL && !IS_NULLSTR( pRoom->morning_desc );
+    edesc = pRoom->evening_desc != NULL && !IS_NULLSTR( pRoom->evening_desc );
+    ndesc = pRoom->night_desc != NULL && !IS_NULLSTR( pRoom->night_desc );
     if ( mdesc || edesc || ndesc )
     {
         add_buf( pBuf, "Alt descs:  [" );
@@ -4019,7 +4150,8 @@ show_room_info( CHAR_DATA *ch, ROOM_INDEX_DATA *pRoom, BUFFER *pBuf )
     {
 	buf_printf( pBuf, "Vehicle:    [%s]\n\r",
 		    flag_string( vehicle_types, pRoom->vehicle_type ) );
-	buf_printf( pBuf, "Short desc: [%s]\n\r", pRoom->short_descr );
+	if ( pRoom->short_descr != NULL )
+	    buf_printf( pBuf, "Short desc: [%s]\n\r", pRoom->short_descr );
     }
 
     if ( pRoom->extra_descr )
@@ -4137,9 +4269,9 @@ show_room_info( CHAR_DATA *ch, ROOM_INDEX_DATA *pRoom, BUFFER *pBuf )
             }
             add_buf( pBuf, "\n\r" );
 
-            if ( !IS_NULLSTR( pExit->sound_closed ) )
+            if ( pExit->sound_closed != NULL && !IS_NULLSTR( pExit->sound_closed ) )
                 buf_printf( pBuf, "Sound (closed):\n\r%s`X", pExit->sound_closed );
-            if ( !IS_NULLSTR( pExit->sound_open ) )
+            if ( pExit->sound_open != NULL && !IS_NULLSTR( pExit->sound_open ) )
                 buf_printf( pBuf, "Sound (open):\n\r%s`X", pExit->sound_open );
 
 	    if ( pExit->keyword && pExit->keyword[0] != '\0' )
@@ -4178,4 +4310,6 @@ wear_bit( int loc )
 
     return 0;
 }
+
+
 

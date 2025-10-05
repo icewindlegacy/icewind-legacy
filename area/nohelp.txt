@@ -109,3 +109,5 @@
 [  630] Mask: webpage
 [  940] Mask: council
 [  940] Mask: timeline
+[ 1204] Mask: objbuy
+[  404] Mask: slots

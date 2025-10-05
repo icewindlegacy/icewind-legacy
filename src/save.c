@@ -186,7 +186,8 @@ save_char_obj( CHAR_DATA *ch )
     /* create god log */
     if (IS_IMMORTAL(ch) || ch->level >= LEVEL_IMMORTAL)
     {
-	fclose(fpReserve);
+	if ( fpReserve != NULL )
+	    fclose(fpReserve);
 	sprintf(strsave, "%s%s",GOD_DIR, capitalize(ch->name));
 	if ((fp = fopen(strsave,"w")) == NULL)
 	{
@@ -200,7 +201,8 @@ save_char_obj( CHAR_DATA *ch )
 	fpReserve = fopen( NULL_FILE, "r" );
     }
 
-    fclose( fpReserve );
+    if ( fpReserve != NULL )
+        fclose( fpReserve );
     sprintf( strsave, "%s%s", PLAYER_DIR, capitalize( ch->name ) );
     if ( ( fp = fopen( TEMP_FILE, "w" ) ) == NULL )
     {
@@ -273,6 +275,14 @@ fwrite_char( CHAR_DATA *ch, FILE *fp )
     	if ( ch->clvl )
     	    fprintf( fp, "Clvl %d\n", ch->clvl );
     }
+    
+    /* House system data */
+    if( !IS_NPC(ch) && ch->pcdata->h_vnum )
+        fprintf(fp,"HVnum %d\n", ch->pcdata->h_vnum);
+    if( !IS_NPC(ch) && ch->pcdata->horesets )
+        fprintf(fp,"HOResets %d\n", ch->pcdata->horesets);
+    if( !IS_NPC(ch) && ch->pcdata->hmresets )
+        fprintf(fp,"HMResets %d\n", ch->pcdata->hmresets);
     fprintf( fp, "Sex  %d\n",	   ch->sex		);
     fprintf( fp, "Cla  '%s'\n",	   class_table[ch->class].name	);
 	fprintf (fp, "God  %d\n", ch->god);
@@ -429,6 +439,8 @@ fwrite_char( CHAR_DATA *ch, FILE *fp )
 	if ( *ch->pcdata->pose != '\0' )
 	    fprintf( fp, "Pose %s~\n",		ch->pcdata->pose );
 	fprintf( fp, "Titl %s~\n",	ch->pcdata->title	);
+	if ( ch->pcdata->target[0] != '\0' )
+	    fprintf( fp, "Targ %s~\n",	ch->pcdata->target	);
 	if ( !IS_NULLSTR( ch->pcdata->lname ) )
 	    fprintf( fp, "Lnm %s~\n", ch->pcdata->lname );
 	if ( ch->pcdata->who_text && *ch->pcdata->who_text != '\0' )
@@ -1019,7 +1031,8 @@ load_char_obj( DESCRIPTOR_DATA *d, char *name )
     ch->pcdata->condition[COND_TIRED]	= MAX_COND;
 
     found = FALSE;
-    fclose( fpReserve );
+    if ( fpReserve != NULL )
+        fclose( fpReserve );
 
     /* decompress if .gz file exists */
     sprintf( strsave, "%s%s%s", PLAYER_DIR, capitalize(name),".gz");
@@ -1616,6 +1629,9 @@ fread_char( CHAR_DATA *ch, FILE *fp )
 	    KEY( "HairC",	ch->pcdata->hair_color,	fread_string( fp ) );
 	    KEY( "Hitroll",	ch->hitroll,		fread_number( fp ) );
 	    KEY( "Hit",		ch->hitroll,		fread_number( fp ) );
+	    KEY( "HVnum",       ch->pcdata->h_vnum,     fread_number( fp ) );
+	    KEY( "HOResets",    ch->pcdata->horesets,   fread_number( fp ) );
+	    KEY( "HMResets",    ch->pcdata->hmresets,   fread_number( fp ) );
 
 	    if ( !str_cmp( word, "HpManaMove" ) || !str_cmp(word,"HMV"))
 	    {
@@ -1861,6 +1877,7 @@ fread_char( CHAR_DATA *ch, FILE *fp )
 	    KEY( "Trust",	ch->trust,		fread_number( fp ) );
 	    KEY( "Tru",		ch->trust,		fread_number( fp ) );
         KEY( "Tpld",	ch->pcdata->timesplayed, fread_number( fp ) );
+            KEY( "Targ",	ch->pcdata->target,	fread_string( fp ) );
 	    if ( !str_cmp( word, "Title" )  || !str_cmp( word, "Titl"))
 	    {
 		ch->pcdata->title = fread_string( fp );

@@ -66,57 +66,6 @@ Cost 0
 Values 100 0 0 0
 End
 
-Room 401
-#O
-Vnum 231
-Nest 0
-Name 10 ten qp quest point token~
-ShD  `Ga `Y10`Cqp `Gtoken`X~
-Desc `Ga `Y10`Cqp `Gtoken`X~
-ItemType 47
-ExtraFlags 1091321856
-WearFlags 1
-WearLoc -1
-Weight 0
-Timer 0
-Cost 0
-Values 10 0 0 0
-End
-
-Room 401
-#O
-Vnum 233
-Nest 0
-Name 100 one hundred one-hundred qp quest point token~
-ShD  `Ga `R100`Cqp `Gtoken!`X~
-Desc `B(`PRARE`B)`Ga `R100`Cqp `Gtoken!`X~
-ItemType 47
-ExtraFlags 1091321856
-WearFlags 1
-WearLoc -1
-Weight 0
-Timer 0
-Cost 0
-Values 100 0 0 0
-End
-
-Room 401
-#O
-Vnum 232
-Nest 0
-Name fifty 50 qp quest point token~
-ShD  `Ga `Y50`Cqp `Gtoken `X~
-Desc `Ga `Y50`Cqp `Gtoken `X~
-ItemType 47
-ExtraFlags 1091321856
-WearFlags 1
-WearLoc -1
-Weight 0
-Timer 0
-Cost 0
-Values 50 0 0 0
-End
-
 Room 498
 #O
 Vnum 232

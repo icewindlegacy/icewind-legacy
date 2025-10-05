@@ -408,7 +408,7 @@ End
 #RACE 'dragonborn'
 Act 0
 Aff 0
-AlMax -350
+AlMax 1000
 AlMin -1000
 AlMax -350
 AlMin -1000
@@ -433,9 +433,9 @@ WtMax 40000
 'barbarian' 100
 'bard' 100
 'cleric' 100
-'druid' 0
+'druid' 100
 'fighter' 100
-'mage' 0
+'mage' 100
 'monk' 100
 'paladin' 100
 'ranger' 100
@@ -455,7 +455,7 @@ Max 16 20 18 21 15
 Off 0
 Parts ABCDEFGHIJK
 Pc TRUE
-Points 5
+Points 0
 Res B
 Size medium
 Skill 'sneak'
@@ -1219,7 +1219,7 @@ WtMax 160000
 'rogue' 0
 End
 
-#RACE 'money'
+#RACE 'monkey'
 Act 0
 Aff J
 AlMax 1000

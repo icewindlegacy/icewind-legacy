@@ -1,0 +1,31 @@
+Oname Mask~
+Objname a small chest~
+Mobname (null)~
+Ovalue 200
+Mvalue 0
+
+Oname Mask~
+Objname couch leather old~
+Mobname (null)~
+Ovalue 200
+Mvalue 0
+
+Oname Mask~
+Objname a small chest~
+Mobname (null)~
+Ovalue 200
+Mvalue 0
+
+Oname Mask~
+Objname a small chest~
+Mobname (null)~
+Ovalue 200
+Mvalue 0
+
+Oname Mask~
+Objname (null)~
+Mobname healer~
+Ovalue 0
+Mvalue 500
+
+$

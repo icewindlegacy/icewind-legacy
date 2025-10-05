@@ -974,6 +974,9 @@ group_add( CHAR_DATA *ch, const char *name, bool deduct)
     if ( IS_NPC( ch ) ) /* NPCs do not have skills */
 	return;
 
+    if ( ch->pcdata == NULL || ch->pcdata->skill == NULL ) /* Safety check */
+	return;
+
     if ( IS_NULLSTR( name ) ) /* Do nothing if no name given */
         return;
 
@@ -1030,6 +1033,12 @@ group_remove( CHAR_DATA *ch, const char *name )
 {
     int sn;
     int gn;
+
+    if ( IS_NPC( ch ) ) /* NPCs do not have skills */
+	return;
+
+    if ( ch->pcdata == NULL || ch->pcdata->skill == NULL ) /* Safety check */
+	return;
 
     sn = skill_lookup( name );
 

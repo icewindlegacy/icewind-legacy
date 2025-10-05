@@ -2716,6 +2716,7 @@ End
 
 #SKILL 'bow'
 0 0 0
+Forget 20
 Offmsg !Bow!~
   Brb 5 1
   Brd 5 1
@@ -3103,6 +3104,36 @@ Offmsg !Whip!~
   Pal -1 0
   Rng -1 0
   Rog -1 0
+End
+
+#SKILL 'weapon focus'
+0 0 0
+Offmsg !Weapon Focus!~
+  Brb 1 1
+  Brd -1 0
+  Clr -1 0
+  Drd -1 0
+  Ftr 1 1
+  Mag -1 0
+  Mnk 1 1
+  Pal 1 1
+  Rng 1 1
+  Rog 1 1
+End
+
+#SKILL 'weapon finesse'
+0 0 0
+Offmsg !Weapon Finesse!~
+  Brb -1 0
+  Brd -1 0
+  Clr -1 0
+  Drd -1 0
+  Ftr 1 1
+  Mag -1 0
+  Mnk -1 0
+  Pal 1 1
+  Rng 1 1
+  Rog 1 1
 End
 
 #SKILL 'assassinate'
@@ -3924,6 +3955,135 @@ Offmsg !Recall!~
   Pal 1 1
   Rng 1 1
   Rog 1 1
+End
+
+#SKILL 'forage'
+0 12 0
+Forget 12
+Offmsg !Forage!~
+  Brb 1 1
+  Brd -1 0
+  Clr 1 1
+  Drd 1 1
+  Ftr -1 0
+  Mag -1 0
+  Mnk -1 0
+  Pal -1 0
+  Rng 1 1
+End
+
+#SKILL 'fishing'
+0 24 0
+Forget 15
+Offmsg !Fishing!~
+  Brb 1 1
+  Brd -1 0
+  Clr -1 0
+  Drd 1 1
+  Ftr 1 1
+  Mag -1 0
+  Mnk -1 0
+  Pal -1 0
+  Rng 1 1
+End
+
+#SKILL 'cooking'
+0 24 0
+Forget 20
+Offmsg !Cooking!~
+  Brb -1 0
+  Brd 1 1
+  Clr 1 1
+  Drd 1 1
+  Ftr 1 1
+  Mag -1 0
+  Mnk -1 0
+  Pal -1 0
+  Rng 1 1
+End
+
+#SKILL 'control animal'
+15 0 0
+Offmsg !Control Animal!~
+  Brb -1 0
+  Brd -1 0
+  Clr -1 0
+  Drd 1 1
+  Ftr -1 0
+  Mag -1 0
+  Mnk -1 0
+  Pal -1 0
+  Rng -1 0
+End
+
+#SKILL 'flare'
+10 0 0
+Offmsg !Flare!~
+  Brb 2 0
+  Brd 1 1
+  Clr 2 0
+  Drd 1 1
+  Ftr 2 0
+  Mag 1 1
+  Mnk 2 0
+  Pal 2 0
+  Rng 2 0
+End
+
+#SKILL 'guidance'
+8 0 0
+Offmsg !Guidance!~
+  Brb 1 0
+  Brd 1 0
+  Clr 1 1
+  Drd 1 1
+  Ftr 1 0
+  Mag 1 0
+  Mnk 1 0
+  Pal 1 0
+  Rng 1 0
+End
+
+#SKILL 'resistance'
+10 0 0
+Offmsg !Resistance!~
+  Brb 1 0
+  Brd 1 1
+  Clr 1 1
+  Drd 1 1
+  Ftr 1 0
+  Mag 1 0
+  Mnk 1 0
+  Pal 1 1
+  Rng 1 1
+End
+
+#SKILL 'virtue'
+12 0 0
+Offmsg !Virtue!~
+  Brb 1 0
+  Brd 1 0
+  Clr 1 1
+  Drd 1 1
+  Ftr 1 0
+  Mag 1 0
+  Mnk 1 0
+  Pal 1 1
+  Rng 1 0
+End
+
+#SKILL 'entangle'
+15 0 0
+Offmsg !Entangle!~
+  Brb 3 0
+  Brd 3 0
+  Clr 3 0
+  Drd 1 1
+  Ftr 3 0
+  Mag 3 0
+  Mnk 3 0
+  Pal 3 0
+  Rng 1 1
 End
 
 #$

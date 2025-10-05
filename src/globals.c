@@ -287,3 +287,5 @@ WEATHER_DATA		weather_info;
 char			whoborder_imm[MAX_INPUT_LENGTH];
 char			whoborder_mort[MAX_INPUT_LENGTH];
 int			whosock;		/* web who socket */
+
+HOUSE_DATA *		house_list;

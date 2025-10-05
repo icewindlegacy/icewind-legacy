@@ -67,6 +67,7 @@
  * Local functions
  */
 bool	dragon	args( ( CHAR_DATA *ch, char *spell_name ) );
+bool	spec_architect	args( ( CHAR_DATA *ch ) );
 
 /* the function table */
 const   struct  spec_type    spec_table[] =
@@ -83,6 +84,7 @@ const   struct  spec_type    spec_table[] =
     {	"spec_cast_cleric",		spec_cast_cleric	},
     {	"spec_cast_judge",		spec_cast_judge		},
     {	"spec_cast_mage",		spec_cast_mage		},
+    {	"spec_architect",		spec_architect		},
     {	"spec_cast_undead",		spec_cast_undead	},
     {	"spec_chimera",			spec_chimera		},
     {	"spec_customs_weapons",		spec_customs_weapons	},
@@ -1071,6 +1073,13 @@ spec_thief( CHAR_DATA *ch )
 	}
     }
 
+    return FALSE;
+}
+
+bool spec_architect(CHAR_DATA * ch)
+{
+    if (ch->fighting != NULL)
+        return spec_cast_mage(ch);
     return FALSE;
 }
 

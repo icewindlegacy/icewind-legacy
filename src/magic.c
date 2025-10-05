@@ -932,10 +932,10 @@ void do_cast( CHAR_DATA *ch, char *argument )
         return;
     }
 
-    /* Mage memorization check */
-if (ch->pcdata->skill[sn].memorized <= 0)
+    /* Mage memorization check - bypass for immortals */
+if (!IS_IMMORTAL(ch) && ch->pcdata->skill[sn].memorized <= 0)
 {
-    send_to_char("You haven’t memorized that spell yet.\n\r", ch);
+    send_to_char("You haven't memorized that spell yet.\n\r", ch);
     return;
 }
 
@@ -1627,8 +1627,8 @@ void spell_call_lightning( int sn, int level,CHAR_DATA *ch,void *vo,int target)
 
     dam = dice(level/2, 8);
 
-    send_to_char( "The lightning of the Kinsar strikes your foes!\n\r", ch );
-    act( "$n calls the lightning of the Kinsar to strike $s foes!",
+    send_to_char( "You call down lightning from the storm above!\n\r", ch );
+    act( "$n calls the lightning from the storm above to strike $s foes!",
 	ch, NULL, NULL, TO_ROOM );
 
     for ( vch = char_list; vch != NULL; vch = vch_next )
@@ -2722,7 +2722,7 @@ void spell_dispel_evil( int sn, int level, CHAR_DATA *ch, void *vo,int target)
 
     if ( IS_GOOD(victim) )
     {
-	act( "The Kinsar protect $N.", ch, NULL, victim, TO_ROOM );
+	act( "The $T protect $N.", ch, capitalize(god_table[ch->god].name), victim, TO_ROOM );
 	return;
     }
 
@@ -7105,17 +7105,26 @@ void do_memorize( CHAR_DATA *ch, char *argument )
         return;
     }
 
-    spell_level = skill_table[sn].skill_level[ch->class];
-    if ( spell_level <= 0 )
+    /* Check if spell is available to any of the character's classes */
+    if ( !is_skill_available_to_multiclass(ch, sn) )
     {
         send_to_char("You cannot memorize that.\n\r", ch);
         return;
     }
 
+    /* Check if character meets level requirement for any class that has the spell */
+    if ( !multiclass_meets_skill_level(ch, sn) )
+    {
+        send_to_char("You are not experienced enough to memorize that spell.\n\r", ch);
+        return;
+    }
+
+    spell_level = get_multiclass_skill_level(ch, sn);
+
     /* count slots already used for this level */
     for ( int i = 0; i < top_skill; i++ )
     {
-        if ( skill_table[i].skill_level[ch->class] == spell_level )
+        if ( get_multiclass_skill_level(ch, i) == spell_level )
             used_slots += ch->pcdata->skill[i].memorized;
     }
 
@@ -7143,7 +7152,7 @@ void do_memlist(CHAR_DATA *ch, char *argument)
         for (int sn = 0; sn < top_skill; sn++)
         {
             if (ch->pcdata->skill[sn].memorized > 0 &&
-                skill_table[sn].skill_level[ch->class] == level)
+                get_multiclass_skill_level(ch, sn) == level)
             {
                 char buf[MSL];
                 snprintf(buf, sizeof(buf), "  `P[`G%2d`P]`X %s `Y: `G%d `Xmemorized\n\r",
@@ -7182,7 +7191,7 @@ void do_spellslots(CHAR_DATA *ch, char *argument)
         for (int sn = 0; sn < top_skill; sn++)
         {
             if (ch->pcdata->skill[sn].memorized > 0 &&
-                skill_table[sn].skill_level[ch->class] == spell_lvl)
+                get_multiclass_skill_level(ch, sn) == spell_lvl)
                 used += ch->pcdata->skill[sn].memorized;
         }
 
@@ -7218,4 +7227,185 @@ void do_forget(CHAR_DATA *ch, char *argument)
 
     ch->pcdata->skill[sn].memorized = 0;
     send_to_char("You have forgotten that spell.\n\r", ch);
+}
+
+void spell_flare( int sn, int level, CHAR_DATA *ch, void *vo, int target )
+{
+    CHAR_DATA *victim;
+    AFFECT_DATA af;
+    
+    victim = (CHAR_DATA *) vo;
+
+    if ( victim->position == POS_FIGHTING || is_affected( victim, sn ) )
+    {
+        if ( victim == ch )
+            send_to_char( "You are already dazzled.\n\r", ch );
+        else
+            act( "$N is already dazzled.", ch, NULL, victim, TO_CHAR );
+        return;
+    }
+
+    af.where     = TO_AFFECTS;
+    af.type      = sn;
+    af.level     = level;
+    af.duration  = 8 + level / 3;
+    af.location  = APPLY_HITROLL;
+    af.modifier  = -(10 + level / 2);  /* -10 at level 1, -20 at level 20 */
+    af.bitvector = 0;
+    affect_to_char( victim, &af );
+
+    send_to_char( "Bright light dazzles your vision!\n\r", victim );
+    if ( ch != victim )
+        act( "You blast $N with a brilliant flare of light!", ch, NULL, victim, TO_CHAR );
+    return;
+}
+
+void spell_guidance( int sn, int level, CHAR_DATA *ch, void *vo, int target )
+{
+    CHAR_DATA *victim;
+    AFFECT_DATA af;
+    
+    victim = (CHAR_DATA *) vo;
+
+    if ( victim->position == POS_FIGHTING || is_affected( victim, sn ) )
+    {
+        if ( victim == ch )
+            send_to_char( "You already have divine guidance.\n\r", ch );
+        else
+            act( "$N already has divine guidance.", ch, NULL, victim, TO_CHAR );
+        return;
+    }
+
+    af.where     = TO_AFFECTS;
+    af.type      = sn;
+    af.level     = level;
+    af.duration  = 10 + level / 2;
+    af.location  = APPLY_HITROLL;
+    af.modifier  = 10 + level / 2;  /* +10 at level 1, +20 at level 20 */
+    af.bitvector = 0;
+    affect_to_char( victim, &af );
+
+    send_to_char( "You feel guided by divine wisdom.\n\r", victim );
+    if ( ch != victim )
+        act( "You grant $N divine guidance.", ch, NULL, victim, TO_CHAR );
+    return;
+}
+
+void spell_resistance( int sn, int level, CHAR_DATA *ch, void *vo, int target )
+{
+    CHAR_DATA *victim;
+    AFFECT_DATA af;
+    
+    victim = (CHAR_DATA *) vo;
+
+    if ( victim->position == POS_FIGHTING || is_affected( victim, sn ) )
+    {
+        if ( victim == ch )
+            send_to_char( "You already have magical resistance.\n\r", ch );
+        else
+            act( "$N already has magical resistance.", ch, NULL, victim, TO_CHAR );
+        return;
+    }
+
+    af.where     = TO_AFFECTS;
+    af.type      = sn;
+    af.level     = level;
+    af.duration  = 12 + level / 2;
+    af.location  = APPLY_SAVING_SPELL;
+    af.modifier  = -10;  /* -10 saving throws */
+    af.bitvector = 0;
+    affect_to_char( victim, &af );
+
+    send_to_char( "You feel more resistant to magical effects.\n\r", victim );
+    if ( ch != victim )
+        act( "You grant $N magical resistance.", ch, NULL, victim, TO_CHAR );
+    return;
+}
+
+void spell_virtue( int sn, int level, CHAR_DATA *ch, void *vo, int target )
+{
+    CHAR_DATA *victim;
+    AFFECT_DATA af;
+    
+    victim = (CHAR_DATA *) vo;
+
+    if ( victim->position == POS_FIGHTING || is_affected( victim, sn ) )
+    {
+        if ( victim == ch )
+            send_to_char( "You already have divine virtue.\n\r", ch );
+        else
+            act( "$N already has divine virtue.", ch, NULL, victim, TO_CHAR );
+        return;
+    }
+
+    af.where     = TO_AFFECTS;
+    af.type      = sn;
+    af.level     = level;
+    af.duration  = 15 + level / 2;
+    af.location  = APPLY_HIT;
+    af.modifier  = 10 + (level / 2) * 2;  /* +10 at level 1, +50 at level 20 */
+    af.bitvector = 0;
+    affect_to_char( victim, &af );
+
+    send_to_char( "You feel virtuous and healthy.\n\r", victim );
+    if ( ch != victim )
+        act( "You grant $N divine virtue.", ch, NULL, victim, TO_CHAR );
+    return;
+}
+
+bool event_room_entangle( EVENT_DATA *event )
+{
+    ROOM_INDEX_DATA *room;
+    
+    if ( event == NULL || event->owner.room == NULL )
+        return FALSE;
+    
+    room = event->owner.room;
+    
+    /* Remove the entangled flag */
+    REMOVE_BIT( room->room_flags, ROOM_ENTANGLED );
+    
+    /* Send message to occupants */
+    send_to_room( AT_GREEN, room, "The tangled roots and brambles wither away.\n\r", POS_RESTING );
+    
+    return FALSE;  /* FALSE tells the event system to dequeue this event */
+}
+
+void spell_entangle( int sn, int level, CHAR_DATA *ch, void *vo, int target )
+{
+    CHAR_DATA *victim;
+    ROOM_INDEX_DATA *room;
+    EVENT_DATA *event;
+    
+    victim = (CHAR_DATA *) vo;
+    room = ch->in_room;
+
+    /* Check if room is already entangled */
+    if ( IS_SET( room->room_flags, ROOM_ENTANGLED ) )
+    {
+        send_to_char( "This area is already entangled.\n\r", ch );
+        return;
+    }
+
+    /* Check if room is suitable for entangling (field or forest) */
+    if ( room->sector_type != SECT_FIELD && room->sector_type != SECT_FOREST )
+    {
+        send_to_char( "You can only entangle fields and forests.\n\r", ch );
+        return;
+    }
+
+    /* Set the entangled flag */
+    SET_BIT( room->room_flags, ROOM_ENTANGLED );
+
+    /* Create event to remove entanglement after 3 ticks */
+    event = new_event();
+    event->fun = event_room_entangle;
+    event->type = EVENT_ROOM_ENTANGLE;
+    add_event_room( event, room, 3 * PULSE_TICK );
+
+    /* Send messages */
+    act( "Tangling roots and brambles spring up from the ground!", ch, NULL, NULL, TO_ROOM );
+    send_to_char( "You call upon the earth to entangle the area.\n\r", ch );
+    
+    return;
 }

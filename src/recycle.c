@@ -1218,6 +1218,7 @@ new_reset_data( void )
     }
 
     pReset->next	= NULL;
+    pReset->prev	= NULL;
     pReset->command	= 'X';
     pReset->arg1	= 0;
     pReset->arg2	= 0;
@@ -1277,6 +1278,8 @@ new_room_index( void )
     pRoom->sector_type      =   0;
     pRoom->heal_rate	    =   100;
     pRoom->mana_rate	    =   100;
+    pRoom->last_mob_reset   =   NULL;
+    pRoom->last_obj_reset   =   NULL;
 
     return pRoom;
 }
@@ -1784,6 +1787,7 @@ new_pcdata( void )
     pcdata->lname	  = &str_empty[0];
     pcdata->pwd		  = &str_empty[0];
     pcdata->title	  = &str_empty[0];
+    pcdata->target	  = &str_empty[0];
     pcdata->hair_color	  = &str_empty[0];
     pcdata->hair_adj    = &str_empty[0];
     pcdata->eye_color	  = &str_empty[0];
@@ -2291,4 +2295,38 @@ bool buf_printf( BUFFER *pBuf, const char *fmt, ... )
     va_end( args );
     fResult = add_buf( pBuf, buf );
     return fResult;
+}
+
+/* House system memory management */
+HOUSE_DATA *house_free;
+
+HOUSE_DATA *new_house(void)
+{
+    static HOUSE_DATA house_zero;
+    HOUSE_DATA *hOuse;
+
+    if (house_free == NULL)
+        hOuse = alloc_perm(sizeof(*hOuse));
+    else
+    {
+        hOuse = house_free;
+        house_free = house_free->next;
+    }
+
+    *hOuse = house_zero;
+    VALIDATE(hOuse);
+    return hOuse;
+}    
+
+void free_house(HOUSE_DATA *hOuse)
+{
+    if (!IS_VALID(hOuse))
+        return;
+
+    free_string( hOuse->oname );
+    free_string( hOuse->objname );
+    free_string( hOuse->mobname );
+    INVALIDATE(hOuse);
+    hOuse->next = house_free;
+    house_free = hOuse;
 }

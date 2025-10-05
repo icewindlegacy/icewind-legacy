@@ -15,9 +15,9 @@ BINARY	= legacy
 C_FILES = act_clan.c act_comm.c act_info.c act_misc.c act_move.c \
 	  act_obj.c act_skills.c act_wiz.c act_wiz2.c act_wiz3.c \
           alias.c ban.c boards.c combat.c combat_act.c comm.c const.c \
-	  db.c db2.c debug.c donation.c effects.c event.c  \
+	  control_animal.c db.c db2.c debug.c donation.c effects.c event.c  \
 	  fight.c fight2.c flags.c globals.c gsn.c \
-	  handler.c healer.c interp.c items.c item_table.c lookup.c \
+	  handler.c healer.c house.c interp.c items.c item_table.c lookup.c \
 	  magic.c magic2.c \
 	  mob_cmds.c multi.c multiclass.c music.c nanny.c \
 	  olc.c olc_area.c olc_board.c olc_clan.c olc_cmd.c olc_dream.c \

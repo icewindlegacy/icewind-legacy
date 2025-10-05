@@ -5192,3 +5192,206 @@ void do_oldshoot(CHAR_DATA *ch, char *argument)
             ch->crossbow_loaded = FALSE;
     }
 }
+
+/* Bowfire code -- actual firing function */
+void do_fire( CHAR_DATA *ch, char *argument )
+{
+    char arg[MAX_INPUT_LENGTH];
+    CHAR_DATA *victim = NULL;
+    OBJ_DATA *arrow;
+    OBJ_DATA *bow;
+    ROOM_INDEX_DATA *was_in_room;
+    EXIT_DATA *pexit;
+    int dam ,door ,chance;
+
+    bow = get_eq_char(ch, WEAR_WIELD);
+    if (bow == NULL)
+    {
+        send_to_char("`WWhat are you going to do, throw the arrow at them?`X\n\r", ch);
+        return;
+    }
+
+    if (bow->value[0] != WEAPON_BOW && bow->value[0] != WEAPON_CROSSBOW)
+    {
+        send_to_char("`WYou might want to use a bow or crossbow to fire that arrow with`X\n\r", ch);
+        return;
+    }    
+
+    one_argument( argument, arg );
+    if ( arg[0] == '\0' && ch->fighting == NULL )
+    {
+        send_to_char( "`WFire an arrow at who?`X\n\r", ch );
+        return;
+    }
+    
+
+    if (!str_cmp(arg, "none") || !str_cmp(arg, "self") || victim == ch)
+    {
+        send_to_char("`WHow exactly did you plan on firing an arrow at yourself?`X\n\r", ch );
+        return;
+    }
+
+    if ( ( arrow = get_eq_char( ch, WEAR_HOLD ) ) == NULL )
+    {
+        send_to_char( "`WYou hold nothing in your hand.`X\n\r", ch );
+        return;
+    }
+
+    if ( arrow->item_type != ITEM_ARROW )
+    {
+        send_to_char( "`WYou can only a fire arrows or quarrels.`X\n\r", ch );
+        return;
+    }
+
+    
+    if ( arg[0] == '\0' )
+    {
+        if ( ch->fighting != NULL )
+        {
+            victim = ch->fighting;
+        }
+        else
+        {
+            send_to_char( "`WFire at whom or what?`X\n\r", ch );
+            return;
+        }
+    }
+    else
+    {
+        
+    /* See if who you are trying to shoot at is nearby... */
+
+        if ( ( victim = get_char_room ( ch, arg ) ) == NULL)
+        {
+            was_in_room=ch->in_room;
+            pexit = NULL;  /* Initialize pexit */
+            
+
+            for( door=0 ; door<=9 && victim==NULL ; door++ )
+             { 
+                if ( (  pexit = was_in_room->exit[door] ) != NULL
+                   &&   pexit->u1.to_room != NULL
+                   &&   pexit->u1.to_room != was_in_room )
+                   { 
+                     ch->in_room = pexit->u1.to_room;
+                     victim = get_char_room ( ch, arg ); 
+                     if (victim != NULL) {
+                         /* Found victim, keep pexit for door check */
+                         break;
+                     } else {
+                         ch->in_room = was_in_room;  /* Restore room if no victim found */
+                         pexit = NULL;  /* Reset pexit since we didn't find victim */
+                     }
+                    }
+               
+              }
+
+            ch->in_room=was_in_room;
+            if(victim==NULL)
+              {
+               /* Fallback: Try get_char_area to search the entire area */
+               victim = get_char_area(ch, arg);
+               if (victim == NULL) {
+                   send_to_char( "`WYou can't find it.`X\n\r", ch );
+                   return;
+               }
+              }
+            else
+              {  if(pexit != NULL && IS_SET(pexit->exit_info,EX_CLOSED))
+                    { send_to_char("`WYou can't fire through a door.`X",ch);
+                      return;
+                     } 
+             }
+        }
+    }
+
+    if((ch->in_room) == (victim->in_room))
+    {
+        send_to_char("`WDon't you think that standing a bit further away would be wise?`X\n\r", ch);
+        return;
+    }
+
+    /* Lag the bowman... */
+    WAIT_STATE( ch, 2 * PULSE_VIOLENCE ); 
+
+    /* Fire the damn thing finally! */
+
+    if(arrow->item_type== ITEM_ARROW )
+       {
+            
+          /* Valid target? */
+            
+            if ( victim != NULL )
+            {
+                act( "`W$n `Wfires $p `Wat $N`W.`X", ch,  arrow, victim, TO_NOTVICT );
+                act( "`WYou fire $p `Wat $N`W.`X", ch,   arrow, victim, TO_CHAR );
+                act( "`W$n `Wfires $p `Wat you.`X",ch,   arrow, victim, TO_VICT );
+            }
+
+          /* Did it hit? */
+          
+            if (ch->level <   arrow->level
+            ||  number_percent() >= 20 + get_skill(ch,gsn_bow) * 4/5 )
+            {       
+                 /* denied... */
+                         
+                  act( "`WYou fire $p `Wmissing, and it lands harmlessly on the ground.`X",
+                     ch,  arrow,NULL,TO_CHAR);
+                  act( "`W$n fires $p `Wmissing, and it lands harmlessly on the ground.`X",
+                     ch,  arrow,NULL,TO_ROOM);
+                  obj_from_char(arrow);
+                  obj_to_room(arrow, victim->in_room);
+              check_improve(ch,gsn_bow,FALSE,2);
+            }
+            else
+            {      
+                   /* Shawing battah!  Now, where did it thud into? */
+
+            chance=dice(1,10);
+        switch (chance)
+        {
+        case 1 :
+        case 2 :
+        case 3 :
+        case 4 :
+        case 5 :
+        case 6 :
+                obj_from_char(arrow);
+                obj_to_char(arrow, victim);
+                if (get_eq_char(victim, WEAR_LODGE_LEG) == NULL)
+                    equip_char(victim, arrow, WEAR_LODGE_LEG);
+                arrow->extra_flags = arrow->extra_flags + 134217728;
+                dam      =  dice(arrow->value[1],arrow->value[2]);
+                damage( ch, victim, dam, TYPE_HIT + 11, DAM_PIERCE, TRUE );						
+                check_improve(ch,gsn_bow,TRUE,2);
+                break;
+        case 7 :
+        case 8 :
+        case 9 :
+                obj_from_char(arrow);
+                obj_to_char(arrow, victim);
+                if (get_eq_char(victim, WEAR_LODGE_ARM) == NULL)
+                    equip_char(victim, arrow, WEAR_LODGE_ARM);
+                arrow->extra_flags = arrow->extra_flags + 134217728;
+                dam      = 3*( dice(arrow->value[1],arrow->value[2]))/2;
+                damage( ch, victim, dam, TYPE_HIT + 11, DAM_PIERCE, TRUE );						
+                check_improve(ch,gsn_bow,TRUE,2);
+                break;
+        case 10 :
+                obj_from_char(arrow);
+                obj_to_char(arrow, victim);
+                if (get_eq_char(victim, WEAR_LODGE_RIB) == NULL)
+                    equip_char(victim, arrow, WEAR_LODGE_RIB);
+                arrow->extra_flags = arrow->extra_flags + 134217728;
+                dam      = 2*( dice(arrow->value[1],arrow->value[2]));
+                damage( ch, victim, dam, TYPE_HIT + 11, DAM_PIERCE, TRUE );						
+                check_improve(ch,gsn_bow,TRUE,2);
+                break;
+        }		
+       }
+
+
+     } 
+
+    return;
+}

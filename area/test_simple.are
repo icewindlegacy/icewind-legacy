@@ -1,0 +1,44 @@
+#AREADATA
+Version     9
+Name        Test Area~
+Credits     Test~
+Builders    None~
+Kingdom     'Outlying'
+Continent   None
+World       'All'
+VNUMs       1100 1199
+Levels      85 95
+Security    9
+Recall      900
+Flags       0
+Color       7
+ExitSize    medium
+Created     1605817509
+Changed     1605839580 Thu Nov 19 21:33:00 2020
+Resetmsg    Time shudders and rewinds, leaving everything as it once was~
+End
+
+#MOBILES
+#0
+
+#OBJECTS
+#0
+
+#ROOMS
+#1100
+Test Room~
+This is a test room.
+~
+~
+~
+~
+~
+~
+0 0 0 1
+S
+#0
+
+#RESETS
+S
+
+#$

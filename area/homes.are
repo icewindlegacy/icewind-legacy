@@ -1,0 +1,1114 @@
+#AREADATA
+Version     9
+Name        homes~
+Credits     ~
+Builders    None~
+Kingdom     'Outlying'
+Continent   Faerun
+World       'All'
+VNUMs       1200 1400
+Levels      0 0
+Security    0
+Recall      900
+Flags       B
+Color       7
+ExitSize    medium
+Created     1759548241
+Changed     1759567317 Sat Oct  4 04:41:57 2025
+End
+
+#HELPS
+
+0 Seraphim PHOMES~
+Player Homes System
+
+The player homes system allows you to purchase and customize your own house.
+Visit Fizzledip the Architect to get started.
+
+Commands:
+  house         - Buy or sell a house, or check its value
+  home          - Return to your house
+  objbuy        - Buy furniture and objects for your house
+  mobbuy        - Buy NPCs for your house
+  hname         - Rename your house
+  hdesc         - Redescribe your house (costs 500 gold)
+  invite        - Invite someone to your house
+  house_join    - Join someone's house (if invited)
+  boot          - Remove someone from your house
+
+House Layout:
+Your house consists of 5 connected rooms:
+  - Central room (main entrance)
+  - West room
+  - North room  
+  - East room
+  - Up room (second floor)
+
+Costs:
+  - House purchase: 100,000 gold
+  - House description: 500 gold
+  - Furniture varies by item
+
+Limits:
+  - Maximum 10 objects per house
+  - Maximum 10 NPCs per house
+~
+0 Seraphim PHOUSE~
+House Command
+
+Syntax: phouse [buy|sell|value]
+
+This command allows you to purchase, sell, or check the value of your house.
+
+Examples:
+  phouse        - Shows house status
+  phouse buy    - Purchase a new house (100,000 gold)
+  house sell   - Sell your current house
+  house value  - Check your house's value
+
+You must be in the presence of Fizzledip the Architect to use this command.
+~
+0 Seraphim HOME~
+Home Command
+
+Syntax: home
+
+This command instantly transports you to your house. You must own a house
+to use this command.
+
+The home command works from anywhere in the world and will take you
+directly to the central room of your house.
+~
+0 Seraphim OBJBUY~
+Object Purchase Command
+
+Syntax: objbuy [list|buy <item>]
+
+This command allows you to purchase furniture and objects for your house.
+
+Examples:
+  objbuy list        - Show available objects for purchase
+  objbuy buy couch   - Purchase a couch for your house
+
+Available objects:
+  - Couch (200 gold)
+  - Chest (200 gold)
+
+You must be in your house to use this command. Purchased objects will
+be added to your house's resets and will persist through reboots.
+~
+0 Seraphim MOBBUY~
+Mobile Purchase Command
+
+Syntax: mobbuy [list|buy <mobile>]
+
+This command allows you to purchase NPCs for your house.
+
+Examples:
+  mobbuy list        - Show available NPCs for purchase
+  mobbuy buy healer  - Purchase a healer for your house
+
+Available NPCs:
+  - Healer (500 gold)
+
+You must be in your house to use this command. Purchased NPCs will
+be added to your house's resets and will persist through reboots.
+~
+0 Seraphim HNAME~
+House Name Command
+
+Syntax: hname <new name>
+
+This command allows you to rename your house. The new name will be
+displayed when other players visit your house.
+
+Example:
+  hname "The Dragon's Lair"
+
+You must be in your house to use this command.
+~
+0 Seraphim HDESC~
+House Description Command
+
+Syntax: hdesc
+
+This command allows you to redesign the description of your house.
+It costs 500 gold to use this command.
+
+The command will enter you into a text editor where you can modify
+the room description. Type the end character on a line by itself to finish editing.
+
+You must be in your house to use this command.
+~
+0 Seraphim INVITE~
+Invite Command
+
+Syntax: invite <player>
+
+This command allows you to invite another player to your house.
+The invited player can then use house_join to teleport to your house.
+
+Example:
+  invite Mask
+
+You must be in your house to use this command.
+~
+0 Seraphim HJOIN~
+House Join Command
+
+Syntax: hjoin
+
+This command allows you to join someone's house if you have been
+invited. It will teleport you directly to their house.
+
+You must have been invited by the house owner to use this command.
+~
+0 Seraphim BOOT~
+Boot Command
+
+Syntax: boot <player>
+
+This command removes another player from your house. Use this to
+kick out unwanted guests.
+
+Example:
+  boot Mask
+
+You must be the owner of the house to use this command.
+~
+
+0 0 $~
+
+#MOBILES
+#1200
+healer~
+Healer for Hire~
+A Healer for Hire is here.
+~
+~
+human~
+ABGa 0 0 0 0 0 0
+40 7 7d11+1750 1d1+249 6d7+0 none
+-6 -6 -6 -6
+0 0 0 0
+stand stand male 400
+0 0 medium 0 hard ''
+#1201
+architecht fizzledip~
+Fizzledip the Architect~
+Fizzledip the Achitect is here, waiting to design your dream home
+~
+~
+gnome~
+ABG Z 0 0 0 0 0
+40 6 7d11+1500 1d1+249 5d8+0 none
+-6 -6 -6 -6
+0 0 0 0
+stand stand male 400
+0 0 small 0 hard ''
+#0
+
+#OBJECTS
+#1200
+couch leather old~
+an old leather couch~
+An old brown leather couch with holes worn on the arm rests~
+~
+furniture 0 0 0
+4 0 BEHK 300 300 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1201
+a small chest~
+a small chest~
+A small wooden chest~
+~
+container 0 0 0
+200 AC 0 100000 100 10000
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1202
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1203
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1204
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1205
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1206
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1207
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1208
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1209
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1210
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1211
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1212
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1213
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1214
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1215
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1216
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1217
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1218
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1219
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1220
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1221
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1222
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1223
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1224
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1225
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1226
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1227
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1228
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1229
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1230
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1231
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1232
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1233
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1234
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1235
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1236
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1237
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1238
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1239
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1240
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1241
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1242
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1243
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1244
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1245
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1246
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1247
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1248
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1249
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1250
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1251
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1252
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1253
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1254
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1255
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1256
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1257
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1258
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1259
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1260
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1261
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1262
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1263
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1264
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1265
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1266
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1267
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1268
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1269
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1270
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1271
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1272
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1273
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1274
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1275
+no name~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#0
+
+#ROOMS
+#1200
+Entrance to a village~
+A small village with a few thatch roofed homes and some
+empty plots lies ahead. You may purchase one of
+these empty lots and construct your own home for
+the right price.
+ 
+(help PHOMES)
+~
+~
+~
+~
+~
+~
+0 Cac 0 0
+S
+#1201
+Mask's Home~
+~
+~
+~
+~
+~
+~
+0 Cac 0 0
+Dnorth medium
+~
+~
+~
+~
+0 0 1203
+Deast medium
+~
+~
+~
+~
+0 0 1204
+Dwest medium
+~
+~
+~
+~
+0 0 1202
+Dup medium
+~
+~
+~
+~
+0 0 1205
+S
+#1202
+~
+~
+~
+~
+~
+~
+~
+0 Cac 0 0
+Deast medium
+~
+~
+~
+~
+0 0 1201
+S
+#1203
+~
+~
+~
+~
+~
+~
+~
+0 Cac 0 0
+Dsouth medium
+~
+~
+~
+~
+0 0 1201
+S
+#1204
+The calming grotto~
+Stone stairs lead into a grotto carved from the earth
+with a pool of water in the middle.
+~
+~
+~
+~
+~
+~
+0 Cac 0 0
+Dwest medium
+~
+~
+~
+~
+0 0 1201
+S
+#1205
+a dusty attic~
+Up the small wooden ladder lies a dusty attic
+full of old wooden crates and casks strewn
+abut the room. A single small chest sits against
+one wall.
+~
+~
+~
+~
+~
+~
+0 Cac 0 0
+Ddown medium
+~
+~
+~
+~
+0 0 1201
+S
+#0
+
+#RESETS
+M 0 1201 1 1200 1
+O 0 1200 -1 1201
+O 0 1201 -1 1202
+M 0 1200 1 1203 0
+O 0 1201 -1 1203
+M 0 1200 -1 1204 1
+O 0 1201 -1 1205
+S
+
+#SHOPS
+0
+
+#SPECIALS
+M 1201 spec_architect
+S
+
+#$

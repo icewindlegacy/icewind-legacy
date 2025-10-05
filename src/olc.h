@@ -154,7 +154,7 @@ AREA_DATA *get_area_data	args( ( int vnum ) );
 AREA_DATA *get_area_edit	args( ( CHAR_DATA *ch ) );
 AREA_DATA *get_vnum_area	args ( ( int vnum ) );
 bool exec_command		args( ( CHAR_DATA *ch, char *argument ) );
-void instaroom			args( ( CHAR_DATA *ch, ROOM_INDEX_DATA *pRoom ) );
+void do_instaroom		args( ( CHAR_DATA *ch, char *argument ) );
 int read_desc_file		args ( ( CHAR_DATA *ch, char *buf,
 					 char *filename, char *fext,
 					 bool fOpen ) );
@@ -510,6 +510,7 @@ DECLARE_OLC_FUN( redit_south		);
 DECLARE_OLC_FUN( redit_up		);
 DECLARE_OLC_FUN( redit_vehicle		);
 DECLARE_OLC_FUN( redit_west		);
+DECLARE_OLC_FUN( redit_delete		);
 
 DECLARE_OLC_FUN( redit_rdamage          );
 DECLARE_OLC_FUN( redit_edesc		);

@@ -653,6 +653,15 @@ void do_pack ( CHAR_DATA *ch, char *argument )
 
     obj = create_object( get_obj_index(OBJ_VNUM_MAP), 0 );
     obj_to_obj( obj, pack);
+
+    obj = create_object( get_obj_index(OBJ_VNUM_SCHOOL_FLINT), 0 );
+    obj_to_obj( obj, pack);
+
+    for ( i = 0; i < 5; i ++ )                                                                                         
+    {                                                                                                                   
+         obj = create_object( get_obj_index(OBJ_VNUM_SCHOOL_FAGGOT), 0 );                                                       
+         obj_to_obj( obj, pack );                                                                                       
+    }   
                                                                                                                         
     for ( i = 0; i < 10; i ++ )                                                                                         
     {                                                                                                                   
@@ -4108,7 +4117,7 @@ do_mset( CHAR_DATA *ch, char *argument )
 	send_to_char( "Syntax:\n\r", ch );
 	send_to_char( "  mset <name> <field> <value>\n\r", ch ); 
 	send_to_char( "  Field being one of:\n\r",			ch );
-	send_to_char( "    str int wis dex con sex class level \n\r",	ch );
+	send_to_char( "    str int wis dex con sex class level multiclass \n\r",	ch );
 	send_to_char( "    race group hp kingdom mana move prac\n\r",ch );
 	ch_printf( ch, "    %s %s %s %s\n\r",
 	           GOLD_PLURAL, SILVER_PLURAL, COPPER_PLURAL, FRACT_PLURAL );
@@ -4267,6 +4276,18 @@ do_mset( CHAR_DATA *ch, char *argument )
 	}
 
 	victim->class = class;
+	
+	/* Update class_levels for multiclass display */
+	if ( !IS_NPC(victim) )
+	{
+	    int i;
+	    /* Clear existing class levels */
+	    for ( i = 0; i < MAX_CLASS; i++ )
+		victim->class_levels[i] = 0;
+	    /* Set the new class level */
+	    victim->class_levels[class] = victim->level;
+	}
+	
 	update_userlist( victim, FALSE );
 	send_to_char( "Ok.\n\r", ch );
 	return;
@@ -4288,6 +4309,121 @@ do_mset( CHAR_DATA *ch, char *argument )
 	}
 	victim->level = value;
 	send_to_char( "Ok.\n\r", ch );
+	return;
+    }
+
+    if ( !str_prefix( arg2, "multiclass" ) )
+    {
+	if ( IS_NPC(victim) )
+	{
+	    send_to_char( "Not on NPCs.\n\r", ch );
+	    return;
+	}
+
+	/* Parse multiclass string like "clr10/mag5" */
+	char *multiclass_str = arg3;
+	char *token;
+	char *saveptr;
+	int total_level = 0;
+	int class_levels[MAX_CLASS] = {0};
+	int class_count = 0;
+	int i;
+
+	/* Clear existing class levels */
+	for ( i = 0; i < MAX_CLASS; i++ )
+	    victim->class_levels[i] = 0;
+
+	/* Parse each class/level pair */
+	token = strtok_r(multiclass_str, "/", &saveptr);
+	while ( token != NULL )
+	{
+	    char class_name[20];
+	    int level;
+	    
+	    /* Check maximum of 3 classes */
+	    if ( class_count >= 3 )
+	    {
+		ch_printf( ch, "Maximum of 3 classes allowed. Found more than 3 classes.\n\r" );
+		return;
+	    }
+	    
+	    /* Parse class name and level - support both formats: "clr10" and "10clr" */
+	    if ( sscanf(token, "%19[^0-9]%d", class_name, &level) == 2 )
+	    {
+		/* Format: classname# (e.g., "clr10") */
+	    }
+	    else if ( sscanf(token, "%d%19[^0-9]", &level, class_name) == 2 )
+	    {
+		/* Format: #classname (e.g., "10clr") */
+	    }
+	    else
+	    {
+		ch_printf( ch, "Invalid format: %s (expected format: classname# or #classname)\n\r", token );
+		return;
+	    }
+	    
+	    /* Validate class and level */
+	    int class_num = class_lookup(class_name);
+	    if ( class_num == -1 )
+	    {
+		ch_printf( ch, "Unknown class: %s\n\r", class_name );
+		return;
+	    }
+	    if ( level < 1 || level > MAX_LEVEL )
+	    {
+		ch_printf( ch, "Invalid level %d for class %s (range: 1-%d)\n\r", 
+		           level, class_name, MAX_LEVEL );
+		return;
+	    }
+	    
+	    class_levels[class_num] = level;
+	    total_level += level;
+	    class_count++;
+	    
+	    token = strtok_r(NULL, "/", &saveptr);
+	}
+
+	/* Validate total level doesn't exceed character's current level */
+	if ( total_level > victim->level )
+	{
+	    ch_printf( ch, "Total levels (%d) exceed character's current level (%d)\n\r", 
+	               total_level, victim->level );
+	    return;
+	}
+
+	/* Validate total level doesn't exceed MAX_LEVEL */
+	if ( total_level > MAX_LEVEL )
+	{
+	    ch_printf( ch, "Total levels (%d) exceed maximum (%d)\n\r", total_level, MAX_LEVEL );
+	    return;
+	}
+
+	/* Apply the class levels */
+	for ( i = 0; i < MAX_CLASS; i++ )
+	{
+	    if ( class_levels[i] > 0 )
+	    {
+		victim->class_levels[i] = class_levels[i];
+	    }
+	}
+
+	/* Update victim's level and primary class */
+	victim->level = total_level;
+	
+	/* Set primary class to the highest level class */
+	int primary_class = 0;
+	int max_level = 0;
+	for ( i = 0; i < MAX_CLASS; i++ )
+	{
+	    if ( victim->class_levels[i] > max_level )
+	    {
+		max_level = victim->class_levels[i];
+		primary_class = i;
+	    }
+	}
+	victim->class = primary_class;
+
+	ch_printf( ch, "Multiclass set: %s (total level %d)\n\r", arg3, total_level );
 	return;
     }
 

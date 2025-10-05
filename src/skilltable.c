@@ -1396,7 +1396,7 @@ struct	skill_type	skill_table	[]	=
     {
 	"bow",			{-1,-1,-1,-1,-1,-1,-1,-1,-1},	{0,0,0,0,0,0,0,0,0},	{ },
 	spell_null,		TAR_IGNORE,		POS_FIGHTING,
-	&gsn_bow,		SPELL_NONE,	0,	0,	0,
+	&gsn_bow,		SPELL_NONE,	0,	0,	20,
 	"",			"!Bow!",	""
     },
 
@@ -1574,6 +1574,20 @@ struct	skill_type	skill_table	[]	=
 	spell_null,		TAR_IGNORE,		POS_FIGHTING,
 	&gsn_whip,		SPELL_NONE,	0,	0,	0,
 	"",			"!Whip!",	""
+    },
+
+    {
+	"weapon focus",		{-1,-1,-1,-1,-1,-1,-1,-1,-1},	{0,0,0,0,0,0,0,0,0},	{ },
+	spell_null,		TAR_IGNORE,		POS_FIGHTING,
+	&gsn_weapon_focus,	SPELL_NONE,	0,	0,	0,
+	"",			"!Weapon Focus!",	""
+    },
+
+    {
+	"weapon finesse",	{-1,-1,-1,-1,-1,-1,-1,-1,-1},	{0,0,0,0,0,0,0,0,0},	{ },
+	spell_null,		TAR_IGNORE,		POS_FIGHTING,
+	&gsn_weapon_finesse,	SPELL_NONE,	0,	0,	0,
+	"",			"!Weapon Finesse!",	""
     },
 
     {
@@ -1947,6 +1961,61 @@ struct	skill_type	skill_table	[]	=
 	spell_null,		TAR_IGNORE,		POS_STANDING,
 	&gsn_recall,		SPELL_NONE,	0,	12,	0,
 	"",			"!Recall!",		""
+    },
+
+    {
+	"forage",		{-1,-1,-1,-1,-1,-1,-1,-1,-1},	{0,0,0,0,0,0,0,0,0},	{ },
+	spell_null,		TAR_IGNORE,		POS_STANDING,
+	&gsn_forage,		SPELL_NONE,	0,	24,	12,
+	"",			"!Forage!",		""
+    },
+    {
+	"fishing",		{-1,-1,-1,-1,-1,-1,-1,-1,-1},	{0,0,0,0,0,0,0,0,0},	{ },
+	spell_null,		TAR_IGNORE,		POS_STANDING,
+	&gsn_fishing,		SPELL_NONE,	0,	24,	15,
+	"",			"!Fishing!",		""
+    },
+    {
+	"cooking",		{-1,-1,-1,-1,-1,-1,-1,-1,-1},	{0,0,0,0,0,0,0,0,0},	{ },
+	spell_null,		TAR_IGNORE,		POS_STANDING,
+	&gsn_cooking,		SPELL_NONE,	0,	24,	20,
+	"",			"!Cooking!",		""
+    },
+    {
+	"control animal",	{-1,-1,-1,-1,-1,-1,-1,-1,-1},	{0,0,0,0,0,0,0,0,0},	{ },
+	spell_control_animal,	TAR_CHAR_DEFENSIVE,		POS_STANDING,
+	&gsn_control_animal,	SPELL_NONE,	15,	0,	0,
+	"",			"!Control Animal!",	""
+    },
+    {
+	"flare",		{2,2,2,2,2,2,2,2,2},	{0,0,0,0,0,0,0,0,0},	{ },
+	spell_flare,		TAR_CHAR_OFFENSIVE,	POS_FIGHTING,
+	&gsn_flare,		SPELL_NONE,	10,	0,	0,
+	"",			"!Flare!",		""
+    },
+    {
+	"guidance",		{1,1,1,1,1,1,1,1,1},	{0,0,0,0,0,0,0,0,0},	{ },
+	spell_guidance,		TAR_CHAR_SELF,		POS_FIGHTING,
+	&gsn_guidance,		SPELL_NONE,	8,	0,	0,
+	"",			"!Guidance!",		""
+    },
+    {
+	"resistance",		{1,1,1,1,1,1,1,1,1},	{0,0,0,0,0,0,0,0,0},	{ },
+	spell_resistance,	TAR_CHAR_SELF,		POS_FIGHTING,
+	&gsn_resistance,	SPELL_NONE,	10,	0,	0,
+	"",			"!Resistance!",		""
+    },
+    {
+	"virtue",		{1,1,1,1,1,1,1,1,1},	{0,0,0,0,0,0,0,0,0},	{ },
+	spell_virtue,		TAR_CHAR_SELF,		POS_FIGHTING,
+	&gsn_virtue,		SPELL_NONE,	12,	0,	0,
+	"",			"!Virtue!",		""
+    },
+    {
+	"entangle",		{3,3,3,3,3,3,3,3,3},	{0,0,0,0,0,0,0,0,0},	{ },
+	spell_entangle,		TAR_CHAR_OFFENSIVE,	POS_FIGHTING,
+	&gsn_entangle,		SPELL_NONE,	15,	0,	0,
+	"",			"!Entangle!",		""
     },
 
 

@@ -519,7 +519,7 @@ makedrunk( CHAR_DATA *ch, char *string )
     int		randomnum;
     char	temp;
 
-    drunklevel = IS_NPC( ch ) ? 0 : ch->pcdata->condition[COND_DRUNK];
+    drunklevel = IS_NPC( ch ) ? 0 : (ch->pcdata ? ch->pcdata->condition[COND_DRUNK] : 0);
     if ( drunklevel <= 0 )
         return string;
 

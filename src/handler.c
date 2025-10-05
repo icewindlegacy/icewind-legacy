@@ -1905,6 +1905,7 @@ char_from_room( CHAR_DATA *ch )
     ch->in_room      = NULL;
     ch->next_in_room = NULL;
     ch->on 	     = NULL;  /* sanity check! */
+    ch->furniture_in = NULL;
     return;
 }
 
@@ -2005,6 +2006,12 @@ char_to_room( CHAR_DATA *ch, ROOM_INDEX_DATA *pRoomIndex )
             	affect_join(vch,&plague);
             }
         }
+    }
+
+    /* Check for hunted animal spawning */
+    if ( !IS_NPC(ch) && ch->pcdata != NULL )
+    {
+        spawn_hunted_animal( ch );
     }
 
     return;
@@ -5527,10 +5534,31 @@ int god_lookup (const char *name)
 
     for (god = 0; god < MAX_GOD; god++)
     {
+        if (god_table[god].name == NULL)
+            break;
+            
+        /* Debug output for first few gods */
+        if (god < 5)
+        {
+            char debug_buf[200];
+            sprintf(debug_buf, "[DEBUG_GOD_LOOKUP] Checking god %d: '%s' against '%s'\n\r", 
+                    god, god_table[god].name, name);
+            log_string(debug_buf);
+        }
+        
         if (LOWER (name[0]) == LOWER (god_table[god].name[0])
             && !str_prefix (name, god_table[god].name))
+        {
+            char debug_buf[200];
+            sprintf(debug_buf, "[DEBUG_GOD_LOOKUP] Found match: '%s' at index %d\n\r", 
+                    god_table[god].name, god);
+            log_string(debug_buf);
             return god;
+        }
     }
 
+    char debug_buf[200];
+    sprintf(debug_buf, "[DEBUG_GOD_LOOKUP] No match found for '%s'\n\r", name);
+    log_string(debug_buf);
     return -1;
 }

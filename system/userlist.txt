@@ -38,12 +38,12 @@ End
 Name Alcinious
 Host 'localhost'
 Id 1759308517
-Last 1759313367
-LogC 2
-Lvl 5
+Last 1759640285
+LogC 1
+Lvl 1
 Race 'Human'
 Class 'Mag'
-Plyd 4875
+Plyd 57
 End
 
 #USER
@@ -239,6 +239,42 @@ Plyd 1348
 End
 
 #USER
+Name Godd
+Host 'localhost'
+Id 1759641601
+Last 1759642294
+LogC 1
+Lvl 1
+Race 'Drow'
+Class 'Mag'
+Plyd 82
+End
+
+#USER
+Name Goddy
+Host 'localhost'
+Id 1759636969
+Last 1759641392
+LogC 1
+Lvl 1
+Race 'Drow'
+Class 'Mag'
+Plyd 84
+End
+
+#USER
+Name Goddygod
+Host 'localhost'
+Id 1759634219
+Last 1759634219
+LogC 1
+Lvl 1
+Race 'HlfLf'
+Class 'Rng'
+Plyd 74
+End
+
+#USER
 Name Gorin
 Host 'localhost'
 Id 1756856941
@@ -314,24 +350,24 @@ End
 Name Malafay
 Host 'localhost'
 Id 1758845068
-Last 1759307139
+Last 1759640034
 LogC 1
-Lvl 3
+Lvl 1
 Race 'Drow'
 Class 'Clr'
-Plyd 1358
+Plyd 236
 End
 
 #USER
 Name Mask
 Host 'localhost'
 Id 1634293764
-Last 1759344912
-LogC 99
+Last 1759647485
+LogC 131
 Lvl 30
 Race 'Dgnbn'
-Class 'Clr'
-Plyd 6323264
+Class 'Drd'
+Plyd 6447602
 End
 
 #USER
@@ -395,6 +431,18 @@ Plyd 984
 End
 
 #USER
+Name Om
+Host 'localhost'
+Id 1759545226
+Last 1759545226
+LogC 1
+Lvl 30
+Race 'Elf'
+Class 'Mag'
+Plyd 164
+End
+
+#USER
 Name Practest
 Host 'aesir.fios-router.home'
 Id 1637373142
@@ -428,6 +476,42 @@ Lvl 1
 Race 'Elf'
 Class 'Mag'
 Plyd 2776
+End
+
+#USER
+Name Shaya
+Host 'localhost'
+Id 1759639717
+Last 1759639717
+LogC 1
+Lvl 1
+Race 'Drow'
+Class 'Rog'
+Plyd 203
+End
+
+#USER
+Name Shayala
+Host 'localhost'
+Id 1759637091
+Last 1759637091
+LogC 1
+Lvl 1
+Race 'Drow'
+Class 'Clr'
+Plyd 63
+End
+
+#USER
+Name Sinaj
+Host 'localhost'
+Id 1759642564
+Last 1759642564
+LogC 1
+Lvl 1
+Race 'Drow'
+Class 'Mag'
+Plyd 92
 End
 
 #USER

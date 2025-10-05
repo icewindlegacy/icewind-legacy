@@ -459,6 +459,7 @@ void get_multiclass_display( CHAR_DATA *ch, char *buf )
 {
     int i;
     bool first = TRUE;
+    bool has_class_levels = FALSE;
     
     if ( IS_NPC( ch ) )
     {
@@ -468,6 +469,24 @@ void get_multiclass_display( CHAR_DATA *ch, char *buf )
     
     buf[0] = '\0';
     
+    /* Check if character has any class levels set */
+    for ( i = 0; i < MAX_CLASS; i++ )
+    {
+        if ( ch->class_levels[i] > 0 )
+        {
+            has_class_levels = TRUE;
+            break;
+        }
+    }
+    
+    /* If no class levels are set, fall back to ch->class */
+    if ( !has_class_levels )
+    {
+        sprintf( buf, "%s %d", class_table[ch->class].who_name, ch->level );
+        return;
+    }
+    
+    /* Display multiclass information */
     for ( i = 0; i < MAX_CLASS; i++ )
     {
         if ( ch->class_levels[i] > 0 )

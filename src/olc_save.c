@@ -455,7 +455,8 @@ save_area( AREA_DATA *pArea )
 	return FALSE;
 
     sprintf( filename, "%s%s", TEMP_DIR, pArea->file_name );
-    fclose( fpReserve );
+    if ( fpReserve != NULL )
+        fclose( fpReserve );
     if ( ( fp = fopen( filename, "w" ) ) == NULL )
     {
 	perror( filename );
@@ -591,7 +592,8 @@ save_boards_file( void )
     if ( !changed_boards )
 	return;
 
-    fclose( fpReserve );
+    if ( fpReserve != NULL )
+        fclose( fpReserve );
     if ( ( fp = fopen( TEMP_DIR BOARDS_FILE, "w" ) ) == NULL )
     {
 	perror( "Save_boards_file: " TEMP_DIR BOARDS_FILE );
@@ -628,7 +630,8 @@ save_cmd_files( void )
 
     if ( changed_command )
     {
-	fclose( fpReserve );
+	if ( fpReserve != NULL )
+	    fclose( fpReserve );
 	if ( ( fp = fopen( TEMP_DIR COMMAND_FILE, "w" ) ) == NULL )
 	{
 	    perror( "Save_cmd_files: " TEMP_DIR COMMAND_FILE );
@@ -665,7 +668,8 @@ save_cmd_files( void )
 
     if ( changed_secgroup )
     {
-	fclose( fpReserve );
+	if ( fpReserve != NULL )
+	    fclose( fpReserve );
 	if ( ( fp = fopen( TEMP_DIR SECGROUP_FILE, "w" ) ) == NULL )
 	{
 	    perror( "Do_cmdedit: " TEMP_DIR COMMAND_FILE );
@@ -1257,7 +1261,8 @@ save_projects( void )
     if ( !changed_project )
 	return;
 
-    fclose( fpReserve );
+    if ( fpReserve != NULL )
+        fclose( fpReserve );
     if ( ( fp = fopen( TEMP_DIR PROJECT_FILE, "w" ) ) == NULL )
     {
 	perror( "Save_projects: " TEMP_DIR PROJECT_FILE );
@@ -1309,7 +1314,8 @@ save_race_file( void )
     if ( !changed_race )
 	return;
 
-    fclose( fpReserve );
+    if ( fpReserve != NULL )
+        fclose( fpReserve );
     if ( ( fp = fopen( TEMP_DIR RACE_FILE, "w" ) ) == NULL )
     {
 	perror( "Save_race_file: " TEMP_DIR RACE_FILE );
@@ -1598,7 +1604,8 @@ save_skill_files( void )
 
     if ( changed_skill )
     {
-	fclose( fpReserve );
+	if ( fpReserve != NULL )
+	    fclose( fpReserve );
 	if ( ( fp = fopen( TEMP_DIR SKILL_FILE, "w" ) ) == NULL )
 	{
 	    fpReserve = fopen( NULL_FILE, "r" );
@@ -1658,7 +1665,8 @@ save_skill_files( void )
 
     if ( changed_group )
     {
-	fclose( fpReserve );
+	if ( fpReserve != NULL )
+	    fclose( fpReserve );
 	if ( ( fp = fopen( TEMP_DIR GSKILL_FILE, "w" ) ) == NULL )
 	{
 	    fpReserve = fopen( NULL_FILE, "r" );
@@ -1757,7 +1765,8 @@ save_socials( void )
     if ( !changed_social )
 	return;
 
-    fclose( fpReserve );
+    if ( fpReserve != NULL )
+        fclose( fpReserve );
     if ( ( fp = fopen( TEMP_DIR SOCIAL_FILE, "w" ) ) == NULL )
     {
 	bug( "Sedit: fopen", 0 );
@@ -1810,7 +1819,8 @@ save_sysconfig( void )
     if ( !changed_system )
 	return;
 
-    fclose( fpReserve );
+    if ( fpReserve != NULL )
+        fclose( fpReserve );
     if ( ( fp = fopen( TEMP_DIR CONFIG_FILE, "w" ) ) == NULL )
     {
 	fpReserve = fopen( NULL_FILE, "r" );
@@ -1886,7 +1896,8 @@ save_vehicles( void )
     ROOM_INDEX_DATA *	pRoom;
     int			iHash;
 
-    fclose( fpReserve );
+    if ( fpReserve != NULL )
+        fclose( fpReserve );
     if ( ( fp = fopen( TEMP_DIR VEHICLE_FILE, "w" ) ) == NULL )
     {
 	perror( "Save_vehicles: " TEMP_DIR VEHICLE_FILE );

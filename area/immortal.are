@@ -14,7 +14,7 @@ Flags       DH
 Color       7
 ExitSize    medium
 Created     1634028838
-Changed     1759313257 Wed Oct  1 06:07:37 2025
+Changed     1759546562 Fri Oct  3 22:56:02 2025
 End
 
 #MOBILES
@@ -183,6 +183,46 @@ manual 0 0 A
 0 0 0 0 P
 0 0 0 0
 0 0 0 0 0
+#410
+weak fishing rod~
+a weak fishing rod~
+A stick with a bit of string and a bone hook~
+~
+fishing_rod 0 0 AO
+5 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#411
+flint~
+flint~
+A piece of flint chert for starting fires~
+~
+flint 0 0 A
+1 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#412
+firesteel~
+a fire steel~
+A fire steel for striking a fire~
+~
+firesteel 0 0 A
+1 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#413
+firewood fire wood~
+some fire wood~
+A bundle of fire wood~
+~
+firewood 0 0 A
+5 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
 #492
 test vorpal dagger~
 vorpal dagger~
@@ -299,6 +339,70 @@ Dwest medium
 ~
 0 0 401
 S
+#403
+fishing test~
+~
+~
+~
+~
+~
+~
+0 CK 0 13
+S
+#404
+~
+~
+~
+~
+~
+~
+~
+0 CK 0 3
+Deast medium
+~
+~
+~
+~
+0 0 405
+Dwest medium
+~
+~
+~
+~
+0 0 406
+S
+#405
+~
+~
+~
+~
+~
+~
+~
+0 CK 0 3
+Dwest medium
+~
+~
+~
+~
+0 0 404
+S
+#406
+~
+~
+~
+~
+~
+~
+~
+0 CK 0 3
+Deast medium
+~
+~
+~
+~
+0 0 404
+S
 #498
 ~
 ~
@@ -344,6 +448,8 @@ S
 #0
 
 #RESETS
+M 0 497 1 404 3
+E 1 492 1 16
 M 0 498 1 498 1
 E 1 405 -1 16
 E 1 406 -1 8

@@ -14,7 +14,7 @@ Flags       F
 Color       7
 ExitSize    medium
 Created     1635696280
-Changed     1759314702 Wed Oct  1 06:31:42 2025
+Changed     1759642926 Sun Oct  5 01:42:06 2025
 End
 
 #MOBILES
@@ -362,6 +362,26 @@ water~
 drink I 0 A
 50 50 'water' 0 0 0
 0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#616
+simple flint and steel~
+simple flint and steel~
+A simple flat piece of steel and a jagged piece of flint~
+~
+firesteel 0 0 A
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#617
+bundle of firewood~
+a bundle of firewood~
+A bundle of branches, twigs, and small logs~
+wood~
+firewood 0 0 A
+0 0 0 0 0 0
+0 640 0 0 P
 0 0 0 0
 0 0 0 0 0
 #0

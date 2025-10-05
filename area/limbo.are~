@@ -13,7 +13,7 @@ Recall      900
 Flags       0
 Color       7
 ExitSize    medium
-Changed     1719856637 Mon Jul  1 13:57:17 2024
+Changed     1759643976 Sun Oct  5 01:59:36 2025
 Resetmsg    A Simon and Garfunkel song comes to mind, then fades.~
 End
 
@@ -78,169 +78,58 @@ of the item from your quest points.
 `c-------------------------------------------------------------------------------
  
 ~
-0 Seraphim STORY 'STORY OF MARS' 'STORY HELP'~
+0 Seraphim GODS DEITIES 'GOD LIST'~
 `c-------------------------------------------------------------------------------
-`C    The Story of MARS
-`c-------------------------------------------------------------------------------
-`X
+`C    The Gods of Faerun
+`c-------------------------------------------------------------------------------`X
+These are the Gods of Faerun, sorted by alignment
 
-Once, in a world far beyond the reach of our reality, there existed a magical 
-realm where elves, humans, dwarves, and halflings lived in harmony under the 
-watchful eyes of the ancient forests and towering mountains. This was a land of 
-wonders and enchantment, filled with magic and myth.
+`WOvergod
+`c----------------------------------------`X
+Lord Ao - the god above all gods
 
-In the heart of this wondrous realm lay the massive obsidian isle, known as the 
-`zShadow Isle`X. It had always been a place of darkness, surrounded by legends of 
-ancient evils and forbidden necromancy. For centuries, the inhabitants of the 
-main continent had kept their distance from this cursed isle, knowing its 
-sinister power could corrupt anything it touched.
+`YG`Woo`Yd`X                                      `WN`weu`zt`wra`Wl`X
+`c----------------------------------------  ----------------------------------------`X
+Chauntea - goddess of agriculture         Akadi - goddess of air
+Deneir - god of writing                   Azuth - god of wizards
+Eldath - goddess of peace                 Gond - god of craft
+Ilmater - god of endurance                Helm - god of protection
+Lathander - god of birth and renewal      Kelemvor - god of the dead
+Lliira - goddess of joy                   Leira - goddess of illusion
+Mielikki - goddess of forests             Mask - god of thieves
+Milil - god of poetry and song            Oghma - god of knowledge
+Mystra, goddess of magic                  Silvanus - god of wild nature
+Selune - goddess of the moon              Tempus - god of war	
+Sune - goddess of love and beauty         Ubtao - the father of dinosaurs
+Torm - god of courage and self-sacrifice  Waukeen - goddess of trade
+Tymora - goddess of good fortune  
+Tyr - god of justice
 
-However, a sinister force had awakened within the `zShadow Isle`X, a powerful 
-necromancer named `RMorwen`X who sought to spread his malevolent dominion far and 
-wide. Using dark magic fueled by the souls of the departed, he began to extend 
-the reach of the `zShadow Isle`X, causing corruption to slowly spread across the 
-ocean like a creeping shadow. The once sparkling blue waters turned murky and 
-lifeless, and fear gripped the hearts of those living along the coastlines.
-
-In a small elven village, nestled among the ancient trees of the forest, a 
-young elf named `GLyra`X sensed the growing darkness. She was gifted with an 
-uncommon talent to see the threads of destiny and felt a calling within her 
-soul. Disturbed by the visions of the spreading corruption, she knew that she 
-had to act.
-
-`GLyra`X embarked on a journey to seek out the Council of Elders, a gathering of 
-wise beings from all races who safeguarded the harmony of their world. With a 
-heavy heart, she shared her visions and spoke of the impending doom that 
-awaited if Morwen's power was not stopped.
-
-The Council listened intently and recognized the gravity of the situation. They 
-decided that a fellowship of heroes must be formed to stand against the rising 
-darkness. `GLyra`X, with her insight, was chosen to lead the fellowship, and the 
-council selected four others to join her quest:
-
-`YTormund`X, a fearless dwarf warrior known for his strength and loyalty.
-
-`PLillian`X, a skilled human mage who had the power to harness the ancient elements.
-
-`OThistlefoot`X, a clever halfling rogue, nimble and quick-witted, with a knack for 
-finding hidden paths.
-
-`WA`Yn`wd`Yr`Wo`Ys`X, a wise elder elf skilled in ancient lore and healing magic.
-
-The five companions set out from the elven village and journeyed through vast 
-forests, treacherous mountains, and mysterious caves. Along their path, they 
-encountered both friends and foes, learning to rely on each other's strengths 
-and protect each other from the lurking dangers.
-
-As they approached the `zShadow Isle`X, they faced the true horrors of `RMorwen's`X 
-necromancy. Undead creatures lurked in the shadows, and the corruption was 
-spreading like a blight, choking the life from the once-vibrant land.
-
-`GLyra`X and her companions faced countless trials and hardships, but their 
-determination never wavered. The fellowship's bond grew stronger as they shared 
-laughter, sorrow, and victories. Each of them knew that their united purpose 
-was more significant than any individual glory.
-
-As they approached the heart of the `zShadow Isle`X, `RMorwen`X sensed their presence 
-and unleashed his darkest forces upon them. The final battle was fierce and 
-relentless. The necromancer wielded the power of the souls he had captured, 
-seeking to drown the world in everlasting darkness.
-
-But the fellowship had a weapon far stronger than `RMorwen's`X dark magic—their 
-unity and unwavering resolve. Together, they faced the necromancer and shattered 
-his vile spells, drawing upon their strengths and the hope that they carried 
-within.
-
-In the end, the fellowship prevailed, and `RMorwen's`X corruption was pushed back, 
-weakening the grip of the `zShadow Isle`X on the ocean and the main continent. 
-However, they knew the evil had only been held at bay, not defeated entirely. 
-Their victory was a temporary respite, and the world would still need champions 
-to rise and face the darkness whenever it dared to resurface.
-
-The tale of the fellowship's heroic deeds echoed throughout the land, inspiring 
-others to be vigilant and ready to fight against the ever-looming shadow of the 
-`zShadow Isle`X. And so, the world held its breath, knowing that one day, when 
-darkness threatened to engulf it again, a new band of heroes would arise to 
-stand against it and safeguard their realm. 
-`c-------------------------------------------------------------------------------
- 
- 
-~
-0 Seraphim 'HEROES OF THE CIRCLE' ANDROS LILLIAN LYRA THISTLEFOOT TORMUND ~
-`c-------------------------------------------------------------------------------
-`C    The Heroes of the Circle
-`c-------------------------------------------------------------------------------
-`X
-The Heroes of the Circle, a fellowship that fought back against the Necromancer,
-`RMorwen`X, and managed to defeat him. They are:
-
-`GLyra`X - An elven druid who first discovered the spreading blackness of `RMorwen`X's
-corruption.
-
-`YTormund Foeaxe`X - A dwarven fighter of some renown, the first non-elf to off aid to `GLyra`X
-
-`PLillian`X - A human mage, offering her expertise in magical theory to assist in defeating `RMorwen`X.
-
-`OThislefoot`X - A halfling rogue, joining them even though there was thought to be no riches
-on the `zShadow Isle`X, purely due to his good nature and desire to protect the lands from
-the coming darkness.
-
-`c-------------------------------------------------------------------------------
- 
- 
-~
-0 Seraphim 'COUNCIL OF THE CIRCLE' 'COUNCIL OF KINGS' 'CIRCLE OF KINGS' CIRCLE_OF_KINGS ~
-`c-------------------------------------------------------------------------------
-`C    The Council of the Circle
-`c-------------------------------------------------------------------------------
-`X
-
-These are the rulers of the largest territories that make up "The Circle" also known as the 
-"Council of Kings" much to the chagrin of the two Queens currently serving on the council.
-
-Dwarf King: Thrain Stonehammer - A formidable and skilled warrior who rules the 
-underground kingdom of Dwurin Hold. Known for his long beard adorned with precious 
-gems and a legendary hammer passed down through generations.
-
-Halfling King: Tumbletoe Brambleburr - A jovial and wise ruler who presides over the 
-lush and peaceful realm of Greenmeadow. He is beloved by his subjects for his love of 
-gardening and storytelling.
-
-Elf Queen: Seraphina Moonshadow - An ethereal and powerful elf queen who governs the 
-mystical city of Silverwood. Her beauty is legendary, and her wisdom is unmatched, 
-making her an influential figure among the elven people.
-
-Human King: King Cedric Stormbourne - A just and noble king who reigns over the coastal 
-kingdom of Stormhaven. He is a skilled strategist and sailor, often seen leading his fleet 
-into battle against marauding pirates.
-
-Human King: King Aldric Ironheart - A grizzled and battle-hardened king who rules the mountainous 
-realm of Ironpeak. He is known for his iron will and unwavering loyalty to his people, leading his 
-soldiers from the front lines.
-
-Human Queen: Queen Isabella Dawnswind - A charismatic and diplomatic queen who inherited the 
-throne of Sunfield after her father's passing. She is renowned for her ability to negotiate 
-peace and maintain alliances among neighboring kingdoms.
-
-Human King: King Magnus Blackthorn - A stern and just ruler who governs the ancient kingdom of 
-Blackthorn. He is respected for his dedication to enforcing the law and maintaining order in the realm.
-
-Human King: King Leopold Silvercrest - A wise and scholarly king who rules over the prosperous 
-kingdom of Silvercrest. He is known for his love of learning and support of arts and sciences, 
-which has led to great advancements in his kingdom.
-
-Gnome King: Tinkermagus Fizzlesnap Underwrench is the enigmatic and eccentric Gnome King who rules 
-over the subterranean city of Glimmerforge. Gnomes are known for their technological prowess and 
-ingenuity, and Tinkermagus is no exception.
+`RE`rvi`Rl`X
+`c----------------------------------------`X
+Asmodeus - god of indulgence
+Auril - goddess of winter	
+Bane - god of tyranny	
+Beshaba - goddess of misfortune
+Bhaal - god of murder
+Cyric - god of lies
+Lolth - goddess of spiders
+Loviatar - goddess of pain
+Malar - god of the hunt
+Myrkul - god of death
+Shar - goddess of darkness and loss
+Talona - goddess of disease and poison
+Talos - god of storms
+Umberlee - goddess of the sea
 `c-------------------------------------------------------------------------------
  
 ~
 0 Seraphim RACES 'RACE HELP'~
 `c-------------------------------------------------------------------------------
-`C    The Races of MARS!
+`C    The Races of Icewind Legacy!
 `c-------------------------------------------------------------------------------
 
-    `WMARS has ten sentient races.  They are:
+    `WIcewind Legacy has ten sentient races.  They are:
 
     Dragonborn     Drow      Dwarves      Elves      Half-Elves      Halflings
     Half-Orcs      Humans    Gnomes       Tieflings                 
@@ -251,22 +140,36 @@ ingenuity, and Tinkermagus is no exception.
 `c-------------------------------------------------------------------------------
  
 ~
+0 Seraphim DROW 'DARK ELVES' 'DARK ELF'~
+`c-----------------------------------------------------------------------------
+    DROW
+-----------------------------------------------------------------------------`X
+`W
+     Drow are cousins to surface elves that live deep within the earth of Faerun
+     in a land called The Underdark. The Underdark is a harsh and terrible place
+     of absolute darkness, and horrors at every turn. The drow build cities in
+     the Underdark to protect themselves from those horrors. The nearest drow city
+     is Menzoberranzan in the Northdark. The drow worship an evil goddess known
+     as The Spider Queen, Lolth. Lolth demands absolute obedience, and bestows
+     favor upon on the most loyal matriarchical drow houses. Lolth favors female
+     drow over males, and indeed males are treated as second-class citizens in drow
+     society. Almost all drow are evil, but occassionally one is born with a strong
+     moral compass and they either die for their sacrilege, escape and live as
+     outcasts, hunted by their own people to curry favor with Lolth, or they hide
+     what is in their heart and bury their goodness.
+
+`c-----------------------------------------------------------------------------`X
+~
 0 Seraphim DWARF DWARVES~
 `c-----------------------------------------------------------------------------
-    DWARFS
+    DWARVES
 -----------------------------------------------------------------------------`X
-
-      Dwarves are short, stocky demi-humans, known for foul temper
-      and great stamina.  Dwarves are strong and have the ability
-      to heal exceptionaly well, however their body structure doesn't
-      allow them to be very flexible with their movements.  They are
-      not as smart as humans, but are usually wiser due to their long
-      lifespans.  Dwarves make excellent fighters and mystics, and are
-      also skilled in the art of alchemy.
-
-      Dwarves are very resistant to poison and disease, but cannot swim,
-      and so are very vulnerable to drowning.  They even have the
-      ability to see in the dark.
+`W
+     Dwarves are known for their skill in warfare, their ability to withstand 
+     physical and magical punishment, their knowledge of the earth’s secrets, 
+     their hard work, and their capacity for drinking ale. Their mysterious 
+     kingdoms, carved out from the insides of mountains, are renowned for the 
+     marvelous treasures that they produce as gifts or for trade
 
 `c-----------------------------------------------------------------------------`X
 ~
@@ -275,19 +178,11 @@ ingenuity, and Tinkermagus is no exception.
 `C    ELVES
 `c-----------------------------------------------------------------------------
 `W
-      Elves are slightly taller than humans, but have a much lighter
-      build.  They lack the strength and stamina of the other races, 
-      but are far more agile, both in body and mind.  Elves are superb
-      mages and rogues, but have at best fair talent as soldiers, 
-      hunters, or mystics.  Others have shown great skill as alchemists
-      and elementalists.
-`W
-      Elves resist charm spells most effectively, due to their magical
-      nature.  However, they are burned by the touch of iron, and so are
-      barred from the use of iron or steel in their adventuring careers.
-      Elves are notoriously hard to spot, and so elven rogues tend to 
-      have the natural ablitity to sneak around.  They also have the 
-      ability to see in the dark.
+      Elves mingle freely in human lands, always welcome yet never at home 
+      there. They are well known for their poetry, dance, song, lore, and 
+      magical arts. Elves favor things of natural and simple beauty. When 
+      danger threatens their woodland homes, however, elves reveal a more 
+      martial side, demonstrating skill with sword, bow, and battle strategy.
 `W
 `c-----------------------------------------------------------------------------
 ~
@@ -295,17 +190,170 @@ ingenuity, and Tinkermagus is no exception.
 `c-----------------------------------------------------------------------------
     HUMANS
 -----------------------------------------------------------------------------`X
-
-The most common race they are of average height and weight, and as 
-individuals they can be quite intelligent,
-
-Most of the heroes, wizards, nobles and people worth any note at all are human. 
-This is probably because, as already has been stated, humans are the most common 
-race, so if heroes, wizards etc are picked by fate at random, the odds on bet is 
-that charactera worthy of note will be human.  
+`W
+    Most humans are the descendants of pioneers, conquerors, traders, travelers, 
+    refugees, and other people on the move. As a result, human lands are home 
+    to a mix of people—physically, culturally, religiously, and politically 
+    different. Hardy or fine, light-skinned or dark, showy or austere, 
+    primitive or civilized, devout or impious, humans run the gamut. 
     
 `c-----------------------------------------------------------------------------`X
 
+~
+0 Seraphim HALFLING HALFLINGS~
+`c-----------------------------------------------------------------------------
+    HALFLING
+-----------------------------------------------------------------------------`X
+    `W
+    Halflings are clever, capable opportunists. Halfling individuals and clans 
+    find room for themselves wherever they can. Often they are strangers and 
+    wanderers, and others react to them with suspicion or curiosity. Depending 
+    on the clan, halflings might be reliable, hard-working (if clannish) 
+    citizens, or they might be thieves just waiting for the opportunity to make 
+    a big score and disappear in the dead of night. Regardless, halflings are 
+    cunning, resourceful survivors.
+`c-----------------------------------------------------------------------------`X
+
+~
+0 Seraphim DRAGONBORNS~
+`c-----------------------------------------------------------------------------
+`C    DRAGONBORN
+`c-----------------------------------------------------------------------------
+`W
+    Born of dragons, as their name proclaims, the dragonborn walk proudly through 
+    a world that greets them with fearful incomprehension. Shaped by draconic 
+    gods or the dragons themselves, dragonborn originally hatched from dragon 
+    eggs as a unique race, combining the best attributes of dragons and 
+    humanoids. Some dragonborn are faithful servants to true dragons, others 
+    form the ranks of soldiers in great wars, and still others find themselves 
+    adrift, with no clear calling in life.
+ 
+    Dragonborn look very much like dragons standing erect in humanoid form, 
+    though they lack wings. The first dragonborn had scales of vibrant hues 
+    matching the colors of their dragon kin, but generations of interbreeding 
+    have created a more uniform appearance. Their small, fine scales are usually 
+    brass or bronze in color, sometimes ranging to scarlet, rust, gold, or 
+    copper-green. They are tall and strongly built, often standing close to 6 
+    feet tall and weighing 300 pounds or more. Their hands and feet are strong, 
+    talonlike claws with three fingers and a thumb on 
+    each hand.
+ 
+    The blood of a particular type of dragon runs very strong through some 
+    dragonborn clans. These dragonborn often boast scales that more closely 
+    match those of their dragon ancestorbright red, green, blue, or white, 
+    lustrous black, or gleaming metallic gold, silver, brass, copper, or 
+    bronze.
+
+`c-----------------------------------------------------------------------------`X
+~
+0 Seraphim TIEFLINGS~
+`c-----------------------------------------------------------------------------
+`C    TIEFLINGS
+`c-----------------------------------------------------------------------------
+`W
+To be greeted with stares and whispers, to suffer violence and insult on the 
+street, to see mistrust and fear in every eye: this is the lot of the tiefling. 
+And to twist the knife, tieflings know that this is because a pact struck 
+generations ago infused the essence of Asmodeusoverlord of the Nine Hellsinto 
+their bloodline. Their appearance and their nature are not their fault but the 
+result of an ancient sin, for which they and their children and their childrens 
+children will always be held accountable.
+ 
+Tieflings are derived from human bloodlines, and in the broadest possible sense, 
+they still look human. However, their infernal heritage has left a clear imprint 
+on their appearance. Tieflings have large horns that take any of a variety of 
+shapes: some have curling horns like a ram, others have straight and tall horns 
+like a gazelles, and some spiral upward like an antelopes horns. They have 
+thick tails, four to five feet long, which lash or coil around their legs when 
+they get upset or nervous. Their canine teeth are sharply pointed, and their eyes 
+are solid colorsblack, red, white, silver, or goldwith no visible sclera or pupil. 
+Their skin tones cover the full range of human coloration, but also include various 
+shades of red. Their hair, cascading down from behind their horns, is usually dark, 
+from black or brown to dark red, blue, or purple.
+ 
+`c-----------------------------------------------------------------------------`X
+~
+0 Seraphim GNOMES~
+`c-----------------------------------------------------------------------------
+`C    GNOMES
+`c-----------------------------------------------------------------------------
+`W
+    A constant hum of busy activity pervades the warrens and neighborhoods 
+    where gnomes form their close-knit communities. Louder sounds punctuate 
+    the hum: a crunch of grinding gears here, a minor explosion there, a yelp 
+    of surprise or triumph, and especially bursts of laughter. Gnomes take 
+    delight in life, enjoying every moment of invention, exploration, 
+    investigation, creation, and play.
+ 
+    A gnomes energy and enthusiasm for living shines through every inch of his 
+    or her tiny body. Gnomes average slightly over 3 feet tall and weigh 
+    40 to 45 pounds. Their tan or brown faces are usually adorned with broad 
+    smiles (beneath their prodigious noses), and their bright eyes shine with 
+    excitement. Their fair hair has a tendency to stick out in every direction, 
+    as if expressing the gnomes insatiable interest in everything around.
+    A gnomes personality is writ large in his or her appearance. A male 
+    gnomes beard, in contrast to his wild hair, is kept carefully trimmed but 
+    often styled into curious forks or neat points. A gnomes clothing, though 
+    usually made in modest earth tones, is elaborately decorated with embroidery, 
+    embossing, or gleaming jewels.
+ 
+`c-----------------------------------------------------------------------------`X
+~
+0 Seraphim HALFELVES HALF-ELVES HALFELF HALF-ELF~
+`c-----------------------------------------------------------------------------
+`C    HALF ELVES
+`c-----------------------------------------------------------------------------
+`W
+Walking in two worlds but truly belonging to neither, half-elves combine what 
+some say are the best qualities of their elf and human parents: human curiosity,
+inventiveness, and ambition tempered by the refined senses, love of nature, and 
+artistic tastes of the elves. Some half-elves live among humans, set apart by 
+their emotional and physical differences, watching friends and loved ones age 
+while time barely touches them. Others live with the elves, growing restless as 
+they reach adulthood in the timeless elven realms, while their peers continue to
+live as children. Many half-elves, unable to fit into either society, choose 
+lives of solitary wandering or join with other misfits and outcasts in the 
+adventuring life.
+ 
+To humans, half-elves look like elves, and to elves, they look human. In height,
+theyre on par with both parents, though theyre neither as slender as elves nor
+as broad as humans. They range from under 5 feet to about 6 feet tall, and from 
+100 to 180 pounds, with men only slightly taller and heavier than women. 
+Half-elf men do have facial hair, and sometimes grow beards to mask their elven 
+ancestry. Half-elven coloration and features lie somewhere between their human 
+and elf parents, and thus show a variety even more pronounced than that found 
+among either race. They tend to have the eyes of their elven parents.
+ 
+`c-----------------------------------------------------------------------------`X
+~
+0 Seraphim HALFORCS HALF-ORCS~
+`c-----------------------------------------------------------------------------
+`C    HALF ORCS
+`c-----------------------------------------------------------------------------
+`W
+Whether united under the leadership of a mighty warlock or having fought to a 
+standstill after years of conflict, orc and human tribes sometimes form 
+alliances, joining forces into a larger horde to the terror of civilized lands 
+nearby. When these alliances are sealed by marriages, half-orcs are born. Some 
+half-orcs rise to become proud chiefs of orc tribes, their human blood giving 
+them an edge over their full-blooded orc rivals. Some venture into the world to 
+prove their worth among humans and other more civilized races. Many of these 
+become adventurers, achieving greatness for their mighty deeds and notoriety for
+their barbaric customs and savage fury.
+ 
+Half-orcs grayish pigmentation, sloping foreheads, jutting jaws, prominent 
+teeth, and towering builds make their orcish heritage plain for all to see. 
+Half-orcs stand between 5 and 7 feet tall and usually weigh between 180 and 
+250 pounds.
+ 
+Orcs regard battle scars as tokens of pride and ornamental scars as things of 
+beauty. Other scars, though, mark an orc or half-orc as a former slave or a 
+disgraced exile. Any half-orc who has lived among or near orcs has scars, 
+whether they are marks of humiliation or of pride, recounting their past 
+exploits and injuries. Such a half-orc living among humans might display these 
+scars proudly or hide them in shame.
+ 
+`c-----------------------------------------------------------------------------`X
 ~
 0 Seraphim 'GROUP HEADER'~
 `WThe following skills and groups are available to your characters:
@@ -353,30 +401,187 @@ done         exit the character generation process
 `W
 `c-------------------------------------------------------------------------------
 ~
+0 Seraphim BARBARIAN~
+`c-------------------------------------------------------------------------------
+`C    BARBARIAN
+`c-------------------------------------------------------------------------------
+`W
+    From the frozen wastes of the north and the hellish jungles of the 
+    south come brave, even reckless, warriors. Civilized people call 
+    them barbarians or berserkers and suspect them of mayhem, impiety, 
+    and atrocities. These “barbarians,” however, have proven their 
+    mettle and their value to those who would be their allies. 
+    To enemies who underestimated them, they have proved their cunning, 
+    resourcefulness, persistence, and mercilessnes. 
+`W
+`c-------------------------------------------------------------------------------
+ 
+~
+0 Seraphim BARD~
+`c-------------------------------------------------------------------------------
+`C    BARD
+`c-------------------------------------------------------------------------------
+`W
+    It is said that music has a special magic, and the bard proves that
+    saying true. Wandering across the land, gathering lore, telling stories, 
+    working magic with his music, and living on the gratitude of his 
+    audience—such is the life of a bard. When chance or opportunity draws 
+    them into a conflict, bards serve as diplomats, negotiators, messengers, 
+    scouts, and spies. A bard's magic comes from the heart. If his heart is 
+    good, a bard brings hope and courage to the downtrodden and uses his 
+    tricks, music, and magic to thwart the schemes of evildoers. If the 
+    nobles of the land are corrupt, the good bard is an enemy of the state, 
+    cunningly evading capture and raising the spirits of the oppressed. 
+    But music can spring from an evil heart as well. Evil bards forego 
+    blatant violence in favor of manipulation, holding sway over the hearts 
+    and minds of others and taking what enraptured audiences “willingly” give.
+`W
+`c-------------------------------------------------------------------------------
+ 
+~
+0 Seraphim CLERIC~
+`c-------------------------------------------------------------------------------
+`C    CLERIC
+`c-------------------------------------------------------------------------------
+`W
+    The handiwork of the gods is everywhere—in places of natural beauty, in 
+    mighty crusades, in soaring temples, and in the hearts of worshipers. 
+    Like people, gods run the gamut from benevolent to malicious, reserved 
+    to intrusive, simple to inscrutable. The gods, however, work mostly 
+    through intermediaries—their clerics. Good clerics heal, protect, and 
+    avenge. Evil clerics pillage, destroy, and sabotage. A cleric uses the 
+    power of his god to make his god’s will manifest. And if a cleric uses 
+    his god’s power to improve his own lot, that’s to be expected, too.
+`W
+`c-------------------------------------------------------------------------------
+ 
+~
+0 Seraphim DRUID~
+`c-------------------------------------------------------------------------------
+`C    DRUID
+`c-------------------------------------------------------------------------------
+`W
+    The fury of a storm, the gentle strength of the morning sun, the cunning 
+    of the fox, the power of the bear—all these and more are at the druid’s 
+    command. The druid however, claims no mastery over nature. That claim, 
+    she says, is the empty boast of a city dweller. The druid gains her power 
+    not by ruling nature but by being at one with it. To trespassers in a 
+    druid’s sacred grove, and to those who feel her wrath, the distinction is 
+    overly fine.
+`W
+`c-------------------------------------------------------------------------------
+ 
+~
+0 Seraphim FIGHTER~
+`c-------------------------------------------------------------------------------
+`C    FIGHTER
+`c-------------------------------------------------------------------------------
+`W
+    The questing knight, the conquering overlord, the king’s champion, the 
+    elite foot soldier, the hardened mercenary, and the bandit king — all 
+    are fighters. Fighters can be stalwart defenders of those in need, cruel 
+    marauders, or gutsy adventurers. Some are among the land’s best souls, 
+    willing to face death for the greater good. Others are among the worst, 
+    with no qualms about killing for private gain, or even for sport. 
+    Fighters who are not actively adventuring may be soldiers, guards, 
+    bodyguards, champions, or criminal enforcers. An adventuring fighter might 
+    call himself a warrior, a mercenary, a thug, or simply an adventurer. 
+    
+`W
+`c-------------------------------------------------------------------------------
+ 
+~
 0 Seraphim MAGE~
 `c-------------------------------------------------------------------------------
 `C    MAGE
 `c-------------------------------------------------------------------------------
 `W
-    Mages are those that have studied the ways in which the forces of 
-    nature can be bent to an individuals will. Unlike elementalists, 
-    who give themselves over to the power of the elements, the mage 
-    focuses his will until the elements perform feats that are entirely 
-    unnatural. Fireballs, lightning out of a clear sky, ice forming on 
-    the hottest of days, these are some of the less exotic castings that 
-    the mage is capable of performing. Mages, for the most part, eschew 
-    wearing bulky armor. They prefer ornate robes that proclaim their 
-    status to the world in order to propagate awe and sometimes fear. For 
-    all races of E'dhora know that it was the modern mage's predecessors
-    that caused the Cataclysm. So it is with at least some distrust that 
-    the mage is met with wherever they go in pursuit of magical knowledge. 
+   A few unintelligible words and fleeting gestures carry more power than a 
+   battleaxe, when they are the words and gestures of a mage. These simple acts 
+   make magic seem easy, but they only hint at the time the mage must spend 
+   poring over her spellbook preparing each spell for casting, and the years 
+   before that spent in apprenticeship to learn the arts of magic. Mages 
+   depend on intensive study to create their magic. They examine musty old 
+   tomes, debate magical theory with their peers, and practice minor magics 
+   whenever they can. For a mage, magic is nota talent but a difficult, 
+   rewarding art.
+
+`W
+`c-------------------------------------------------------------------------------
+ 
+~
+0 Seraphim MONK~
+`c-------------------------------------------------------------------------------
+`C    NONK
+`c-------------------------------------------------------------------------------
+`W
+    Dotted across the landscape are monasteries—small, walled cloisters 
+    inhabited by monks who pursue personal perfection through action as well 
+    as contemplation. They train themselves to be versatile warriors skilled 
+    at fighting without weapons or armor. The inhabitants of monasteries 
+    headed by good masters serve as protectors of the people. Ready for battle 
+    even when barefoot and dressed in peasant clothes, monks can travel 
+    unnoticed among the populace, catching bandits, warlords, and corrupt 
+    nobles unawares. In contrast, the residents of monasteries headed by evil 
+    masters rule the surrounding lands through fear, as an evil warlord and 
+    his entourage might. Evil monks make ideal spies, infiltrators, and 
+    assassins.The individual monk is unlikely to care passionately about 
+    championing commoners or amassing wealth. She cares primarily for the 
+    perfection of her art and, thereby, her personal perfection. Her goal is 
+    to achieve a state that is beyond the mortal realm.
+`W
+`c-------------------------------------------------------------------------------
+ 
+~
+0 Seraphim PALADIN~
+`c-------------------------------------------------------------------------------
+`C    PALADIN
+`c-------------------------------------------------------------------------------
+`W
+    The compassion to pursue good, the will to uphold law, and the power to 
+    defeat evil—these are the three weapons of the paladin. Few have the 
+    purity and devotion that it takes to walk the paladin’s path, but those 
+    few are rewarded with the power to protect, to heal, and to smite. In a 
+    land of scheming wizards, unholy priests, bloodthirsty dragons, and 
+    infernal fiends, the paladin is the final hope that cannot be extinguished.
+`W
+`c-------------------------------------------------------------------------------
+ 
+~
+0 Seraphim RANGER~
+`c-------------------------------------------------------------------------------
+`C    RANGER
+`c-------------------------------------------------------------------------------
+`W
+    The forests are home to fierce and cunning creatures, such as bloodthirsty
+    owlbears and malicious displacer beasts. But more cunning and powerful than
+    these monsters is the ranger, a skilled hunter and stalker. He knows the
+    woods as if they were his home (as indeed they are) and he knows his prey
+    in deadly detail.
+
+`W
+`c-------------------------------------------------------------------------------
+ 
+~
+0 Seraphim ROGUE~
+`c-------------------------------------------------------------------------------
+`C    ROGUE
+`c-------------------------------------------------------------------------------
+`W
+    Rogues share little in common with each other. Some are stealthy thieves. 
+    Others are silver-tongued tricksters. Still others are scouts, infiltrators, 
+    spies, diplomats, or thugs. What they share is versatility, adaptability, 
+    and resourcefulness. In general, rogues are skilled at getting what others 
+    don’t want them to get: entrance into a locked treasure vault, safe 
+    passage past a deadly trap, secret battle plans, a guard’s trust, or some 
+    random person’s pocket money.
 `W
 `c-------------------------------------------------------------------------------
  
 ~
 0 Seraphim BASICS 'MUD BASICS'~
 `c-------------------------------------------------------------------------------
-`C    MARS BASICS    
+`C    Icewind Legacy BASICS    
 `c-------------------------------------------------------------------------------
 `W
     The basic skills:
@@ -419,15 +624,8 @@ done         exit the character generation process
 `W
 `c-------------------------------------------------------------------------------
 ~
--1 Seraphim CLERIC 'CLERIC BASICS' 'CLERIC DEFAULT'~
+-1 Seraphim 'CLERIC BASICS' 'CLERIC DEFAULT'~
 `Y----------------------------------------------------------------`X
-Clerics are the most defensively orientated class.  Most of
-their spells focus on healing or defending the faithful, with
-their few combat spells being less powerful than those of mages.
-However, clerics are the best class by far at healing, & they
-posess an impressive area of protective magics, as well as
-fair combat prowess.
-
 All clerics begin with skill in mace.  Other weapon skills must
 be purchased, many at a dear cost.  The default skill selection
 for clerics is as follows:
@@ -447,27 +645,6 @@ protective	defensive magics, including the powerful sanctuary spell
 transportation	spells for getting from here to there
 weather         spells for conjuring and mastering the elements
 `Y----------------------------------------------------------------`X
-~
-0 Seraphim ROGUE~
-`c-------------------------------------------------------------------------------
-`C    ROGUE
-`c-------------------------------------------------------------------------------
-`W
-    Rogues are those who are abandoned by society, or perhaps those 
-    that merely seek to live off the work of others, that make their 
-    living by stealing whatever they can. Gifted with quick hands, a 
-    startling degree of agility, and razor-sharp wits, the successful 
-    rogue is the undisputed master of the streets. It is said that master 
-    rogues can render themselves nearly invisible in broad daylight thanks 
-    to the stealth techniques that have developed among the various factions 
-    that have arisen in the centuries since the Cataclysm. Spotting a rogue 
-    is very hard, simply for the fact that hiding their nature is a necessity
-    if they are to stay in business. So an adventuring rogue may outfit 
-    himself like a fighter, a hunter, or any number of professions, in 
-    order to better insinuate himself into a group into an adventuring 
-    group in order to make himself rich.
-`W
-`c-------------------------------------------------------------------------------
 ~
 -1 Seraphim 'ROGUE BASICS' 'ROGUE DEFAULT'~
 `Y----------------------------------------------------------------`X
@@ -797,20 +974,52 @@ word of recall	transports the caster to safety in Gandora
 `Y----------------------------------------------------------------`X
 ~
 -1 Seraphim WEATHER~
-`Y----------------------------------------------------------------`X
-These spells allow the caster to manipulate local weather
-conditions, as well as summon certain weather phenomena.  These
-spells are usable by all classes:
+`P ---------------------------------------------------------------- 
+`GWEATHER CONDITIONS AND YOU`X
+`P----------------------------------------------------------------`X 
+Welcome to the wonderful world of weather that can absolutely kill 
+you dead. That's right. Stone dead. How, you ask? Well the same 
+way it would IRL!
+ 
+You see, here in Icewind Legacy, winter gets VERY cold and summer 
+gets VERY hot. That means freezing to death in one, and sweating 
+out all of your fluids until you die a slow miserable death by 
+dehydration in the other!
+ 
+But there are ways to protect yourself! 
+ 
+First, you can go indoors. That's... that's it. Just go inside.
+ 
+Second, if going indoors isn't your thing, you can go into the 
+woods and 'gather' some wood. Once you've done that, you can 
+either build a 'campfire' (provided you have a flint and steel 
+handy. Did you check your newbie satchel?) or you can 'build' a
+shelter for warmth in the winter and shade in the summer! But 
+make sure you have plenty of provisions in your pack, because 
+when it's really cold out, your limbs begin to freeze and 
+movement becomes difficult, and in extreme heat the exertion 
+will speed up dehydration via sweat as well as increase your 
+chance of heat exhaustion, so if you're caught in the 
+wilderness when inclement weather strikes, you had better 
+have all the supplies you need to keep warm/cool, dry,
+fed, and hydrated.. otherwise mother nature will make short 
+work of you!
+ 
+But fret not! In the more mild seasons of spring and fall, 
+you can 'forage' for food, 'hunt' game, go 'fish' up a meal 
+at a nearby river or lake, and if you have a 'campfire' you 
+can even 'cook' the food you've gathered. And if you do 
+'hunt' some game, remember to 'butcher' the corpse for some
+meat!
 
-call lightning  calls bolts from above, if conditions are right
-control weather changes weather in manner desired by caster
-faerie fire	surrounds the target in a glowing aura
-faerie fog	reveals all hidden creatures in the room
-lightning bolt	sends a bolt of electricity into the target
-
-[weather command shows local weather conditions & is unrelated]
-`Y----------------------------------------------------------------`X
+And if you're freezing, you can even 'skin' the game and 
+make a blanket from their pelts to keep warm if you don't 
+have the supplies to 'build' a shelter or start a 'campfire'!  
+`P(`GSee `Yhelp `W'gather', 'campfire', 'build shelter', 'fish', 
+'forage', 'hunt' and 'cooking'`P)`X
+`P----------------------------------------------------------------`X
 ~
+
 -1 Seraphim BACKSTAB~
 `c-------------------------------------------------------------------------------
 `C    BACKSTAB
@@ -1438,10 +1647,10 @@ for protecting large numbers of objects.
 ~
 -1 Seraphim GOLD SILVER MONEY COINAGE CURRENCY COPPER FARTHINGS PENCE SILBERN OREN PENNY DOLLAR TENPENNY~
 `c-------------------------------------------------------------------------------
-`C    THE COINAGE AND CURRENCY OF MARS
+`C    THE COINAGE AND CURRENCY OF Icewind Legacy
 `c-------------------------------------------------------------------------------
 `W   
-    If the lands of MARS are the flesh, then money is the
+    If the lands of Icewind Legacy are the flesh, then money is the
     life-blood that keeps it functioning.  From the simplest trades
     including simple trading of goods, to the usage of coins and paper money.  
 `W
@@ -1819,11 +2028,16 @@ for protecting large numbers of objects.
 `W
     Syntax: `Gdrop <object>`W
     Syntax: `Gdrop <amount> <type of coin>`W
+`X    Syntax: `Gdrop <amount>*<object>`X
     Syntax: `Gget  <object>`W
+`X    Syntax: `Gget <amount>*<object>`X
     Syntax: `Gget  <object> <container>`W
+`X    Syntax:`G get <amount>*<object> <container>`X
     Syntax: `Ggive <object> <character>`W
+`X    Syntax:`G give <amount>*<object> <character>`X
     Syntax: `Ggive <amount> <type of coin> <character>`W
     Syntax: `Gput  <object> <container>`W
+`X    Syntax:`G put <amount>*<object> <container>`X
 `W
     DROP drops an object or some coins on the ground.
 `W
@@ -1838,6 +2052,8 @@ for protecting large numbers of objects.
          objects and 'ALL.object' for all objects with the same
          name.
 `W
+`X    DROP, GET and PUT understand quantities for objects with a *
+`X    so get 3*potion bag would be the same as typing get potion bag three times.
 `c-------------------------------------------------------------------------------
 ~
 -1 1 EQUIPMENT INVENTORY~
@@ -3384,7 +3600,7 @@ Seraphim Seraphim TRUST~
             `Gcast 'cause critical' <target>
 `W
     Mystics and Alchemist, through the study of the anatomy of the beings
-    that live in E'dhora, have learned to defend themselves using spells 
+    that live in Faerun, have learned to defend themselves using spells 
     that cause wounds with different levels of damage to the target.  The
     spells mastered at a lower rank causes less damage to the target. 
     Whereas the higher ranking spells tend to cause more damage.  
@@ -3999,64 +4215,70 @@ and frost can break objects, while acid damages armor.
 `c-----------------------------------------------------------------------------
 `W
     A map is a navigational aid which highlights relations between the 
-    land masses of E'dhora.  As you view the link listed below you will 
-    see how E'dhora appears now, 500 years after the massive cataclysm 
+    land masses of Faerun.  As you view the link listed below you will 
+    see how Faerun appears now, 500 years after the massive cataclysm 
     that ripped the world apart.
 `W
 `Y           http://forsakendreams.wolfpaw.net/maps/
 `W
 `W
-`R    Note: `OSee also - `GE'dhora, History, Kingdoms, Continents
+`R    Note: `OSee also - `GFaerun, History, Kingdoms, Continents
 `W
 `c-----------------------------------------------------------------------------
 ~
 -1 Seraphim GREETING~
-Welcome to MARS - Multi-Adventurer Roleplaying System
+`G
 
-     *****   **    **           **             ***** ***        *******            
-  ******  ***** *****        *****          ******  * **      *       ***          
- **   *  *  ***** *****     *  ***         **   *  *  **     *         **          
-*    *  *   * **  * **         ***        *    *  *   **     **        *           
-    *  *    *     *           *  **           *  *    *       ***                  
-   ** **    *     *           *  **          ** **   *       ** ***                
-   ** **    *     *          *    **         ** **  *         *** ***              
-   ** **    *     *          *    **         ** ****            *** ***            
-   ** **    *     *         *      **        ** **  ***           *** ***          
-   ** **    *     **        *********        ** **    **            ** ***         
-   *  **    *     **       *        **       *  **    **             ** **         
-      *     *      **      *        **          *     **              * *          
-  ****      *      **     *****      **     ****      ***   ***        *           
- *  *****           **   *   ****    ** *  *  ****    **   *  *********            
-*     **                *     **      **  *    **     *   *     *****              
-*                       *                 *               *                        
- **                      **                **              **                    
 
-[*]==================================================[*]==================[*]
-[*]Original DikuMUD by Hans Staerfeldt, Katja Nyboe, [*]   M.A.R.S. 0.1b  [*]
-[*]Tom Madsen, Michael Seifert, and Sebastian Hammer [*]   Copyright 2020 [*]
-[*]Based on MERC 2.1 code by Hatchet, Furey, and Kahn[*]   Leland Schwarz [*]
-[*]ROM 2.4 copyright (c) 1993-1995 Russ Taylor       [*]                  [*]
-[*]==================================================[*]==================[*]
+`B  ___---------------------__         .:.         __---------------------___
+`B-- ---__          ......====\\--    .:::.    --//====......          __--- --
+`B        -\ ...::::------  //|||    .:::::.    |||\\  ------::::... /-
+`B       ---\_            //  |||***.`w(`B:::::`w)`B.***|||  \\            _/---
+`B            -\_        // *******.:`w|\`B^^^`w/|`B:.******* \\        _/-
+`B               \      / ********.::`C(`R>: :<`C)`B::.******** \      /
+`B                \   /  ********.::::`C\\|//`B::::.********  \   /
+`B                 \ /   *******.:::::`C(`wo o`C)`B:::::.*******   \ /
+`B                  /.   ******.::::'*`O|`RV`C_`RV`O|`B***'::.******   .\
+`B                    ----****.:::'***`O|___|`B`*****':.****----
+`B                          *.::'***`C//`O|___|`C\\`B*****'.*
+`B                          .:'  **`C/##`O|___|`C##\`B**    .
+`B                         .    `z(`Rv`z(`RVVV`z)`O___`z(`RVVV`z)`Rv`z)`X Collage by John Lawrence
+`C          .mm              '        ]     .                       
+`B           ]   m,  m, ,  ,.m  ..,  md     ]    m,  mm  m,  m, . . 
+`C           ]  ]'' ]'] \..' ]  ]'] ]'T     ]   ]'] ]'T ' ] ]'' ',/ 
+`B           ]  ]   ]"" ]dd  ]  ] ] ] ]     ]   ]"" ] ] ."T ]    b[ 
+`C          .dm 'b/ 'b/  [[ .dm ] ] 'bW     ]mm,'b/ 'bT 'mT 'b/  T  
+`B                                                  ,]          / 
+`C                                                 ''         ''  
+`Y[`R*`Y]`W==================================================`Y[`R*`Y]`W==================`Y[`R*`Y]`X
+`Y[`R*`Y]`GOriginal DikuMUD by Hans Staerfeldt, Katja Nyboe, `Y[`R*`Y]`G   Icewind Legacy `Y[`R*`Y]
+`Y[`R*`Y]`GTom Madsen, Michael Seifert, and Sebastian Hammer `Y[`R*`Y]`G   Copyright 2025 `Y[`R*`Y]
+`Y[`R*`Y]`GBased on MERC 2.1 code by Hatchet, Furey, and Kahn`Y[`R*`Y]`G   Leland Schwarz `Y[`R*`Y]
+`Y[`R*`Y]`GROM 2.4 copyright (c) 1993-1995 Russ Taylor       `Y[`R*`Y]`G   M.A.R.S. 0.1b  `Y[`R*`Y]
+`Y[`R*`Y]`W==================================================`Y[`R*`Y]`W==================`Y[`R*`Y]`X
  
 What is your name, Stranger? 
 ~
 0 Seraphim MOTD~
-March 15, 2024
+September 26, 2025
 `G
 We are not open for players just yet but we are working very hard to
 bring this wonderful game to realization.  For those of you that came by
 before and checked us out, you will notice some severe changes, but all 
-for the positive movement of the game.  MARS will be a very PvE/Party 
-intensive game and our players will reflect that.  Feel free to check back 
-from time to time to see if we are open.
+for the positive movement of the game.  Icewind Legacy  will be a very 
+PvE/Party intensive game and our players will reflect that.  
+Feel free to check back from time to time to see if we are open.
 `c
 For those of you that wish to help in our development, we are looking
 for builders and coders that have moderate to heavy experience and can
 build in our atmosphere.  While you are here take a moment to read the
-`RHELP MARS`c to get a feel of what we are trying to accomplish.  
-Maps of our world are also available for viewing. See help link for details. 
-Leave Praesius a note or email (mars@wr3tch.org) and he will set up a 
-time to talk to you about joining our team.
+`RHELP ICEWIND`c to get a feel of what we are trying to accomplish.  
+Maps of our world are also available for viewing. You may also send an
+email to icewindlegacy@gmail.com with the subject line "LEGACY BUILDING"
+or "LEGACY CODING" depending on which position you are looking for.
+If you're an experienced builder and fan of the Dungeons and Dragons
+Forgotten Realms campaign setting, and have a favorite location that
+you'd like to build, be sure to indicate that in the email!
 `W 
 On behalf of the staff, thank you for coming.
 `X
@@ -4075,7 +4297,7 @@ be found by typing 'help laws' or 'help commandments'.
 * Asking for promotion is grounds for instant deletion.
 * Type 'help jobs' to get some idea of what you should be doing.
  
-Welcome to MARS.  If you're seeing this, it's because you
+Welcome to Icewind Legacy.  If you're seeing this, it's because you
 were promoted to Immortal. Good job, you! 
  
 `c-------------------------------------------------------------------------------`X
@@ -4151,14 +4373,14 @@ were promoted to Immortal. Good job, you!
        and not a right. While we appreciate the time you spend with us, this 
        is not to say we will not exist without you. 
 `W
-    2. MARS is a ROLEPLAY ENFORCED MUD. You are expected 
+    2. Icewind Legacy is a ROLEPLAY ENFORCED MUD. You are expected 
        to be in character at all times. There are OOC platforms set aside for 
        players that require assistance. 
 `W
     3. Do not kill steal. This means you cannot attack a mob someone else is 
        fighting, unless they ask you to. Also avoid attacking fleeing mobs. 
 `W
-    4. Do not sit around idle for extended amounts of time. Since MARS is 
+    4. Do not sit around idle for extended amounts of time. Since Icewind Legacy is 
        a roleplay mud, a rogue may take an idle character for a victim and 
        rob them blind. 
 `W
@@ -4197,7 +4419,7 @@ were promoted to Immortal. Good job, you!
         not be restored. Whatever the reason that caused the action will be 
         respected and held firm. 
 `W
-    12. The staff, admin and those people that strive to make MARS a 
+    12. The staff, admin and those people that strive to make Icewind Legacy a 
         place we can all enjoy are to be respected. Insults, harrassment or 
         blatant disrespect will not be tolerated. Failure to perform the 
         request of an staff member is also not tolerated. 
@@ -4236,26 +4458,13 @@ were promoted to Immortal. Good job, you!
 `C    GAINING NEW SKILLS OR SPELLS
 `c-------------------------------------------------------------------------------
 `W
-    Syntax:`G gain list`W
-    Syntax:`G gain points`W
-    Syntax:`G gain <name of skill or spell>`W
     Syntax:`G gain convert`W
     Syntax:`G gain revert`W
 `W
-    The gain command is used to learn new skills, once the proper
-    trainer has been found. The following options can be used with
-    gain:
- 
-    gain list:    list all groups and skills that can be learned
-    gain points:  lower your creation points by 1 (costs two trains)
-    gain <name>:  add a skill or skill group, at the listed cost
     gain convert: turns 10 practices into one training session
     gain revert:  turns 1 train into 10 practices
  
     Gain uses training sessions, not practices. 
-    Gained skills and groups do NOT increase your experience per
-    level or total number of creation points. 
- 
     `RSee also `W'`Ghelp train`W'
  
 `c------------------------------------------------------------------------------
@@ -4356,7 +4565,7 @@ were promoted to Immortal. Good job, you!
 `W
     Syntax: `Gclan
 `W
-    The clan system here, in MARS is both simple and complex at the same
+    The clan system here, in Icewind Legacy is both simple and complex at the same
     time.  Each of the seven kingdoms has a code supported clan or house.  The
     kingdom has a clan hall with a house leader selected from the player base 
     and appointed by the imps.  The house leader has the ability to induct and 
@@ -4387,7 +4596,7 @@ were promoted to Immortal. Good job, you!
     Syntax: `Gcount
 `W
     The count command displays the number of people you can see logged
-    into MARS.  It also  displays the highest number observed that
+    into Icewind Legacy.  It also  displays the highest number observed that
     day, if it is higher.
 `W
 `c-------------------------------------------------------------------------------
@@ -4429,9 +4638,9 @@ your own and players with no summon set.
 `C    NEWBIES           
 `c-------------------------------------------------------------------------------
 `W
-`O    Welcome to MARS
+`O    Welcome to Icewind Legacy
 `W
-    We hope MARS will bring you the enjoyment of role playing 
+    We hope Icewind Legacy will bring you the enjoyment of role playing 
     in a challenging and exciting game environment.  Newbies may be 
     completely new or experienced players.  A player is considered a 
     newbie if they are level, also known as rank, of ten or less.  
@@ -4445,7 +4654,7 @@ your own and players with no summon set.
     help "topic" or help all "topic" will display every keyword on the 
     selected topic.   
 `W
-    Be sure to read help "rules" to see the rules of MARS.  
+    Be sure to read help "rules" to see the rules of Icewind Legacy.  
 `W
 `c-------------------------------------------------------------------------------
  
@@ -4483,13 +4692,13 @@ your own and players with no summon set.
 ~
 -1 Seraphim WIZLIST~
 `C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`X`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`X
-                    W I Z L I S T - To apply, send a note to Om or email to mars@wr3tch.org
+                    W I Z L I S T - To apply, send a note to Mask or email to icewindlegacy@gmail.com
 `C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`X`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`W=`C-`X
  
  .`O  ____________________________________`X
-`O / \       The Staff of M A R S        \. `X
+`O / \       The Staff of Legacy         \. `X
 `O|   |----------------------------------|.`X
- `O\_ | `C30 `W- Owner        -  `POm  `O        |.`X
+`O_   | `C30 `W- Owner        -  `PMask  `O      |.`X
 `O    | `C30 `W- Coders       -         `O     |.
 `O    | `C29 `W- Admins       -          `O    |.`X
 `O    | `C28 `W- PR/Security   -          `O   |.`X
@@ -4864,7 +5073,7 @@ Avatar Seraphim ITEM_PORTAL~
 ~
 0 Seraphim CLASSES~
 `c-------------------------------------------------------------------------------
-`C    The Classes of MARS
+`C    The Classes of Icewind Legacy
 `c-------------------------------------------------------------------------------
 
     `WThe following classes are available:
@@ -6622,7 +6831,7 @@ Seraphim Seraphim LOPES~
 
 `c-------------------------------------------------------------------------------
 ~
--1 Seraphim STORY HISTORY~
+-1 Seraphim SONKY~
 Wallace Sonky (Deceased), in his time created items (known as Sonkies)
 designed to keep the population of Ankh-Morpork down.  Sam Vimes was heard
 to say that "the housing shortage in Ankh-Morpork would be a good deal worse
@@ -6643,7 +6852,7 @@ own molten latex, producing a life-size, full-body Sonky.
 `C    THE WORLD OF E'DHORA
 `c-------------------------------------------------------------------------------
 `W
-      The world of E'dhora is one of magnificent contrasts and unexplained
+      The world of Faerun is one of magnificent contrasts and unexplained
       mystery.  A land  that has suffered much in the last millenium,
       victim of the activities of man and god, torn between the conflicting
       views of both groups.  The years before the cataclysm, after the gods
@@ -6654,7 +6863,7 @@ own molten latex, producing a life-size, full-body Sonky.
       possessing the ability to commune with her, that she cried out in
       pain, the gods heard her and responded -- the cataclysm occurred.
  `W
-      The cataclysm shook the face of E'dhora in ways mere words cannot
+      The cataclysm shook the face of Faerun in ways mere words cannot
       accurately describe.  Lands that were once joined were torn asunder,
       sent sailing through boiling oceans to land elsewhere.  Entire sets
       of countries sank beneath the heated waves, while in other areas
@@ -6665,7 +6874,7 @@ own molten latex, producing a life-size, full-body Sonky.
       from the cataclysm began to change the world, shifting men into beasts 
       and vice versa.
  `W
-      E'dhora is slowly recovering from the events of the past, what
+      Faerun is slowly recovering from the events of the past, what
       secrets she hides, what purpose the gods have for her lay sprinkled
       within the strands of fate.  What hero will rise to uncover these
       secrets?  To again rekindle the relationship between the gods and
@@ -6720,810 +6929,6 @@ own molten latex, producing a life-size, full-body Sonky.
 `O               - `zthe Winds of Change
 `O               - `zthe Fountain of Rapture
 `X
- 
- 
-`c-------------------------------------------------------------------------------
- 
-~
--1 Seraphim GODS IMMORTALS ~
-`c-------------------------------------------------------------------------------
-`C    THE GODS OF MARS
-`c-------------------------------------------------------------------------------
-`W
-    The gods gaze down upon the face of the world, their very
-    thoughts reality to those that live upon the surface.  The
-    greater powers, as they are known, govern the basic elements
-    of existance and see to it that all remains within some
-    semblance of balance.  Some directly oppose others, while a
-    few are more aloof.  Seldom have they ever agreed, on anything,
-    one of the rare times they did occured moments before the
-    cataclysm.  Who they are, or perhaps what they are, is more
-    of a mystery deciphered in the mused stories of the shamans.
-`W
-`G    ???`W, `G???`W, `G???`W, `G???`W, `G???`W, `G???`W, `G???`W, `G???`W, `G???`W, and the
-    enigmatic `GOm`W are spoken of often around warm fires,
-    tales for children in the darkness of the night.
-`W
-`R    Note:  `OSee also `Y- ???, ???, Om, the Elder God.
-`W
-`c-------------------------------------------------------------------------------
-~
--1 Seraphim ELDER 'ELDER GOD'~
-`c-------------------------------------------------------------------------------
-`C    THE LOST ELDER GOD
-`c-------------------------------------------------------------------------------
-`W
-      His story is lost in the folds of time, a whispered memory on the
-      lips of the attentive few.  Who or what it was is unknown, but it
-      is said he possessed a power far beyond most, if not all, of the
-      higher circle of gods.  Patron to the future GL Empire, this god
-      spawned the events that led to the creation of the artifacts and
-      what would eventually become the cataclysm.  In a time of struggle
-      and chaos, it would be the hand of fate that banished him from the
-      world to sit in a dark void forever.  Many of his people herald
-      his inevitable return, upon which havoc shall be wrought with
-      furious vengence.  His portfolio was quickly adopted and shared
-      among the 9 gods that remained, further defiling his memory.
- 
-`c-------------------------------------------------------------------------------
- 
- 
-~
-0 Seraphim CENALIN~
-`O-------------------------------------------------------------------------------
-`Y    CENALIN, THE SILVER EMPIRE
-`O-------------------------------------------------------------------------------
-`W
-  Little can inspire awe like lines of armored knights charging in unison
-  across a battlefield, shimmering in the light of day. Such is the effect 
-  the incredibly trained knights of Cenalin give.  Called the "Silver Empire" 
-  due to the silver mines and unique armor their knights wear, an alloy of 
-  silver and steel, this empire is one that is both feared and admired.
- `W
-  Cenalin is located on the continent of Solace.  The closest landmass is
-  Zandofen found to the north of Solace.  Alaris lies to the northeast and 
-  Lycandria is found east of the continent.  The lands of Solace are 
-  home to temperate forests, lush fields, mountainous ranges and deserts.  
-  Wonderfully hot summers, cool winters and moderate seasons in between 
-  lend near limitless possibilities to the people of this land. The empire 
-  itself is ruled via the Royal family and is directly protected by its 
-  elite force of knights known as the "Silver Storm".
- `W
-  The history of Cenalin begins like all others, shortly after the great
-  cataclysm, when the lands were torn asunder and the magical surges changed
-  people into all manner of creatures. The forested lands of Cenalin fell 
-  into madness with bands of men living like beasts and killing all who came 
-  upon them.  This behavior became known as Amens Sanquis and those that 
-  became affected, Sanquimen.  Those that remained sane maintained small 
-  cloistered villages, cutting back the trees in order to provide warning 
-  and rarely mingled with each other.
-`W 
-  Then without warning, one day the Sanquimen disappeared. The villages
-  contacted each other for the first time in decades and a gathering was
-  called; members of each village arrived at the clearing, fearful and
-  distrustful.  At this gathering, the Sanquimen chose to make their
-  reappearance, dropping from the trees like twisted shapes out of a
-  nightmare. One among them came forward and announced himself as Ceritus.
-  The madness of the Amens Sanquis still lingered about his eyes and in his
-  erratic movements but he had gained a measure of control.  He spoke about a
-  dream;  a place filled with fire and death where they would find a cure. He
-  led the Sanquimen, all of them, to this far away land of scorched ground.
- `W
-  They dragged forward five exotic women they took as captives from this land.
-  Ceritus took one of them and before the eyes of those gathered, he pierced
-  her heart with his blade. As her blood spilled from the wound, he bowed his
-  head and drank of the blood, calling forth a power that burned away the
-  madness of the Amens Sanquis.  Each woman, one by one, was sacrificed in
-  this manner and with each Ceritus grew in power and strength. The villagers
-  could only stand and watch, amazed and frightened by what they were
-  witnessing.
- `W
-  Ceritus became the first blood mage, leading the way for his Sanguimen to
-  follow.  These blood mages ruled the villages, every year demanding
-  sacrifices be made for them.  But power has a funny way of attracting
-  others, and it wasn't long before outside armies began attacking.  The
-  villagers were nearly helpless to defend themselves.  The blood mages
-  required more and more sacrifices of them, in order to maintain their
-  protection.  It wasn't long before the nearly empty villages were overrun.
- `W
-  The leader of this band, Arturos the Black, demanded a meeting with Ceritus.
-  Upon hearing Arturos' demands, the blood mages and the village men began a 
-  partnership. Ceritus became the head counselor to Arturos.  A select few of 
-  the men were chosen to join the blood mages, and learn the magic.
- `W
-  It was a strong alliance of blood and blade, one that might have lasted for
-  centuries.  But Ceritus was greedy for power and killed Arturos in an 
-  attempt to overthrow his dominion and seize his armies.  Arturos' men 
-  rebelled and tortured Ceritus to death in revenge. Blood magic became 
-  illegal to practice, the blood mages taking to the wild forests to hide as 
-  their ancestors once did.
- `W
-  When it exactly happened is not known, but out of the blood soiled 
-  wilderness came a man holding a crystal grail. It is said he possessed 
-  an aura that caused men to want to follow him and he went in turn to each 
-  little village, uniting them one by one. With the united villages he turned 
-  and marched the people into the wilderness away from the settlements they 
-  had built, to what many scholars believe to be the origin of the grail.  It 
-  was at that central spot that this man, one Jhaspur Bismark, built what 
-  would become the largest and most powerful city in all of Solace.
- `W
-  Voted king by those about him, he encouraged the study of magic and 
-  religion, building great temples to the gods.   Knights began pledging 
-  their swords to him, his armies grew, and his people prospered.  It was 
-  during this time the silver mines were uncovered and the "Silver Empire" 
-  was born.  Jhaspur was king for 50 years before dying and passing the 
-  grail to his son, Yamar Bismark.  Leadership of the empire has been in 
-  their family ever since.
- `W
-  As for the blood mages, most assumed the practice fell away, with the 
-  return of the gods and the control of magic.  It is something that very 
-  few Cenalins are willing to talk about.
- `W
- `W
- `W
- `G     Continent:    `WSolace
-`G      Government:   `WMonarchy
- 
- 
-`O-------------------------------------------------------------------------------
- 
-~
-0 Seraphim SORCIA~
-`c-------------------------------------------------------------------------------
-`g    THE SULLEN PLAINS OF SORCIA
-`c-------------------------------------------------------------------------------
-`W
-  The angry war cries from the nomads of the plains are something that would 
-  shake even the iciest berserker from his rage.  Masses of disenchanted 
-  folk of all races struggling to survive, battle hardened by the sheer act 
-  of living in a kingdom where treacherous beasts, shortages of food and water
-  and the occasional swarm of bandits raiding camps for supplies is a daily
-  worry and way of life.  To many people that have visited the few areas
-  of Sorcia that are permanent, living here is worse than even treks into
-  the dark continent.
- 
-  Sorcia shares the continent of Lycandria with two other kingdoms,
-  Alkaan'Caal to the north across the mountains of enlightenment,
-  and Arcavo to the south.  The landscape of Sorcia is homogenous from top to
-  bottom, a dry and cracked plainscape with sparse growths of dry grasses and
-  the random tree or briar bush.  The climate of this vast wasteland varies
-  with one's location within the actual kingdom, ranging from dangerously
-  hot near the northern coast to unbearably cold far to the south near the
-  border of Arcavo.  Storms and tornados are common and are the cause of the
-  nomadic nature of the citizens here.
- 
-  The actual history of Sorcia is mostly hearsay, but the story is passed
-  on from generation to generation in hopes of preventing another cataclysm
-  such as that which was experienced some 500 years ago.  The area of Sorcia 
-  was the actual location of the significant battle that caused the cataclysm
-  that all but destroyed the entire world and set the sea to boiling.  On
-  the plains of Sorcia the mages gathered to wage their battles, hurling
-  magics beyond description at each other.  With the combinations of magic
-  the land was literally torn asunder and all life on Sorcia was reduced to
-  mere ashes that were blown away by the explosions that followed.
- 
-  The release of magic exploded in all directions, freezing the south of
-  the combat site and burning toward the north.  Massive mountains grew
-  out of the soil and volcanoes sprung into being.  Over a year passed
-  before those few that survived again stepped forth into the open.  What
-  they saw was a land devoid of life and possibilities.  How they survived
-  for a year is unknown, but some say cannibalism among other things
-  was a major factor.  The first few people that strode out into the open
-  found themselves immediately set upon by massive beasts of strange and
-  intense natures.  Together they fought back the creatures and when the
-  dust settled, they found a glove in the midst of a burnt crater, in the
-  exact location of the origin of the magical cataclysm.
- 
-  They gazed at the glove for a moment before the bravest of them, once a
-  man, now some sort of ethereal shadow, Liazus the Faint, approached and
-  donned the item.  It was said that his scream could be heard across the
-  face of Sorcia as it literally bonded to him.  With this glove burned
-  into his hand, he led a series of campaigns grouping the various nomadic
-  tribes and placing them all under a single flag.  His rule was extremely
-  violent and all who approached to conquer him were felled.  Though he
-  allowed the various tribes to move at will, he decreed that they bind
-  together in times of danger.  Once bitter enemies would fight shoulder
-  to shoulder to protect Sorcia, such was the wisdom of the first Grand
-  Chieftain of the Plains.
- 
-  It is whispered that Liazus still walks the land.  Others say upon his
-  death one of his men took the glove and continued to rule in his place.
-  The actual location of the artifact is unknown, but when strife befalls
-  the kingdom, one can be certain that a shadow creature wearing the glove
-  will be seen ahead of the combined armies of nomadic scavengers, their war
-  cry echoing across the plains.
- 
- 
-`G      Continent:    `WLycandria
-`G      Government:   `WLimited Anarchy
- 
- 
-`c-------------------------------------------------------------------------------
-~
--1 Seraphim SOLACE~
-`c-------------------------------------------------------------------------------
-`C    THE CONTINENT OF SOLACE
-`c-------------------------------------------------------------------------------
-`W
-      If there is a land of perfection in this forsaken world, it would
-      have to be Solace.  The fourth largest continent boasts wonderfully
-      hot summers, and cool tolerable winters.  Between the seasons are
-      temperate and enjoyable.  One cannot be sure if the pleasant nature
-      of the land is reason for the honorable society that has sprung forth
-      or if the honorable society is the reason for the pleasant lands.
-      Due to its central positioning, it suffered the least effects from
-      the magical fallout, its people, though somewhat changed, were the
-      least damaged.  The land is incredibly fertile, producing large
-      amounts of grain, fruit and animal products.  Its people eat very
-      well, in comparison to other lands.  The continent is rich in ores,
-      mostly silver and mithril, and its citizens take full advantage of
-      this wonderful bounty.
- 
-`c-------------------------------------------------------------------------------
- 
-~
-0 Seraphim ALKAAN'CAAL ALKAANCAAL~
-`c-------------------------------------------------------------------------------
-`R    THE FIERY WASTES OF ALKAAN'CAAL
-`c-------------------------------------------------------------------------------
-`W
-  They arrive in swarms like locusts, clouding the sky and shedding a dark
-  shadow upon the land.  Their battle cry echoes against the mountain face
-  and ripples over the hills onto the desert sands.  Behind this one feels
-  the thunder of thousands of feet charging forward.  What madness is this
-  that terrifies so?  None other than the elite draconian wingmen combined
-  with the massive minotaur infantry from the desert sands of Alkaan'Caal.
- 
-  The kingdom of Alkaan'Caal, known as the fiery wastes, is located on the
-  continent of Lycandria north of Sorcia.  Unlike Arcavo, there is
-  an actual physical border separating it from Sorcia, a mountain range
-  known for its violent and often active volcanoes.  The region is primarily
-  desert wastes, with some sparse growths near the waters edge, though even
-  this is rare and seldom salvageable by the people that live here.  The
-  climate is tremendously hot year round, with violent storms and intense
-  droughts being commonplace.  Food is always scarce and difficult to find,
-  making it oft times more valuable than gold or silver, even platinum.
-  Despite the obvious troubles, the people that live here do survive, moving
-  from place to place, following the light rains that do come as well as
-  the occasional water hole.  There is evidence of some type of trade, but
-  with what or whom is completely unknown.
- 
-  The history of this place began simultaneously with that of Sorcia and
-  the even more southern, Arcavo.  When the magical schools went to battle
-  on the plains of Sorcia some 500 years ago, their magics combined and
-  released a massive amount of energy upon the land.  What energy spread
-  north scorched the lands, burning all life it came in contact with to
-  ashes.  The land itself ruptured and from the very plain rose mountains
-  of incredible heights, volcanoes spewing their fiery storm into the sky,
-  blanketing the lands in ash, soot, and lava.
- 
-  Those that were not incinerated by the flames and lava of the cataclysm did
-  come together for survival, but unbeknownst to them, their trials were just
-  beginning.  Unlike most places, the magical residue of the cataclysm did not
-  fade away in Alkaan'Caal.  It hovered in the air like a cloud of some sort,
-  unseen and unheard.  The few people that came to the surface after the major
-  tremors and shifting had ceased, were totally unaware that something had
-  begun to take hold of them, changing them and altering them permanently.
- 
-  Among them walked a man known as Alkaan.  He was an apprentice wizard before
-  the cataclysm and did not take part in the battles in Sorcia.  His lack of
-  involvement led to his overall survival.  Along with the others, they combed
-  the desert sands in search of survivors and food.  Days passed and water and
-  food could not be found.  The weaker of them collapsed in death, the others
-  setting upon them like ravaging vultures.  They could not see the sickness
-  in their actions, the magic ate away at their flesh, changing them into what
-  they truly were within.  Alkaan knew something was amiss, but he could not
-  place his finger upon just what.  He never did eat the fallen.
- 
-  It was some time later, a few days perhaps, maybe a few weeks, that the
-  group had dwindled down to its last few dozen people.  They were starving,
-  parched, nearing the edge of madness.  Most of them had lost their hair,
-  others had strange growths from their forehead, confusion and panic set in.
-  Alkaan was unchanged and the others hated him for it.  They conspired
-  against him and in a fit of desperation, he fled one night when they all
-  slept.  For 10 days and nights Alkaan wandered the desert alone, feasting
-  off of corpses and muddy water holes he happened across.  All would change
-  on the 10th night of his wanderings, when he collapsed into a deep coma,
-  and dreamt of a massive bird of pure fire, whose wings extended as far as
-  the horizon.  From this bird fell a massive pinion toward the ground that 
-  exploded in a beautiful shower of colored flames that illuminated the night 
-  sky.
- 
-  How long he slept was unknown, even to Alkaan, but when he was awakened
-  he found himself drastically altered.  His clothing was charred and his
-  face and features were grotesque and awkward.  His hands and skins were
-  much larger, scaled.  He was remarkably calm and he stood to examine his
-  body.  He had changed, into a draconian, a reptilian man with the
-  qualities of a dragon.  He found himself immune to the effects of the
-  terrible heat and though his hunger soared, he was able to handle it much 
-  more easily.  At his feet, nearly buried by the sand was the pinion from 
-  his dream, bathed in a strange series of colored flames.  This he took 
-  bravely into his claws and promptly called his own.
- 
-  He flew into the sky, his newfound instincts having alerted him of his
-  wings and the ability to soar.  Toward the mountains he flew, where he now
-  saw his former people in the throes of agony, some already changed into
-  draconians, among other races, some still completely dehydrated humans.
-  With his own magical powers, and that of the phoenix pinion, he rallied
-  the few groups of his people together and began anew the scouring of the
-  lands.  Those that became draconians took to the air behind Alkaan, he
-  that possessed the pinion.  Those that did not formed roving bands on the
-  desert sands.  They were breathtaking to watch.  Together they raged on
-  the desert, fighting back the irrational beasts that climbed out from the
-  bowels of the world, and collecting those people that still huddled in
-  dark places, hiding from the cataclysm.
- 
-  Upon his death, his minions gathered around.  A young and thin draconian
-  stood by her former liege and wept tears that fell upon his reptilian
-  frame and burned him.  The phoenix pinion burst into flames but was not
-  consumed.  The young draconian took the pinion into her hands and it was
-  so that the torch of leadership was passed.  Since then it has been a
-  tradition, that he or she that holds the pinion would rule the desert
-  wastelands until the firebird would return home for it.  The land was
-  later called, Alkaan'Caal, in solemn remembrance for those that calmed
-  the storm and made life in the wastes bearable.
- 
- 
-`G      Continent:    `WLycandria
-`G      Government:   `WChosen Scions
- 
- 
-`c-------------------------------------------------------------------------------
-~
-0 Seraphim ARCAVO~
-`c-------------------------------------------------------------------------------
-`W    THE BARREN TUNDRA OF ARCAVO
-`c-------------------------------------------------------------------------------
-`W
-  Mouths agape, frothing with foam and saliva.  Teeth gnawing the wood of
-  their shields as others, in like fury, bang their axes and swords against
-  their chests, armor and shields.  If it sounds like madness then you are
-  just beginning to understand what it is like to stand before the armed
-  masses of one of the many clans of berserkers from Arcavo, the Ice lands.
-  It is perhaps to the benefit of all others that the clans are not truly
-  unified, for if they were, the world would have much to stress over.
-`W
-  Arcavo exists as the southern most country upon the incredibly large
-  continent of Lycandria. It borders the kingdom of Sorcia which lies 
-  northwest, Alaris and Solace lies west of the continent.  Arcavo is a 
-  quiet, barren place of barbaric men, dangerously vicious beasts, and 
-  a climate of constant sub-zero temperatures.  Violent storms come and 
-  go, and frequent shifts of ice plates are a way of life.
-`W
-  The history of Arcavo is irrevocably intertwined with that of Sorcia
-  and Alkaan'Caal.  At the moment of the cataclysm, when energies were let
-  loose to tear the entire world asunder, the lands of Arcavo were created.
-  Pure streams of cold air and ice erupted from the ground and flooded the
-  southern lands, freezing it permanently, same as Alkaan'Caal far to
-  the north was set ablaze.  Those that were not frozen immediately huddled
-  together in chilled masses, praying to gods that would not help them.
-`W
-  In time those that huddled together were less afraid and entered the
-  frozen wastes together.  Each group, separated by miles, formed amongst
-  themselves clans, with leaders and various rituals.  The lack of gods led
-  to the rise of shamans and their quasi-magical actions.  Again life was
-  found amidst the plateaus and tundra of the ice lands.  But things would
-  not be so simple.  In time the clans met with one another, and as food
-  and clean water was so difficult to find, they were soon at war with one
-  another and the lands wept tears of crimson blood.
-`W
-  For many years a constant series of wars took place.  Clans were
-  nearly exterminated, others rose in power, only to fall with the coming
-  winter.  Food was scarce, and the warring made it even more difficult to
-  find food.  It was during an extremely brutal winter, the year is not
-  known, however it is known the clans lay on the verge of starvation and
-  destruction when each man felt, simultaneously, a pulsing warmth coming
-  from the center of Arcavo.  As though controlled, they all rose and
-  donned their warmest furs and set out, clans from each direction toward
-  this location.
-`W
-  Each clan arrived from different directions and stood atop the plateau
-  gazing down upon a small valley amidst the snowy heights where there stood
-  a single man who held in his hand a small, glowing stone that pulsed to the
-  same beat as the warmth they were feeling.  Each stood there in awe, gazing
-  upon the stone with a strange reverence.  In the hours to come they would
-  be led to a massive cavern where a huge feast was set out, served and
-  prepared by the clan of this mysterious man with the glowing rock.  Each
-  clan sat down and feasted, laughing and drinking mead and telling stories
-  of valor.  They traded goods and clothing, food and other such things.
-  All were happy and joyful, save one man that coveted the stone, Faias.
-`W
-  Towards the end of the evening when all were giggling and singing in their
-  drunken stupors and preparing for sleep to head out to their own lands in
-  the tundra, Faias crept forth, axe in hand to kill the man that held the
-  pulsing stone.  With a war cry common among those of the clans, his lifted
-  the axe and slammed it squarely into the chest of the man.  His lifeless
-  body slumped and the stone rolled out of his palm and onto the floor where
-  it glowed brighter than it had before.  Faias took the stone into his hand
-  and held it up towards the others in hopes of controlling them, as the
-  stranger had.  Instead he saw himself staring into the mad, insane eyes of
-  his former clansmen.  They began to stir wildly, chewing on their shields
-  and banging their heads into the walls of the cavern.
-`W
-  Faias found himself in awe of the sheer ferocity of his own people and
-  dropped the stone, preparing to flee.  It was then that a man known among
-  the barbarians as Amrith leapt forward with axe in hand.  His eyes were
-  enraged and his mouth overflowed with foam, it was as though he were rabid
-  and growing in size.  They two fought viciously, for though Faias was
-  afraid he was still a southlander, and stronger than oxen.  Amrith cared
-  nothing for Faias' skill and walked into the axe as though it were nothing.
-  Faias was afraid, unable to face this berserk beast that ignored the power
-  of the axe on his shoulder.  Soon after Faias fell to the ground...dead.
-`W
-  The stone, one of the ten great artifacts, aptly named the Heart of the
-  World was chosen to rest at a special place within the ice basin.  Every
-  other month, the stone would pulse and the tribes would then rise and come
-  to this ice basin and meet one another, greet one another and trade their
-  goods and items with one another, feasting and celebrating.  The clans do
-  still war every now and again, however it is different now. Upon that
-  fateful day, when the stranger was killed, the stone released something
-  within these southlanders...an unnatural rage that sends them into a rage
-  beyond mere description...it was upon that fateful night, berserkers were
-  born unto the world...
-
-`W 
-`G      Continent:   `W Lycandria
-`G      Government:  `W Clan Chieftains
- 
- 
-`c-------------------------------------------------------------------------------
-~
-0 Seraphim TYREAN~
-`c-------------------------------------------------------------------------------
-`b    TYREAN, EMPIRE OF THE WHITE FLAME
-`c-------------------------------------------------------------------------------
-`W
-  Imagine if you will a single mass of soldiers, hundreds of thousands in
-  number, yet totally and completely focused toward a single goal.  Each
-  person in perfect sync with the other, each person in absolute under-
-  standing of their position.  This only begins to touch the essence of
-  what the White Flame encompasses.  Each man, woman and child are ranked
-  in this totalitarian empire in which every registered person is given
-  training and rank within the armed forces.  They are relentless and will
-  never surrender, when a leader falls in battle, immediately another will
-  rise.  There is a terrible beauty about it all.
-`W
-  The small kingdom of Tyrean is located at the northern end of Alaris and
-  borders the domineering kingdom of Estmina.  The two kingdoms almost
-  never cease in their war over border definition, natural resources, and
-  control of the continent of Alaris itself.  The continent itself is
-  located northeast of Lycandria, while its southern tip is also a few
-  hundred miles northeast of the northern edge of Lycandria.  Tyrean
-  enjoys a wondrously warm climate year round, due mostly to the close
-  proximity to Alkaan'Caal.  Seldom are there dangerous storms, and they
-  enjoy a rich bounty of animal life, cattle and a variety of fruits and
-  grain.  The military nature of Tyrean, and the rapidly growing population
-  keeps most of the resources in house and their trade is very limited.
-`W
-  The history of what eventually became Tyrean is clouded, stories tainted
-  by time and myth.  The most popular story begins, of course, moments
-  after the cataclysm rocked the cradle of the world.  When all would run
-  and cower in caves beneath the surface away from the fires and magic in
-  the sky, their rose a single child.  The name of the little girl is lost
-  in time, but it is said her fury at the gods for their judgment defied
-  even the mandates of the gods of war, chaos and death.  The gods, though
-  silent, admired this child and blessed her purity of self.  In a moment
-  when all around her were succumbing to the alterations of the magic, she
-  remained unchanged, eternally lost in her fury.
-`W
-  When many of the changes had occurred, and people calmed in their screams
-  of agony, the gods quietly bestowed upon this child a final gift.  The
-  gods set her voice upon the cymbals of war, and her very words mandated
-  the sounding of thunder.  People crept from their holes and crypts to
-  listen to this child.  The years that followed, called "The Gathering"
-  to the people of Tyrean, were spent unifying everyone.  The child in
-  her purity of thought treated everyone as equals, regardless of race,
-  sex or heritage.
-`W
-  The people trained then, each ranked according to detailed scriptures.
-  Man and woman, child and senior, walked together as a single wave.
-  Ahead of this growing army walked a single child.  Their movement
-  swept across the face of the land, destroying the utterly defiled and
-  uniting the few last bands that scavenged like animals.  The child was
-  absolute in her resolve and accepted no weakness.  Her essential use
-  of fairness and justice made her a hero among the people.
-`W
-  As with all godly gifts, the child's might was temporary, and upon
-  the declaration of the Empire of Tyrean, she collapsed to the dismay
-  of the army.  As they were trained, one immediately stepped up to
-  assume the command, chaos was not known among them.  He stood over
-  the body of the child and all watched as she erupted into a white
-  flame that consumed her body.  The man reached into the flame without
-  fear and was consumed as well, though not burned.  In a brilliant
-  flash, the child was gone, and all that remained was this man, palm
-  outstretched with an eternally burning flame dancing thereon.
-`W
-  This young man, named Asim, would found the empire and through him
-  massive cities were erected, and societies of complete and utter
-  order.  His rule was not peaceful however, as a growing force to
-  the north moved south in efforts to purge their beliefs.  Waving
-  the banner of Estmina, these soldiers marched into the lands of
-  Tyrean expecting an easy conquest over the simple villages of the
-  newly found Empire.  Little did they know that the children and
-  women they scoffed at were as well trained as they.
-`W
-  The war raged on for years, neither side faltering to the other.
-  The soldiers of the White Flame fought relentlessly and without
-  fear.  All would be decided on a fateful night when General Asim
-  would meet with the leader of the Estmina forces and pursue then
-  honorable combat beneath the blanket of the sky.  The battle raged
-  on for a complete moon after which both men, in unbridled skill and
-  passion, struck one another dead there before the agape maws of
-  two armies.
-`W
-  As though a herald of change, the armies of Estmina shuddered in
-  relative confusion, those of Tyrean adapted immediately and a young
-  woman stepped forward to assume command.  Before further battle
-  could occur, the two bodies of the honorable generals exploded in
-  a shower of white flame, a wall rose and spread over the assumed
-  border of the two Kingdoms, a wall neither side could pass.  The
-  war had ended briefly, though each time the wall faded, the two
-  sides would again find themselves locked in combat, neither truly
-  losing, neither truly winning.
-`W
-  The young woman who stepped forward after the death of Asim was
-  said to have possessed the flame, and another after her death.
-  The truth of the matter has been lost in the annals of time.
-  What is sure, is that the two Kingdoms, of Estmina and Tyrean,
-  will never rest, each vying for control over the continent, each
-  matching the other evenly.  Rumors are spreading of a possible
-  expansion into the sea for those of Tyrean, but none can be
-  certain of the fact of that matter.
-
-
-`G      Continent:    `WAlaris
-`G      Government:   `WTheocracy
-`X
-`X
-`c-------------------------------------------------------------------------------
-~
-0 Seraphim ESTMINA~
-`g-------------------------------------------------------------------------------
-`G    THE COLLECTED LANDS OF ESTMINA
-`g-------------------------------------------------------------------------------
-`W
-  The very trembling of the ground heralds their approach.  Lines a mile
-  long marching in complete unison towards their goal.  Those that do not
-  join with them are decimated, those that do are trained and merged into
-  the body of the army.  This could accurately describe the gathered force
-  of Estmina and her military.  Perhaps the only actual confederacy in the
-  world, they survive by conquering and assimilating all towns and people
-  on the continent and unifying them under a single banner, that or
-  destroying them outright.
-`W
-  Located on the southern end of Alaris, the collected lands of Estmina are
-  quite possibly the largest empire on the face of E'dhora.  Estmina
-  shares the continent with the kingdom of Tyrean and the two are often
-  at war over resources and border disputes.  The continent itself is
-  located west of Lycandria, and its northeastern tip is also a few
-  hundred miles west from the southwest edge of AlkaanCaal. Estmina
-  enjoys temperate weather all year round and seldom are there any
-  seriously powerful weather conditions, on either extreme.  The land
-  of Alaris is rich in grain and cattle, and trade between the smaller
-  states of the confederacy are extremely profitable.
-`W
-  The history of Estmina is a simple one, filled with tales of battle and
-  constant war.  The story begins as most others, directly after the major
-  cataclysm that sent the land that is now Alaris hurtling through the once
-  boiling oceans toward the northeast.  The people huddled beneath the
-  surface of the land, praying in vain to the gods they had disrespected.
-  The gods turned their backs on the people, all save those that cared for
-  death and war and mayhem.  Of those praying, an avatar appeared before
-  the  most faithless of them all.  Unto him was bestowed an orb which held
-  a soft glow and was warm to the touch.  His mind was filled with thoughts
-  of battle, of an empire which spread from coast to coast.  Through him
-  the people saw power and possibility, a crusade had begun.
-`W
-  Guided by the corruption of the orb this man, who's name has long since
-  been forgotten, though many scholars say it was Estmina, began a long
-  series of campaigns against the few collections of people.  He taught
-  them the meaning of unity, though corrupt, and that conquest meant their
-  survival.  Each different set of people were given rules and regulations
-  and left alone to survive.  States of little nations were formed, all under
-  the banner of Estmina.  Those that resisted were met with force and
-  wars ensued.  This continued onward for years upon years.
-`W
-  In time this man, walked ahead of a massive army.  Some areas of the large
-  continent of Alaris put up adequate defenses, others were exterminated in
-  mere weeks.  Groups of people either joined or died on the spot.  Labeled
-  a madman his campaigns spread far toward the southern border of the lands
-  where the records say he set down to sleep and never woke.  One of his
-  generals were said to have acquired the orb thereafter and continued the
-  campaigns south.  Again they met with opposition, but this time it was of
-  a different and more drastic nature.
-`W
-  They met with a force of people who huddled beneath the banner of the first
-  empire of Tyrean.  These people were not like the small hamlets and villages
-  previously encountered, these people were well trained and their military
-  strategy was incredibly acute and effective.  Estmina and Tyrean went to
-  war immediately.  Losses on both sides were massive, at times Estmina's
-  troops would have to retreat, other times Tyrean had to flee.  The two
-  forces would not surrender to one another, however, and battle raged on for
-  almost twelve years before a change would occur.
-`W
-  By now the casualties were tremendous, more so on the side of Estmina, as
-  even the children of Tyrean were trained in some sort of combat.  What
-  would be called a milestone in their struggles occurred on the evening of
-  the White wolf, when the twin moons were full and their light illuminated
-  the battlefield.  The generals of both sides came to the front, each one
-  possessing an item of tremendous power.  On the side of Estmina, General
-  Uraithi held in his hands the orb given to the people of Estmina so long
-  ago, and on the side of Tyrean, in the opened palm of General Asim, was
-  a beautiful, ever-burning, white flame.
-`W
-  The two charged forward, surrounded by the energies of their respective
-  artifacts.  What occurred could only be spoken of as poetry, so beautiful
-  was their fury that men on both sides wept.  For 30 days they did battle
-  taking only the briefest of rests to eat, drink and recuperate, which
-  was allowed as battle was a noble act in those days.  Neither man would
-  give an inch, neither asked for quarter.  Each man on both sides watched
-  in awe at the uncompromising ferocity of both until it happened...
-`W
-  Simultaneously, both men who were so equally matched, leapt forward with a
-  killing blow, both moves struck home and the men fell atop one another in
-  the center of the field.  The silence was so, that a leaf falling in the
-  distance echoed as would thunder.  For the first time, perhaps, in all of
-  history the two artifacts also lay there, together, touching one another.
-  In what could be called a silent explosion, both bodies were incinerated
-  and where the artifacts lay, a massive wall of white flame erupted from
-  the ground, blocking both groups from one another.  On the side of those
-  from Estmina, confusion and anger set in.  That is until one man stepped
-  forward with the orb in hand.  Lord Yreal Hanoud.  With the orb he stepped
-  up and took command of the confederate states of Estmina.
-`W
-  Since that day, the two forces have fought constantly, as the barrier of
-  white flame is not eternal.  Each time the two kingdoms would collide as
-  though compelled to do so, drawn toward each other.  Oft times it would
-  be Estmina that began the skirmish, but occasionally, Tyrean would cross
-  the border to wreak havoc upon the unsuspecting enemy.  What is a constant
-  however is that at the end of each major battle, before either side can
-  eliminate the other, a massive wall of white flame erupts, separating the
-  two people.  Whether or not this is done intentionally by the people of
-  Tyrean is unknown.
-`W
-  The collected lands of Estmina thrives to this day, its armed forces a 
-  brigand of madman of various races and skill levels.  At the end of each
-  skirmish, that wall of white fire is again erected and used to shut out
-  the people of Estmina.  Currently there are rumors of expansion into the
-  boiling sea, one thing is for sure, these people thrive on conquest and 
-  control.
-`W
-`W
-`W
-`G      Continent:    `WAlaris
-`G      Government:   `WCouncil of Generals
- 
- 
-`G-------------------------------------------------------------------------------
- 
-~
-0 Seraphim 'GL EMPIRE' EMPIRE~
-`c-------------------------------------------------------------------------------
- `r   THE GL EMPIRE
-`c-------------------------------------------------------------------------------
-`W
-  Control.  There would be no other way to describe the sheer ruthlessness
-  of these people.  They washed over the land like a wave, immediately
-  asserting power of those people they encountered, and utterly wiping out
-  those that resisted.  Unlike Estmina, they do not compromise, they do
-  not negotiate.  Those that do not comply are destroyed.  These soldiers
-  possess frightening magics and technologies, things unseen anywhere else
-  in the world.  Their motto is simple and unyielding in reproach,
-  "Those that oppose the Empire will die!"
-`W
-  The GL Empire is primarily located on the island continent of Zandofen,
-  though rumors abound of them having already spread to the islands
-  sprinkled all about.  Relatively distant from all other Kingdoms, the
-  Empire is both protected and confined.  The sea, the only entity they
-  have yet to truly master, keeps them at bay, perhaps to the benefit of
-  the entire world.  The climate of Zandofen is strangely moderate for
-  being so far north, many will say due to the strange meta-magics used.
-  Their resources are plentiful and the people, though chaotic, rarely
-  want for much.  What drives them to conquest, then, must be the sheer
-  thrill of victory over others.
-`W
-  The history of the GL Empire is the strangest of all the known Empires
-  in that it speaks of blasphemous possibilities, none of which can be
-  proven, but none of which could be disproved.  Of these stories, there
-  are many variations, but the most popular of them begins not after the
-  cataclysm as with the others, but many centuries before.  It has
-  been told that in the times lost, there were eleven great gods that
-  held mandate over the heavens and the world of E'dhora below.  Of these
-  eleven, one fighter-god was favored by a select group of people upon 
-  which he bestowed the crafts and technologies of heaven.
-`W
-  The other gods in their anger would manufacture 9 artifacts to spread
-  throughout the rest of the world to match that of these people.  What
-  would occur was a bountiful golden age, of philosophy and invention
-  that would allow mankind to grow and flourish.  In the time leading
-  up to the cataclysm, the elder god knew the time of man was coming to
-  an end, and against the wishes of his brethren set his favored few
-  apart and told them of the disaster to come.  Holed within a section
-  of land, the god taught them great technologies that would protect
-  them from the coming storm, with this he gave them a single relic, an
-  emblem in the shape of a sun.  To one man alone she whispered its
-  meaning...
-`W
-  The cataclysm would hit furiously, and the land now known as Zandofen
-  resisted the storm and instead of vanishing from the world went
-  hurtling through the sea to land far apart from the other lands.  The
-  people did suffer, so thorough was the power of the gods, but they
-  did not lose as much as many would think, and were protected somewhat
-  from the altering of the magical residue.  The other gods were insane
-  with rage when they found out of the interference of the elder god,
-  they bound together to banish him.  For a time the gods warred among
-  themselves, the reason for their silence to the world.  Their war did
-  much to spread the waves of magical residue that altered the world.
-`W
-  A young girl, it is said, stepped forth among the gods and with but
-  a single word, ended the war.  It was said her judgment banished the
-  elder god, and set the others to resurrecting their faith among the
-  people.  For the first time the people of the GL Empire were alone,
-  their patron having been banished.  Within them grew a hatred for the
-  world, a need to control it, to show the other gods the might of the
-  lost.  Armed with the technologies saved from the cataclysm and the
-  mysterious sun emblem, they began a ravenous campaign that took the
-  complete control of Zandofen.
-`W
-  Massive cities and mega-complexes grew, sign of their furious rage
-  and knowledge.  Strange flying devices and meta-magical equipment
-  raged supreme.  The Empire have never seen defeat, and those few that
-  have ever reached their shores were utterly annihilated.  It is said
-  campaigns into the mysterious Abbadon have begun.  What is known for
-  a fact is that the Empire waits for their chance, they lie silently
-  as would a cat who awaits the mouse.  The question remains, is the
-  world prepared for their conquest?
-
-`W
-`G      Continent:    `WZandofan
-`G      Government:   `WComplete Dictatorship
- 
- 
-`c-------------------------------------------------------------------------------
-~
--1 Seraphim ALARIS~
-`c-------------------------------------------------------------------------------
-`C      THE CONTINENT OF ALARIS
-`c-------------------------------------------------------------------------------
-`W
-      Alaris, the second largest continent of E'dhora, is a beautiful and
-      fertile land with lush rolling hills, vast forests, and miles upon
-      miles of farming lands growing most anything imaginable.  It has a
-      very pleasant climate year round, which leads to an abundance of
-      food and natural resources.  While the populations of the people and
-      animals are continually growing, it is safe, more so than any other
-      continent, from losing its stores of supplies.  Sharing its land
-      between two kingdoms, Alaris sees her share of war and battle, but
-      if the blood spilled on her naturally dark soil is harmful, she is
-      reluctant to say.  Local folklore, in fact, speaks to the contrary,
-      the blood enriches the soil, and in such, her people.
- 
-`c-------------------------------------------------------------------------------
- 
- 
-~
--1 Seraphim LYCANDRIA~
-`c-------------------------------------------------------------------------------
- `C   THE CONTINENT OF LYCANDRIA
-`c-------------------------------------------------------------------------------
-`W
-      Affectionately called "The Seat of the World", Lycandria is by
-      far the largest continent on the face of E'dhora. It is the 
-      location of the cataclysm's beginning, and the home to the three 
-      kingdoms of Alkaan'Caal, Arcavo, and Sorcia.  Lycandria is a 
-      truly damned land, forsaken by the gods and relatively without 
-      any resources and natural life.  Far to the north it blazes in 
-      a relative inferno, vast deserts and volcanoes, violent storms 
-      and that dry ever-present heat.  Far to the south it shivers in 
-      the utter cold of Arcavo.  Snow and ice are commonplace there, 
-      blizzards and other terrible storms occur almost daily.  Those 
-      that live there must huddle together for warmth and travel from 
-      place to place just to search for food.  Finally, there is Sorcia.  
-      To the world it is ground zero, scorned due to the history it has
-      in relation to the problems of the world.  Sorcia is both hot
-      and cold at the relative borders, vast wastelands of cracked
-      soil and sparse growths of inedible plants.  It is true, this
-      place is forsaken, scorned, and hated.
  
  
 `c-------------------------------------------------------------------------------
@@ -7998,17 +7403,13 @@ Seraphim Seraphim XYZZY~
 `C    CALENDAR
 `c-------------------------------------------------------------------------------
 
-`W    The calendar of E'dhora has eight months.  The winter months are
-    Winter and the Frost Giant, the spring months are the Spring and Nature,
-    the summer months are the Sun and the Heat, while the autumn months
-    are the Grand Struggle and the Shadows.
-
-    Each month has seven weeks of six days each.  They are named
-    the Moon, Deception, Thunder, Freedom, the Great Gods and the Sun.
-
-    There are exactly seven weeks in each month.  Since this conveniently
-    makes the calendar so regular, the weeks also have names; Darkness,
-    Tears, Toil, the Dragon, the Shadows, the Battle and Atonement.
+`W   The Calendar of Harptos was the calendar used across most of Faerûn. 
+    It was created by the wizard Harptos of Kaalinth, although most people 
+    associate the word "Harptos" with the calendar. It was split into twelve 
+    months, each lasting three tendays (or thirty days). There were an 
+    additional five days that fell between months, bringing the total number 
+    of days in most years to 365. The year starts with Hammer and ends with 
+    Nightal.
 
     `RNote: `OSee also - `Yseasons
 
@@ -8056,20 +7457,24 @@ Seraphim Seraphim XYZZY~
 `C    SUNRISE  SUNSET  SEASONS
 `c-------------------------------------------------------------------------------
 `W
-    The sun rises and sets at different times on the world of E'dhora,
+    The sun rises and sets at different times on the world of Toril,
     depending on the season.  The hours of sunrise and sunset are as
     listed below.
 
-    Month           Sunrise      Sunset
-    -----           -------     -------
-    Winter           8  8am     16  4pm
-    Frost Giant      7  7am     17  5pm
-    Spring           6  6am     18  6pm
-    Nature           5  5am     19  7pm
-    Sun              4  4am     20  8pm
-    Heat             5  5am     19  7pm
-    Grand Struggle   6  6am     18  6pm
-    Shadows          7  7am     17  5pm
+    `GMonth           `YSunrise      `OSunset
+    `P-----           -------     -------`X
+    `GHammer           `W9  9am     16  4pm`X
+    `GAlturiak         `W8  8am     17  5pm`X
+    `GChes             `W7  7am     18  6pm`X
+    `GTarsakh          `W6  6am     19  7pm`X
+    `GMirtul           `W5  5am     20  8pm`X
+    `GKythorn          `W5  5am     20  8pm`X
+    `GFlamerule        `W4  4am     21  9pm`X
+    `GEleasis          `W5  5am     20  8pm`X
+    `GEleint           `W5  5am     20  8pm`X
+    `GMarpenoth        `W6  6am     19  7pm`X
+    `GUktar            `W7  7am     18  6pm`X
+    `GNightal          `W8  8am     17  5pm`X
 
     `RNote: `OSee also - `Ycalendar
 
@@ -8177,230 +7582,6 @@ An up-to-date list of flags can be obtained by typing
 An up-to-date list of position flags can be obtained by typing 
 ? Furniture 
 ~
-0 Seraphim DRACONIAN~
-`c-------------------------------------------------------------------------------
-`C    DRACONIAN
-`c-------------------------------------------------------------------------------
-`W
-    A fearsome and secretive race, the true origin of the draconian is 
-    still a mystery to the inhabitants of E'dhora.  Thought to be created 
-    by a magician, draconians have become a large part of the population 
-    in the realm.  Moderate sized beasts that tower over smaller races, 
-    draconians resemble a more man-like version of a dragon.  The tail of 
-    the draconans may help them on the battle field, but when they aren't 
-    fighting their quick temper causes them trouble since the world isn't 
-    often tolerable to their quick remarks.  A physically strong race 
-    indeed, the draconians are as intelligent and deadly with magic as 
-    they are with a sword or spear, making them one of the most feared 
-    creatures in all of E'dhora.  
-`W
-    Draconians are extremely skilled soldiers and hunters.  Others are well
-    studied in the ways of mages and elementalist.
-`W 
-`c-------------------------------------------------------------------------------
-~
--1 Seraphim CONTINENTS~
-`c-------------------------------------------------------------------------------
-`C    CONTINENTS
-`c-------------------------------------------------------------------------------
-`W
-    At the time of the Day of Absolution five continents were formed that 
-    make up the land masses of E'dhora.  Thousands of uncharted and unnamed 
-    islands also became scattered about the boiling oceans that separate the 
-    different continents.  With the passage of time each continent has taken 
-    on certain characteristics based on the weather and races that live upon 
-    them.  The continents are `YAbbadon`W, `YAlaris`W, `YLycandria`W, `YSolace`W, and `YZandofen`W.  
-    Each of them holds unique stories that are accessible by reading about 
-    the individual continent.
-`W
-`c-------------------------------------------------------------------------------
-~
-0 Seraphim SOLDIER~
-`c-------------------------------------------------------------------------------
-`C    SOLDIER
-`c-------------------------------------------------------------------------------
-`W
-    The extraordinary amount of soldiers that the world of E'dhora has birthed
-    is not happenstance. Soldiers are as much a resource as forests, mines, and 
-    farmland.  Almost every race of E'dhora has soldiers of one sort or another.
-    Trained to endure the harsh rigors of infantry warfare, soldiers are among 
-    the hardiest individuals to face in personal combat. Skilled with a wide 
-    assortment of weaponry, conditioned to wear the heaviest armor, experienced 
-    at traversing terrain of all sorts, the average soldier is a force to be 
-    reckoned with. Those rare soldiers that decide to give up their structured 
-    life for the unknown one of an adventurer are, out of necessity, a great 
-    deal more than average.  Rather than the automaton behavior of their 
-    brethren, these soldiers tend to have rather forceful personalities. Some 
-    are paragons of honor and virtue; others are the basest of brutes. Some 
-    are the physical epitome of a soldier; while others seem incapable of 
-    defeating the weakest of foes. A soldier may seek glory, fame, riches, or 
-    honor outside of their country, Lord, or Generals service; but in their 
-    heart of hearts they will always be a soldier. 
-`W
-`c-------------------------------------------------------------------------------
- 
-~
-0 Seraphim ALCHEMIST~
-`c-------------------------------------------------------------------------------
-`C    ALCHEMIST
-`c-------------------------------------------------------------------------------
-`W
-    Some say the science of alchemy began with the Forsaken Race of the 
-    dwarves; while others believe it predates the Cataclysm that reshaped 
-    the world. No matter what one chooses to believe the facts of alchemy 
-    are well-guarded secrets of those that practice it. It is known that 
-    alchemists are incorrigibly curious about the states of matter and the 
-    processes by which changes in those states can be brought about. The most 
-    interesting, to nearly penniless Lords, is the process by which common 
-    metals can be converted into precious ones. Alchemists themselves though 
-    will experiment with just about whatever they can imagine. There is a 
-    tale of one alchemist succeeding in creating a potion to change the very 
-    air to rock... only to have the massive boulder he created crush him dead.  
-    Those alchemists that choose to wander the lands are said to be in search 
-    of new inspiration for a concoction that will elevate their name to 
-    legendary status... at least among fellow alchemists. 
-`W
-`c-------------------------------------------------------------------------------
-~
-0 Seraphim CAVALIER~
-`c-------------------------------------------------------------------------------
-`C    CAVALIER
-`c-------------------------------------------------------------------------------
-`W
-    The Prime Race, the humans, quickly learned they needed a way to offset 
-    many of the physical advantages the Forsaken Races had gained over them 
-    in terms of fighting wars. Thus some enterprising human Lord, some time 
-    after the Cataclysm, reinvented the modern cavalry. These men are 
-    mercilessly trained in horsemanship, and the care of their mounts, until 
-    it seems as though man and horse are one. In the days before the Cataclysm, 
-    when horse-riding was largely viewed as a gentlemens sport, there had 
-    been two categories of cavalry for mock events: light and heavy. There 
-    was little time, or resources, to effectively equip two types of horseman 
-    so the first cavaliers were trained for either role and expected to adapt 
-    to any situation. So the modern-day cavalier is able to wield a lance for 
-    a charge of heavy horse as well as swing a horse-saber with the lethal 
-    effectiveness of a skirmisher.  As adventurers, cavaliers are formidable 
-    opponents, and are easily capable of taking on several fully-armed and 
-    armored soldiers. The reasons a cavalier would leave the glory-ridden life 
-    of their chosen profession are many but primarily revolve around the need 
-    for personal glory and riches. 
-`W
-`c-------------------------------------------------------------------------------
-~
-0 Seraphim ELEMENTALIST~
-`c-------------------------------------------------------------------------------
-`C    ELEMENTALIST
-`c-------------------------------------------------------------------------------
-`W
-    Elementalist are beings who have so dedicated themselves to the study, 
-    and protection, of nature that they have gained access to the very power 
-    of the elements.  Unlike mages, who bend the elements to very unnatural 
-    ends, elementalists give themselves over to the power of nature and in 
-    doing so are able to take on many of the aspects of those elements. 
-    Communication with a wide variety of animals, even plants, is one such 
-    gift that the elements bestow upon their chosen. The ability to magically 
-    merge with their surroundings is another. This profession finds it nearly 
-    impossible to clothe themselves in heavy alloys and prefer simple cloth 
-    garments. To think that an elementalist is without protection is foolhardy 
-    for there are whispers of these beings changing their skin to the hardest 
-    ores as they effortlessly destroyed hordes intent on ravaging lands under 
-    their protection.  Elementalists are protectors by nature and finding an 
-    aggressive elementalist would be a hard, but not impossible, thing to do. 
-    Those that chose to go adventuring keep their reasons close but it is 
-    thought that they are sent out by a secret coalition of elementalists to 
-    ensure that another Cataclysm never takes place. 
-`W
-`c-------------------------------------------------------------------------------
-~
-0 Seraphim HUNTER~
-`c-------------------------------------------------------------------------------
-`C    HUNTERS
-`c-------------------------------------------------------------------------------
-`W
-    As the title of this profession implies, these are beings that live for 
-    the hunt. Skilled with bow and blade, trained for stealth in virtually 
-    any terrain, able to track anything that breathes, the hunter is truly 
-    at home in the wilds of E'dhora.  The types of prey that the hunter hunts
-    are as varied as the hunters themselves so these individuals are capable 
-    of laying traps for all but the largest game. A solitary path do most 
-    hunters trod, they are rarely seen in the company of other hunters, 
-    perhaps because they truly wish to be free of the binding social conformity 
-    that comes with belonging to a society. Hunters are perhaps the rarest of 
-    adventurers because to do so would push them into the societies they spend 
-    much of their lives avoiding.
-`W
-`c-------------------------------------------------------------------------------
-~
-0 Seraphim MYSTIC~
-`c-------------------------------------------------------------------------------
-`C    MYSTIC
-`c-------------------------------------------------------------------------------
-`W
-    These are those that chose to give themselves over to the will of the 
-    Gods and in doing so gain a small measure of divine power. The power 
-    of a mystic is inexorably tied to their faith. They can heal all but 
-    the most mortal wounds and cure all but the most dreadful illnesses. 
-    There are rumors that the most pious mystics can even beseech their 
-    God to resurrect those they deem worthy. Mystics also are gifted, 
-    maybe burdened, with magic that can harm as well. While not strictly 
-    trained in the way that mages are in the use of their magic, mystics 
-    are more capable physically. They train themselves to wear armor, wield 
-    blunt weapons, and to do battle against those their God demands. Sometimes
-    a God may need a strong arm to do their will and that arm will always be 
-    their mystics. 
-`W
-`c-------------------------------------------------------------------------------
-~
-0 Seraphim NECROMANCER~
-`c-------------------------------------------------------------------------------
-`C    NECROMANCER
-`c-------------------------------------------------------------------------------
-`W
-    No one knows where the first necromancer came from but it is believed 
-    there were none before the Cataclysm. These individuals are akin to 
-    mages in that they bend the natural order in order to suit their wills. 
-    Necromancers primarily concern themselves with life force and the ways 
-    it can be bent to their will. Power over death also falls within the 
-    necromancers sphere of influence. They are capable of resurrecting 
-    souls for whatever purposes they see fit. Once resurrected most 
-    creatures are completely under the necromancers control. Unlike 
-    mystics, the resurrection of a soul is a thing of force, for the 
-    necromancer must rip the soul from whatever place it had journeyed 
-    to. Some believe it is not possible for a mortal to do such a thing 
-    without divine assistance. Necromancers also have the ability to 
-    enslave undead of many sorts as long as the undead creature is not 
-    more powerful than the necromancer. Many necromancers go without 
-    encumbering armor, as they can merely send their enslaved undead to 
-    fight for them. 
-`W
-`c-------------------------------------------------------------------------------
-~
-0 Seraphim VALKYRIE~
-`c-------------------------------------------------------------------------------
-`C    VALKYRIE
-`c-------------------------------------------------------------------------------
-`W
-    Human women were treated as little more than breeders for years after 
-    the Cataclysm and that was something no strong-willed woman would 
-    tolerate. It is said that an ambitious Lady fled her Lords lands with 
-    nearly all of the women that had been virtual slaves there. She was 
-    aided by a number of cavaliers and in the ensuing years, out of 
-    desperate necessity, they taught the women willing all they knew 
-    of mounted warfare. For some hundred years various female tribes 
-    made themselves into a fierce fighter-society. One year, during 
-    a fierce war, this society rode out of their hidden place deep in 
-    the wilds and tore themselves a place in history with blade and heart. 
-`W    
-    The valkyrie, as they came to be called, are generally far more fierce 
-    and aggressive than their cavalier counterparts. Some chose to learn 
-    the lance; but many of the valkyrie are too small to effectively use 
-    the large device. Thus the valkyrie became especially skilled with 
-    the saber. In modern-times valkyrie can be found in any land where 
-    there is human civilization but there are tales that a hidden enclave 
-    of the true Valkyrie resides somewhere in E'dhora. 
-`W
-`c-------------------------------------------------------------------------------
-~
 -22 Seraphim DREAM_CONCEPT~
 `c-------------------------------------------------------------------------------
 `C    DREAM_CONCEPT
@@ -8436,28 +7617,6 @@ An up-to-date list of position flags can be obtained by typing
     Administrators may direct selected dreams toward players.  
 `W
 `c-------------------------------------------------------------------------------
-~
-0 Seraphim TITAN~
-`c-----------------------------------------------------------------------------
-`C  TITANS
-`c-----------------------------------------------------------------------------
-`W
-    Titans are gargantuan, almost godlike men and women.  They, quite 
-    simply, look like 25 foot tall people of great physical strength 
-    and beauty.  They are commonly dressed in traditional garb, favoring
-    togas, loincloths, and such.  However, if they find armor large enough
-    to fit them, a titan may embellish him or herself in decorative armor.
-    They wear rare and valuable jewelry and in other ways make themselves
-    seem beautiful and overpowering.  Titans are very close to nature but 
-    at times they may venture into cities.  They select very carefully what
-    cities they choose to roam because their large size makes it very 
-    difficult to move around in the small structures.
-`W 
-    Titans tend to be skilled alchemists, mages, mystics, and exceptional
-    soldiers.  Titans also have the ability to tolerate fire and cold 
-    extremely well.
-`W
-`c-----------------------------------------------------------------------------
 ~
 -22 Seraphim GUIDES 'BUILDER'S GUIDE' 'BUILDER'S MANUAL'~
 `c-------------------------------------------------------------------------------
@@ -8510,82 +7669,6 @@ An up-to-date list of position flags can be obtained by typing
     POSE NONE or POSE CLEAR will erase your current pose.
 `W
 `c-------------------------------------------------------------------------------
-~
--1 Seraphim WEBPAGE~
-`c-----------------------------------------------------------------------------
-`C    WEBPAGE
-`c-----------------------------------------------------------------------------
-`W
-    A web page is a useful tool for obtaining information.  At 
-    Forsaken Dreams our web master has taken much time to include 
-    valuable information for our players.  The link is below.
-`W
-`Y                  www.egosurf.net/-nobodyspecial
-`z                               (tilda)
-`W
-`W
-`R    Note: `OSee also - `GE'dhora, History, Kingdoms, Continents,
-`G                     Maps, Links, Forum, Guides
-`W   
-`c-----------------------------------------------------------------------------
-~
--1 Seraphim FORUM~
-`c-----------------------------------------------------------------------------
-`C    FORUM
-`c-----------------------------------------------------------------------------
-`W
-    The forum offers a place that players can obtain information and 
-    participate in discussion.  Forsaken Dreams was created with the 
-    player in mind, their suggestions and concerns are important to 
-    the staff.   
-`W
-    Use the following link to register for the forums:
-`W
-`Y       http://forsakendreams.wolfpaw.net/forum/
-`W
-    After you're a registered user, you will have access to the different
-    boards that are established.  Please note a valid email address is 
-    required as a part of the registration for the forum.  At no time will
-    your email address be shared, however mass emails are sent to assure 
-    players have updated information for different events or notices that 
-    may affect the game.
-`W
-`R    Note: `OSee also - `GWebpage, Links, Maps, Guides
-`W
-`c-----------------------------------------------------------------------------
-~
--1 Seraphim FORSAKEN_LINKS~
-`c-----------------------------------------------------------------------------
-`C    LINKS
-`c-----------------------------------------------------------------------------
-`W
-    Listed below are the different links. Be sure to check the individual
-    help files for detailed information.
-`W
-    The Forum
-`W
- `Y      http://forsakendreams.wolfpaw.net/forum/ 
-`W     
-    The World of E'dhora Map
-`W
- `Y      http://forsakendreams.wolfpaw.net/maps/
-`W
-    The web page link.
-`c     
-`Y       http://forsakendreams.wolfpaw.net/`X
-`W  
-    The program guide:
-`c
-`Y       http://forsakendreams.wolfpaw.net/mprogs2.html
-`W
-    The builders guide:
-`c
-`Y       http://forsakendreams.wolfpaw.net/olc.html
-
-`W
-`R    Note: `OSee also - `GForum, Webpage, Maps, Guides
-`W
-`c-----------------------------------------------------------------------------
 ~
 0 Seraphim WANDS ZAP~
 `c-------------------------------------------------------------------------------
@@ -8907,252 +7990,6 @@ Seraphim Seraphim CONFIG_WORK~
 `w
 `c-------------------------------------------------------------------------------
 ~
-0 Seraphim FELIS~
-`c-----------------------------------------------------------------------------
-`C    FELIS
-`c-----------------------------------------------------------------------------
-`W
-    The Felis are a race of cat people that exist in the cellars
-    of legends and dreams.  The average felis stands between six
-    and eight feet.  They are extremely lithe and agile and move
-    with a natural grace that often defies description.  Their fur
-    is quite random, usually the color of any of the great cats but
-    most often, the rustic tawny of lions.  They live in great prides
-    and make incredible soldiers, hunters, rogues, mages, elementalists,
-    or mystics.  While they would be adequate assassins, their strict
-    code of honor prohibits this.
-`W
-`c-----------------------------------------------------------------------------
-~
-0 Seraphim GOBLIN~
-`c-----------------------------------------------------------------------------
-`C    GOBLINS
-`c-----------------------------------------------------------------------------
-`W
-    These small humanoids would be merely pests, if not for their 
-    sheer numbers.  Goblins have flat faces, broad noses, ears with 
-    incredibly sharp points, wide mouths and small, sharp fangs.
-    Their eyes are usually dull and glazed.  Their skin colors range
-    anywhere from yellow through shades of red and orange.  Goblins
-    are extremely malicious and sadistic, preferring to torture their
-    enemies for long periods of time before killing, and eventually
-    eating them.  Because of their cowardly nature, goblins can easily
-    be at home in the shadows and make excellent rogues.  Their small 
-    size and only average intelligent make them acceptable soldiers, 
-    mystics, and necromancers.
-`W
-`c-----------------------------------------------------------------------------
-~
-0 Seraphim HALFLING~
-`c-----------------------------------------------------------------------------
-`C    HALFLINGS
-`c-----------------------------------------------------------------------------
-`W
-    The small form of the halfling, which is about half the size
-    of a human, is very beneficial to them.  Their compact bodies 
-    resist poisons and diseases, and halflings are experts at moving
-    silently.  However, as the halflings were persecuted throughout
-    history they used their small bodies to turn to thievery and
-    lockpicking when there was nothing else to turn to.  As family
-    trades were passed on from generation to generation halflings
-    became experts at pickings locks and usually pass through most
-    doors without even thinking about it.  The science of alchemy has
-    also been a successful area of study by halflings over the years.
-`W
-`c-----------------------------------------------------------------------------
-~
-0 Seraphim KENKU~
-`c-----------------------------------------------------------------------------
-`C    KENKUS
-`c-----------------------------------------------------------------------------
-`W
-    Kenku are bipedal, humanoid birds that use their powers to annoy
-    and inconvenience the human and demihuman races.  The typical kenku
-    resembles a humanoid hawk wearing human clothing.  Kenku have both
-    arms and wings.  The wings are usually folded across the back and
-    may be mistaken at a distance for a very large backpack.  Their 
-    height ranges from 5 to 7 feet and their plumage may be auburn, 
-    brown, or black sometimes with white underfeathers and face markings.
-    Their eyes are often a brilliant yellow but may also be emerald or red.
-`W
-    Kenku are curious beings who tend to be fascinated with the interaction
-    of other races.  This has resulted in many of them being trained as
-    elementalists, mages, and mystics.  Others have adapted their skills 
-    toward studying the ways of hunters and soldiers.
-`W
-`c-----------------------------------------------------------------------------
-  
-~
-0 Seraphim MINOTAUR~
-`c-----------------------------------------------------------------------------
-`C    MINOTAURS
-`c-----------------------------------------------------------------------------
-`W
-    The race of minotaurs is one of honor and discipline.  Natural
-    seafarers, they are usually found near or about islands, or upon 
-    boats of all kind plying their trades.  Minotaurs are huge, well
-    over 7 feet tall, and quite broad and muscular.  They have the 
-    head of a bull but the body of a human. Their fur can be a variety
-    of colors while their eyes range as would a human.  Minotaurs have a
-    natural sense of direction and are incredibly hard to trap, giving
-    them excellent abilities as soldiers and hunters.  On the flip side,
-    they are a very superstitious race, and are not as wise as they 
-    should be.  However they still make acceptable mystics and 
-    elementalists.
-`W
-`c-----------------------------------------------------------------------------
-~
-0 Seraphim SHADOW~
-`c-----------------------------------------------------------------------------
-`C    SHADOWS
-`c-----------------------------------------------------------------------------
-`W
-    Little is known of the Ethereal race that roams Forsaken, hence
-    they are collectively known as 'shadows'.  Shadows are quasi
-    undead creatures that were dragged to E'dhora through one of the
-    many rifts that opened following the cataclysm.  Their natural
-    state of "hiding" makes them formidable rogues and even better
-    assassins.  While having many of the weaknesses that other undead
-    share, they also have many of the strengths as well.  Their study 
-    of the dark arts gives them the ability to perform well as 
-    necromancers and their ability to fight makes them good soldiers.
-`W
-`c-----------------------------------------------------------------------------
-~
-0 Seraphim OGRE~
-`c-----------------------------------------------------------------------------
-`C    OGRES
-`c-----------------------------------------------------------------------------
-`W
-    Ogres are big, ugly, greedy humanoids that live by ambushes, raids,
-    and theft.  Ill-tempered and nasty, these monsters are often found
-    serving as mercenaries in the ranks of orc tribes or for evil 
-    clerics.  Adult ogres stand 8 to 10 feet tall and weight 400 to
-    800 pounds.  Their skin tones range from a dead yellow to a dull
-    black-brown, and rarely a sickly violet.  Their eyes are a variety of
-    colors usually with white pupils.  Ogres have long, greasy hair of 
-    different shades and styles.  Contrary to their looks, ogres are 
-    quite intelligent and some of the most powerful necromancers are ogres.
-    Their phenomenal strength makes them natural soldiers.
-`W
-`c-----------------------------------------------------------------------------
-~
-0 Seraphim ORC~
-`c-----------------------------------------------------------------------------
-`C    ORCS
-`c-----------------------------------------------------------------------------
-`W
-    Orcs are a species of aggressive mammalian carnivores that band
-    together in tribes and survive by hunting and raiding.  Orcs look
-    much like primitive humans with grey-green skin covered with coarse
-    hair of various colors.  Orcs have a slightly stooped posture, a low
-    jutting forehead and a snout instead of a nose.  Their eyes are human,
-    with a variety of tints that sometimes make them appear to glow red 
-    when they reflect dim light sources in near darkness.  Orcs have 
-    limited infravision and their naturally dull demeanor makes them 
-    poor choices for mages or mystics.  However, due to their natural 
-    aggression, and natural stealth, orcs make near perfect choices 
-    for rogues, soldiers, and necromancers.  In fact it is said an 
-    orc without a sword is useless.
-`W
-`c-----------------------------------------------------------------------------
-~
-0 Seraphim THRI-KREEN, THRIKREEN~
-`c-----------------------------------------------------------------------------
-`C    THRI-KREEN
-`c-----------------------------------------------------------------------------
-`W
-    Thri-Kreen are a race of intelligent insects often known as 
-    "mantis-soldiers".  They roam the deserts and savannahs, where
-    they have marked-out hunting territories.  They have no need of
-    sleep and can remain active throughout the day and night.
-`W
-    Adult thri-kreen are roughly 4 feet at the shoulder and 7 feet
-    long.  Of the six limbs protruding from their midsection, two are
-    used for walking; the other four end in four-fingered hands.  Their
-    hard exo-skeleton acts as natural armor and protects the insect
-    from many attacks. The thri-kreen tend to be successful soldiers 
-    and hunters.
-`W
-`c-----------------------------------------------------------------------------
-~
-0 Seraphim OXALIS~
-`c-----------------------------------------------------------------------------
-`C    OXALIS    
-`c-----------------------------------------------------------------------------
-`W
-    The Oxalis are a small jovial crystalline race that came into 
-    existence shortly after the Day of Absolution. The crystalline
-    skin that covers their body is extremely hard and tends to focus
-    the light intensifying its effects on them producing a negative 
-    effect.   They are between one to three feet in height and rarely
-    weigh more than five pounds. They have strong wings that are 
-    leathery and either translucent or colored like any of the myriad
-    mineral stones.  The color of their crystals and eyes vary depending
-    on where they emerged and grew up.  A few Oxalis are so transparent
-    that their small heart can be seen beating within their body.
-`W
-    Oxalis are very intelligent and that leads them to study successfully
-    as alchemists, elementalists, and mages.  They also tend to have a 
-    shady and frisky personality that leads them to be successful as 
-    rogues. 
-`W
-`c-----------------------------------------------------------------------------
-~
-0 Seraphim TROLLS~
-`c-----------------------------------------------------------------------------
-    TROLLS
------------------------------------------------------------------------------
-`X
-Huge moving, living rocks of humanoid shape, with intelligence and 
-personality: in other words, trolls are sentient beings. Trolls have 
-interesting seams of valuable minerals as their blood vessels and nervous 
-system. This phenomenon has at least two repercussions. One: a troll's brain, 
-silicon-based, will overheat and slow down in Ankh-Morpork  (where everyone 
-wants to live), and the troll will become sadly stupid; the brain will also 
-overheat in strong sun, causing trolls to stop moving in daylight. Two: 
-when a troll has stopped moving while his brain has overheated in daylight, 
-this troll will look just like a lump of rock, with interesting seams of 
-valuable minerals, and may be (and have been) attacked by mining dwarfs. 
-
-This is very likely the initial cause of the animosity between  trolls and 
-dwarfs, even though, after hundreds of years, the feud goes on because it 
-is a cultural tradition for both species. It being a cultural tradition does 
-not mean it is nice; trolls and dwarfs have repeated the Battle of Koom Valley 
-several times, each side springing an ambush on the other, casualties are high. 
-The hostility lives on and is found in any place with a significant number of 
-both species.
-
-`c-----------------------------------------------------------------------------`X
-~
-0 Seraphim DROW~
-`c-----------------------------------------------------------------------------
-`C    DROW
-`c-----------------------------------------------------------------------------
-`W
-    Drow are similar in physical build to elves, but of slightly shorter
-    stature.  Unlike land elves, Drow have black or tanned skin and black,
-    brown, green, grey, hazel, or white eyes.  Their hair color can be 
-    white, black, brown, or varying shades of grey.  Drow tend to be a 
-    sub-terranian race, possessing infravision with which to see in the 
-    dark.  This sensitivity in the dark however, makes it difficult to see
-    in the daytime.  
-`W
-    The drow believe that they and not the elves are the true first children
-    and thus it is their duty to subjugate all other races.  The drows are
-    often known for their cold demeanor to all other races, this emotion is
-    accompanied by cruelty for which the drow are well known.  They consider
-    their elven-kin their only equals and thus, the only real threat to their
-    dominance.  Their feelings for their kin range from cold hatred, envy and
-    a secret twisted desire to be accepted, feelings that stemmed from some 
-    event that took place hundreds of years ago, an event never spoken of.
-`W
-    Over time many of the drow race have become well know for their work 
-    as alchemist, mages, and necromancers.  However they also tend to be
-    successful soldiers and rogues.
-`W
-`c-----------------------------------------------------------------------------
-~
 -1 Seraphim BOARDS GENERAL NEWS IDEAS CHANGES BUGS~
 `c-----------------------------------------------------------------------------
 `C    BOARDS
@@ -9442,7 +8279,7 @@ Throne Seraphim ADMINS [~
 `W
     Spirits come in all shapes and sizes.  They are usually disembodied 
     souls that walk the lands in search of something.  Some spirits that 
-    walk in E'dhora are the souls of the fallen.  Their tasks in life have
+    walk in Faerun are the souls of the fallen.  Their tasks in life have
     not been completed, so they do not allow death to take them from this 
     place.  Instead they have faced the challenge of finding their life 
     crystal and seeking one who can resurrect them to their former selves.  
@@ -9572,46 +8409,6 @@ Throne Seraphim ADMINS [~
     fight and strike at one's enemy becomes lessened.  The effects of the
     spell is only for a time, however it can leave a mark on one's life 
     forever.  
-`W
-`c-------------------------------------------------------------------------------
-~
-1 Seraphim COPYRIGHT~
-`c-------------------------------------------------------------------------------
-`C    COPYRIGHT    
-`c-------------------------------------------------------------------------------
-`W
-    Forsaken Dreams is a derivative of Merc 2.1, which is a derivative of 
-    Diku Mud (see help diku and help merc).  It is subject to, and complies 
-    with, the terms of the licenses in the files license.doc, license.txt, 
-    and rom.license which are in this mud's doc directory. 
-`W 
-    All building and/or coding done on Forsaken Dreams mud is the joint  
-    property of the builder/coder and Forsaken Dreams mud.  Both Forsaken 
-    Dreams mud and the builder/coder retain copyright on any work done for 
-    the mud. In particular if the builder/coder leaves the mud for any 
-    reason, the mud retains the right to continue to use anything they built
-    on the mud or coded for the mud.  The builder/coder may do anything they
-    wish with any copies of their work which they may have, after they leave.
-    The builder/coder may not, however, disclose to any third party any 
-    original work done for Forsaken Dreams mud by another builder/coder.  
-    Forsaken Dreams mud agrees not to disclose to any third party any work 
-    done by a builder/coder without the builder/coder's permission while 
-    the builder/coder is a member of the immortal staff of Forsaken Dreams 
-    mud. 
-`W 
-    If you wish to build for Forsaken Dreams mud, an administrator of the
-    mud will log you and ask you to type "help copyright".  If you agree to 
-    these terms, you must say "I agree".  The administrator will stop logging 
-    you as soon as you say "I agree" or indicate that you do not accept these 
-    terms. All builders must agree to these terms to build for Forsaken Dreams
-    Mud. 
-`W
-    If you wish to code for Forsaken Dreams mud, you must print this page. 
-    Sign and date the copy including your address on the signed copy.  The
-    copy should then be faxed or mailed to the mud's administrator.  Upon 
-    receipt of the signed document, the coder will be set up with a copy of
-    the code. Coders will run their coding port from their own servers and 
-    use CVS to add changes to the base code.   
 `W
 `c-------------------------------------------------------------------------------
 ~
@@ -10017,7 +8814,7 @@ Powers Seraphim GUILD~
     Syntax: `Gembark <ship name>
             `Gleave 
 `W
-    Different types of ships and boats can be seen throughout E'dhora.  
+    Different types of ships and boats can be seen throughout Faerun.  
     One type of vessel that is common is sailing vessels.  These vessels 
     have owners or may be common vessels for any traveler to use.  The 
     vessels that have owners have set times they arrive and leave at 
@@ -10138,7 +8935,7 @@ Archangel Seraphim UNLAUNCH~
 `W
 `c-------------------------------------------------------------------------------
 ~
-1 Seraphim MARS~
+1 Seraphim ICEWIND MARS~
 MARS is a Multi-Adventurer Roleplaying System, and the goal is to create a MUD
 base that can be used to create huge worlds of imagination. We want to build out
 the basic world map, then each of the main cities. After that, it will be a matter
@@ -10216,152 +9013,15 @@ their life-timers have not run out at the point of their death.
 `c-----------------------------------------------------------------------------`X
 
 ~
-0 Seraphim DRAGONBORNS~
-`C-----------------------------------------------------------------------------
-`C    DRAGONBORN
-`C-----------------------------------------------------------------------------
-`X
-Born of dragons, as their name proclaims, the dragonborn walk proudly through a 
-world that greets them with fearful incomprehension. Shaped by draconic gods or 
-the dragons themselves, dragonborn originally hatched from dragon eggs as a unique 
-race, combining the best attributes of dragons and humanoids. Some dragonborn are 
-faithful servants to true dragons, others form the ranks of soldiers in great wars, 
-and still others find themselves adrift, with no clear calling in life.
- 
-Dragonborn look very much like dragons standing erect in humanoid form, though they 
-lack wings. The first dragonborn had scales of vibrant hues matching the 
-colors of their dragon kin, but generations of interbreeding have created a more 
-uniform appearance. Their small, fine scales are usually brass or bronze in color, 
-sometimes ranging to scarlet, rust, gold, or copper-green. They are tall and strongly 
-built, often standing close to 6 feet tall and weighing 300 pounds or more. 
-Their hands and feet are strong, talonlike claws with three fingers and a thumb on 
-each hand.
- 
-The blood of a particular type of dragon runs very strong through some dragonborn clans. 
-These dragonborn often boast scales that more closely match those of their dragon 
-ancestorbright red, green, blue, or white, lustrous black, or gleaming metallic gold, 
-silver, brass, copper, or bronze.
-
-`C-----------------------------------------------------------------------------`X
-~
-0 Seraphim TIEFLINGS~
-`C-----------------------------------------------------------------------------
-`C    TIEFLINGS
-`C-----------------------------------------------------------------------------
-`X
-To be greeted with stares and whispers, to suffer violence and insult on the 
-street, to see mistrust and fear in every eye: this is the lot of the tiefling. 
-And to twist the knife, tieflings know that this is because a pact struck 
-generations ago infused the essence of Asmodeusoverlord of the Nine Hellsinto 
-their bloodline. Their appearance and their nature are not their fault but the 
-result of an ancient sin, for which they and their children and their childrens 
-children will always be held accountable.
- 
-Tieflings are derived from human bloodlines, and in the broadest possible sense, 
-they still look human. However, their infernal heritage has left a clear imprint 
-on their appearance. Tieflings have large horns that take any of a variety of 
-shapes: some have curling horns like a ram, others have straight and tall horns 
-like a gazelles, and some spiral upward like an antelopes horns. They have 
-thick tails, four to five feet long, which lash or coil around their legs when 
-they get upset or nervous. Their canine teeth are sharply pointed, and their eyes 
-are solid colorsblack, red, white, silver, or goldwith no visible sclera or pupil. 
-Their skin tones cover the full range of human coloration, but also include various 
-shades of red. Their hair, cascading down from behind their horns, is usually dark, 
-from black or brown to dark red, blue, or purple.
- 
-`C-----------------------------------------------------------------------------`X
-~
-0 Seraphim GNOMES~
-`C-----------------------------------------------------------------------------
-`C    GNOMES
-`C-----------------------------------------------------------------------------
-`X
-A constant hum of busy activity pervades the warrens and neighborhoods 
-where gnomes form their close-knit communities. Louder sounds punctuate 
-the hum: a crunch of grinding gears here, a minor explosion there, a yelp 
-of surprise or triumph, and especially bursts of laughter. Gnomes take 
-delight in life, enjoying every moment of invention, exploration, 
-investigation, creation, and play.
- 
-A gnomes energy and enthusiasm for living shines through every inch of his 
-or her tiny body. Gnomes average slightly over 3 feet tall and weigh 
-40 to 45 pounds. Their tan or brown faces are usually adorned with broad 
-smiles (beneath their prodigious noses), and their bright eyes shine with 
-excitement. Their fair hair has a tendency to stick out in every direction, 
-as if expressing the gnomes insatiable interest in everything around.
-A gnomes personality is writ large in his or her appearance. A male 
-gnomes beard, in contrast to his wild hair, is kept carefully trimmed but 
-often styled into curious forks or neat points. A gnomes clothing, though 
-usually made in modest earth tones, is elaborately decorated with embroidery, 
-embossing, or gleaming jewels.
- 
-`C-----------------------------------------------------------------------------`X
-~
-0 Seraphim HALFELVES HALF-ELVES HALFELF HALF-ELF~
-`C-----------------------------------------------------------------------------
-`C    HALF ELVES
-`C-----------------------------------------------------------------------------
-`X
-Walking in two worlds but truly belonging to neither, half-elves combine what 
-some say are the best qualities of their elf and human parents: human curiosity,
-inventiveness, and ambition tempered by the refined senses, love of nature, and 
-artistic tastes of the elves. Some half-elves live among humans, set apart by 
-their emotional and physical differences, watching friends and loved ones age 
-while time barely touches them. Others live with the elves, growing restless as 
-they reach adulthood in the timeless elven realms, while their peers continue to
-live as children. Many half-elves, unable to fit into either society, choose 
-lives of solitary wandering or join with other misfits and outcasts in the 
-adventuring life.
- 
-To humans, half-elves look like elves, and to elves, they look human. In height,
-theyre on par with both parents, though theyre neither as slender as elves nor
-as broad as humans. They range from under 5 feet to about 6 feet tall, and from 
-100 to 180 pounds, with men only slightly taller and heavier than women. 
-Half-elf men do have facial hair, and sometimes grow beards to mask their elven 
-ancestry. Half-elven coloration and features lie somewhere between their human 
-and elf parents, and thus show a variety even more pronounced than that found 
-among either race. They tend to have the eyes of their elven parents.
- 
-`C-----------------------------------------------------------------------------`X
-~
-0 Seraphim HALFORCS HALF-ORCS~
-`C-----------------------------------------------------------------------------
-`C    HALF ORCS
-`C-----------------------------------------------------------------------------
-`X
-Whether united under the leadership of a mighty warlock or having fought to a 
-standstill after years of conflict, orc and human tribes sometimes form 
-alliances, joining forces into a larger horde to the terror of civilized lands 
-nearby. When these alliances are sealed by marriages, half-orcs are born. Some 
-half-orcs rise to become proud chiefs of orc tribes, their human blood giving 
-them an edge over their full-blooded orc rivals. Some venture into the world to 
-prove their worth among humans and other more civilized races. Many of these 
-become adventurers, achieving greatness for their mighty deeds and notoriety for
-their barbaric customs and savage fury.
- 
-Half-orcs grayish pigmentation, sloping foreheads, jutting jaws, prominent 
-teeth, and towering builds make their orcish heritage plain for all to see. 
-Half-orcs stand between 5 and 7 feet tall and usually weigh between 180 and 
-250 pounds.
- 
-Orcs regard battle scars as tokens of pride and ornamental scars as things of 
-beauty. Other scars, though, mark an orc or half-orc as a former slave or a 
-disgraced exile. Any half-orc who has lived among or near orcs has scars, 
-whether they are marks of humiliation or of pride, recounting their past 
-exploits and injuries. Such a half-orc living among humans might display these 
-scars proudly or hide them in shame.
- 
-`C-----------------------------------------------------------------------------`X
-~
 0 Seraphim LINK~
 `C------------------------------------------------------------
 `C LINKS
 `C------------------------------------------------------------
  
-http://wr3tch.org/MARS
+http://reaux.vineyard.haus
  
  
-The above link will explain more about MARS, the setting, vision, etc
+The above link will explain more about Icewind Legacy, the setting, vision, etc
  
  
 `C------------------------------------------------------------
@@ -10416,7 +9076,7 @@ you must meet the following requirements:
 * No penalties/nochannels/freezes/etc within the last 180 days.
 * Experience with the Immortal position you're applying for.
  
-Onto the application! Either write a note to Om in-game, or send an email to mars@wr3tch.org
+Onto the application! Either write a note to Mask in-game, or send an email to mars@wr3tch.org
 with the following information:
 
 Name:
@@ -10440,7 +9100,7 @@ JavaScript [ ]
 JSON [ ] 
 
 Tell us why you feel that you'd be a good fit in the position for which you're 
-applying, and what you will bring to MARS:
+applying, and what you will bring to Icewind Legacy:
 
 Finally, tell us something interesting about yourself:
 
@@ -10452,50 +9112,50 @@ Visitor Seraphim JOBS 'IMMORTAL JOBS' 'IMMORTAL ROLES' ROLES~
 `C    IMMORTAL JOBS AND ROLES
 `c-------------------------------------------------------------------------------`X
  
-These are the roles/jobs of Immortals on MARS:
+These are the roles/jobs of Immortals on Icewind Legacy:
  
-`POwner`X - Om. Pretty self explanatory. Om owns this place. His word is final.
+`POwner`X - Mask. Pretty self explanatory. Mask owns this place. His word is final.
  
 `CCoder`X - The responsibilties of the coders are to implement code changes 
 and fix bugs that arise. You likely won't interact with coders very often
 if at all, as they spend most of their time in a terminal or coding environment
-and not be logged into MARS. While they are a higher level than any other
-Immortal besides Om, their focus is not on the disciplinary actions and 
+and not be logged into Icewind Legacy. While they are a higher level than any other
+Immortal besides Mask, their focus is not on the disciplinary actions and 
 running of quests. They have a higher Immortal level because they are trusted
 with commands that should not be accessible to lower level Immortals.
  
 This does not mean that they do not deserve the respect of their level,
-quite the contrary, they keep MARS running and add new and exciting features
-and that makes them among the most valuable members of the MARS team.
+quite the contrary, they keep Icewind Legacy running and add new and exciting features
+and that makes them among the most valuable members of the Icewind Legacy team.
 
-`bAdmins`X - Admins are responsible for the day-to-day operation of MARS.
+`bAdmins`X - Admins are responsible for the day-to-day operation of Icewind Legacy.
 This includes the management of disciplinary actions against mortals and 
 even other gods. Admins will spend most of their time wizinvis so that the
-only ones who even know they're online and watching are Om and the coders.
+only ones who even know they're online and watching are Mask and the coders.
 
 `gPR`X/`pSecurity`X - These are actually two sepearate jobs that share the 
-same level. PR's job is to advertise MARS to the world and try to bring in 
+same level. PR's job is to advertise Icewind Legacy to the world and try to bring in 
 new players. However, DO NOT, UNDER ANY CIRCUMSTANCES, advertise on another
 MUD unless the staff there has given express oncsent ahead of time.
 
 Advertising on other MUDs will result in immediate removal from the PR position.
 
-Security is in charge of the security of MARS. This includes making note of multiple
+Security is in charge of the security of Icewind Legacy. This includes making note of multiple
 failed login attempts and IP banning someone who fails to login multiple times on 
 one character and then successfully logs in with another character that is not known
 to be played by the same player. 
 
 `GHead Builder`X - Head Builder is a position earned through experience and the
 demonstration of skill in writing, storytelling, and an understanding of how
-the On-Line Creation system (OLC) of MARS functions. The Head Builder is 
+the On-Line Creation system (OLC) of Icewind Legacy functions. The Head Builder is 
 responsible for overseeing Trainee Builders and approval of areas created
 by all class of Builder, even the Senior Builders. The Head Builder, when
 satisfied with an area, will link the new area to the main world so that
 players can explore and enjoy it.
  
 `YSenior Builders`X - Senior Builders are Builders that have create 3 or more
-areas of 100 rooms or more in MARS and had them linked to the main world by
-the Head Builder. It is up to the Head Builder and Om to decide if a Builder
+areas of 100 rooms or more in Icewind Legacy and had them linked to the main world by
+the Head Builder. It is up to the Head Builder and Mask to decide if a Builder
 who has reached this requirement is 'ready' for the promotion to Senior Builder.
 
 `RBuilders`X - Builders are no longer considered Trainees after the completion of
@@ -10504,17 +9164,385 @@ by the Head Builder to the main world.
  
 `OTrainee Builders`X - Trainee Builders are Builders who have not yet completed
 their first area, or have no OLC experience and are in the process of being
-trained on how to build areas for MARS.
+trained on how to build areas for Icewind Legacy.
  
 `BQuestors`X - Questors are Immortals that create and run quest for the mortals
-and help drive the story and roleplay of MARS. Questors are given a basic story
-framework for what the mainline plot of MARS is at present, so that they may
+and help drive the story and roleplay of Icewind Legacy. Questors are given a basic story
+framework for what the mainline plot of Icewind Legacy is at present, so that they may
 create quests to operate as story hooks to involve the player base and make
 them an active part of the story so that every player, no matter their level
 or equipment, can feel like they had a hand in shaping the world around them.
 
 Trainee Questors are pretty self explanatory.
 `c-------------------------------------------------------------------------------`X
+~
+1 Seraphim SPELLSLOTS~
+These are the spell slots available for casters. X axis is caster level
+and the Y axis is player level.
+ 
+`C   0  1  2  3  4  5  6  7  8  9 10 `X
+`G0`X  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 
+`G1`X  0, `P`P4`X`X, 0, 0, 0, 0, 0, 0, 0, 0, 0 
+`G2`X  0, `P6`X, `P4`X, 0, 0, 0, 0, 0, 0, 0, 0 
+`G3`X  0, `P6`X, `P5`X, 0, 0, 0, 0, 0, 0, 0, 0 
+`G4`X  0, `P6`X, `P6`X, `P3`X, 0, 0, 0, 0, 0, 0, 0 
+`G5`X  0, `P6`X, `P6`X, `P4`X, 0, 0, 0, 0, 0, 0, 0 
+`G6`X  0, `P6`X, `P6`X, `P5`X, `P3`X, 0, 0, 0, 0, 0, 0 
+`G7`X  0, `P6`X, `P6`X, `P6`X, `P4`X, 0, 0, 0, 0, 0, 0 
+`G8`X  0, `P6`X, `P6`X, `P6`X, `P5`X, `P3`X, 0, 0, 0, 0, 0 
+`G9`X  0, `P6`X, `P6`X, `P6`X, `P6`X, `P4`X, 0, 0, 0, 0, 0 
+`G10`X 0, `P6`X, `P6`X, `P6`X, `P6`X, `P5`X, `P3`X, 0, 0, 0, 0 
+`G11`X 0, `P6`X, `P6`X, `P6`X, `P6`X, `P6`X, `P4`X, 0, 0, 0, 0 
+`G12`X 0, `P6`X, `P6`X, `P6`X, `P6`X, `P6`X, `P5`X, `P3`X, 0, 0, 0 
+`G13`X 0, `P6`X, `P6`X, `P6`X, `P6`X, `P6`X, `P6`X, `P`P4`X`X, 0, 0, 0 
+`G14`X 0, `P6`X, `P6`X, `P6`X, `P6`X, `P6`X, `P6`X, `P5`X, `P3`X, 0, 0 
+`G15`X 0, `P6`X, `P6`X, `P6`X, `P6`X, `P6`X, `P6`X, `P6`X, `P4`X, 0, 0 
+`G16`X 0, `P6`X, `P6`X, `P6`X, `P6`X, `P6`X, `P6`X, `P6`X, `P5`X, `P3`X, 0 
+`G17`X 0, `P6`X, `P6`X, `P6`X, `P6`X, `P6`X, `P6`X, `P6`X, `P6`X, `P4`X, 0 
+`G18`X 0, `P6`X, `P6`X, `P6`X, `P6`X, `P6`X, `P6`X, `P6`X, `P6`X, `P5`X, `P3`X 
+`G19`X 0, `P6`X, `P6`X, `P6`X, `P6`X, `P6`X, `P6`X, `P6`X, `P6`X, `P6`X, `P4`X 
+`G20`X 0, `P6`X, `P6`X, `P6`X, `P6`X, `P6`X, `P6`X, `P6`X, `P6`X, `P6`X, `P6`X 
+~
+1 Seraphim TURN_BASED_COMBAT~
+This MUD employs a turn-based combat engine in which the turn order is
+determined based on speed, and each character may take one action at a time.
+When characters are defeated, they stay on the battlefield until combat ends,
+with combat ending when all live characters are members of the same group.
+CTB engine brought to you by Midboss!          (eclipsing.souls@gmail.com)
+-
+~
+1 Seraphim MEMORIZE MEMLIST FORGET~
+`P-------------------------------------------------------------------------------`X
+`G    MEMORIZE
+`P-------------------------------------------------------------------------------`X
+ 
+ 
+`X    Syntax: `Gmemorize <spell>`X
+`X    Syntax: `Gmemorize '<spell with multiple words>'`X
+`X    Syntax: `Gmemlist`X
+`X    Syntax: `Gspellslots`X
+`X    Syntax: `Gforget <spell>`X
+`X    Syntax: `Gforget '<spell with multiple words>'`X
+ 
+ 
+`X    To cast spells in Icewind Legacy you must first memorize them. You can memorize
+`X    only a limited number of spells per caster level (see help spellslots). Each time
+`X    you level up you will gain addition spell slots for your current caster level.
+`X   
+`X    To see what spells you already have memorized, type 'memlist'
+`X    To see how many spell slots you have currently, type 'spellslots'
+`X    To forget a currently memorized spell, type 'forget <spell>'
+`X
+`P-------------------------------------------------------------------------------`X
+~
+1 Seraphim BREATHE BREATH 'BREATH WEAPON'~
+`P-------------------------------------------------------------------------------`X
+`G    BREATH`X
+`P-------------------------------------------------------------------------------`X
+
+`X    Syntax: `Gbreathe <target>`X
+
+`X    Members of the Dragonborn race can tap into an innate ability of their dragon
+`X    ancestry and use the breath weapon of the type of dragon they're descended
+`X    from. The type of breath weapon depends on what color scales you have.
+`X
+`X    `zBlack`X and `OCopper`X dragons - `GAcid Breath`X
+`X    `BBlue`X and `OBronze`X dragons - `WLigh`Yt`Wning breath`X
+`X    `rBrass, `YGold`X and `RRed`X dragons - `RF`Oir`Re`X breath
+`X    `GGreen`X dragons - `gPo`zi`gson`X breath
+`X    `wSilver`X and `WWhite`X dragons - `BF`Cr`Wo`Cs`Bt`X breath
+`X
+`P-------------------------------------------------------------------------------`X
+~
+1 Seraphim TRACK TRACKING~
+`P-------------------------------------------------------------------------------`X
+`G    TRACK`X
+`P-------------------------------------------------------------------------------`X
+`X    Syntax: `Gtrack <target>`X
+`X
+`X    Rangers have the ability to track their prey across great distances,
+`X    and though for rangers who have not practiced the ability for very long
+`X    their efforts may occassionally lead hem astray, a determinded ranger will
+`X    get there in the end.
+`X
+`P-------------------------------------------------------------------------------`X
+ 
+~
+1 Seraphim RAGE~
+`P-------------------------------------------------------------------------------`X
+`G    RAGE`X
+`P-------------------------------------------------------------------------------`X
+`X    Syntax: `Grage`X
+`X
+`X    Barbarians can call upon deep wells of anger and rage to increase their
+`X    ability to hit and damage others for an extremely short time, but at the
+`X    expense of their armor class, making them very easy to BE hit and take a
+`X    LOT more damage than usual. Once a barbarian calls upon their rage, they
+`X    will become exhausted and unable to use their rage for several hours(ticks)
+`X
+`P-------------------------------------------------------------------------------`X
+~
+1 Seraphim 1TIMELINE~
+The timeline of Faerun is a long one, with many events both incredible
+and tragic
+ 
+Icewind Legacy takes place nearly 1,000 years after the Dale Reckoning
+so the timeline will begin at 1 DR and conclude at present day in IL.
+ 
+1 DR - The Dale Reckoning.
+The Dales Compact is signed, giving future Dalesfolk claim over non-forested
+non-elven lands on which they could settle and forbade any further logging
+into the forest. The standing stone of the Dales is erected as a monument
+to the new alliance between human and elf, and is a turning point in both civilizations.
+ 
+20 DR - Netheril region renamed Anauroch
+ 
+26 DR - The founding of Cormyr
+ 
+112 DR - Mapping of the Corymr region
+Cartographers and explorers create the first map of Cormyr, Cormanthor
+and the Dalelands.
+ 
+168 DR - Construction of Undermountain
+Halaster Blackcloak builds Halaster's Hold near Waterdavian farms.
+He begins constructing Undermountain.
+ 
+180 DR - Fall of Ilyanbruen
+The elven nation declines and falls after fighting an orc horde
+that had threatened the north and established itself in Illusk.
+Refugee elves seek Evermeet or flee to the Feywild.
+ 
+241 DR - Elmister serves Mystra
+Elminster Aumar enters the city of Cormanthor to serve Mystra's will
+ 
+261 DR - Founding of Myth Drannor
+Myth Drannor established in the heart of Cormanthor through
+the raising of a mythal. Dwarves and Halflings welcomed into the city
+ 
+324 DR - Founding of the Harpers
+The Harpers at Twilight are formed in secret deep in the Elven
+Court woods by Dathlue Mistwinter, The Lady Steel
+ 
+379 DR - School of Wizardry at Myth Drannor
+Seven mages buil the first school of wizardry open to all races
+of Myth Drannor
+ 
+See help 2TIMELINE for more
+~
+1 Seraphim 2TIMELINE~
+384 DR - Construction of Silverymoon Ford
+Silverymoon Ford, a construction of wood and rope bridge is built across 
+the River Rauvin
+ 
+523 DR - Rise of Phalorm
+Phalorm, the realm of Three Crowns in the North, a kingdom of
+humans, elves and dwarves, rises.
+ 
+574 DR - Silverymoon develops into a trading post town
+ 
+615 DR - Fall of Phalorm
+Phalorm falls to humanoid hordes as both armies are wiped out
+by the magical flood created by a lich to attack the area
+which caused the Mere of Dead Men. One of their Strongholds 
+will later become Cragmaw Castle.
+ 
+627 DR - School of Magic in Silverymoon
+Ecamane Truesilver and his nine apprentices arrive in Silverymoon
+and create a school of magic patterend on Elven teachings.
+ 
+640 DR - Mining and trading at Zhentil Keep
+First mining and trading encampment establish at Zhentil Keep
+ 
+`R708 DR - Return of Moander`X
+Fallen evil god Moander, whom the elves imprisoned in his last
+temple's ruins, reemerges and his cultist release three fiends
+from an extradimensional prison high above Myth Drannor
+by exploiting a loophole in the prison's terms of release
+ 
+714 DR - The Weeping War
+The Weeping War was a battle that culminated on 15 Flamerule, 714 DR
+in which the Akh'Velahr were defeated by invading demonic forces
+called The Army of Darkness, leading to the fall of the city of
+Myth Drannor, the greatest and most powerful bastion of civilization
+by far, at the time.
+ 
+720 DR - Reformation of the Harpers
+Gathering of the Gods at the Dancing Place inspired the refounding
+of the Harpers. All fifteen of the Harpers at Twilight, including Elminster,
+are in attendance.
+ 
+See help 3TIMELINE
+~
+1 Seraphim 3TIMELINE~
+769 DR - Merrydale renamed to Daggerdale
+Following the Vampyric infestation of Merrydale, it 
+is renamed to Daggerdale.
+
+900 DR - Phandelver's Pact Established
+Clans of Dwarves and Gnomes create the Phandelver's Pact
+governing the unique abilities of the Forge of Spells
+found in Wave Echo Cave.
+ 
+902 DR - Cult of the Dragon creates the first Dracolich
+ 
+906 DR - Founding of Shadowdale
+ 
+940 DR - Second Trollwar
+Second Trollwar begins near Waterdeep. Samular Caradoon becomes
+a war hero.
+ 
+951 DR - Battle of Phandalin
+Phandalin destroyed by the orcs of Uruth Ukrypt and a group of
+wizards bent on seizing control of Wave Echo Cave. Sir Aldith Tresendar
+"The Black Hawk", killed defending Phandalin. Mormesk, a powerful wizard
+also killed during the attack on Wave Echo Cave
+ 
+952 DR - Founding of the Order of Samular
+Samular Caradoon establishes the paladin Order of Samular after the end
+of the second Trollwar. He raises his dead eldest brother Renwick "Snowcloak"
+using a potion of lichdom which Renwick, seeking great arcane knowledge had
+created. Renwick's phylactery is buried in Summit Hall, a Samular knighthood 
+monastery. Renwick created a tomb for his brother Samular in his lair but
+has not been able to procure Samular's body which still lies interred
+in Summit Hall.
+ 
+974 DR - Construction of Castle Waterdeep completed.
+ 
+See 'help STORY'
+~
+1 Seraphim STORY HISTORY~
+The year is 980 DR, and the realms stand at a turning point. Castle Waterdeep 
+now crowns Mount Waterdeep, a fortress of ambition rising over the Sword Coast. 
+Yet glory casts long shadows. In Cormyr, knights and farmers alike labor to 
+mend the wounds left by the Second Trollwar. Farther north, a darker tale 
+unfolds: Renwick Snowcloak Caradoon endures as a lich, his cold will fixed 
+upon reclaiming the body of his fallen brother Samular. But Samular lies 
+enshrined within Summit Hall, watched over by the knighthood that bears his 
+name. Whispers tell of Renwicks servants moving unseen, probing for weakness, 
+and many now wonder which will prove strongerthe walls of stone and honor, 
+or the hunger of the grave.
+ 
+See 'help 1TIMELINE' 
+~
+1 Seraphim MULTICLASS~
+Icewind Legacy offers multiclassing. Upon gaining enough experience points
+to level up, you will be prompted to use the 'levelup' command.
+ 
+You will then have the option of applying your new level to your
+current class, or adding an additional class by typing
+'`Gmulticlass `P<`Gnumber`P>`X' with the number corresponding
+to the option in the levelup menu.
+ 
+'multiclass 1' will apply the new level to your main class, where 2-10 will select a new
+class, and you will gain a level in that class instead.
+ 
+You may have up to 3 classes at a time and you will gain
+the ability to learn and use all of the skills and spells of those classes
+in addition to your base class.
+~
+1 Seraphim STUDY~
+`G Syntax: study <object>`X
+ 
+You may learn new skills and spells by studying them.
+Studying is the only way to learn new skills and spells on
+Icewind Legacy after character creation. The 'gain' command
+at trainers that is present in stock rom does not exst here.
+ 
+You may study: Scrolls, Wands, Staves and Manuals.
+Your skill in each (scrolls applies to manuals as well) will increase
+the chance of learning a skill or spell.
+e.g. studying a scroll with scrolls at 75% greatly increases your 
+chances over studying the scroll with only 1% scroll skill.
+~
+1 Seraphim HOMES 'PLAYER HOMES' 'PLAYER HOUSING' HOUSING~
+Homes can be purchased by players for 25,000 gold coins. Homes may only
+be purchased in a designated area, in designated rooms.
+
+Type HOUSE to see a list of arguments.
+Type HOUSE BUY to purchase a home. If a home is currently owned, or you are not in
+a valid home room, you will be notified at that time. You must be carrying 25,000
+gold coins on your person at the time of purchase. If the sale is sucessful, the
+coins will be extracted from you, and you will be notified of your purchase.
+Type HOUSE SELL to sell your home. You must be standing in your home in order to
+perform this command. You will be reimbursed one half the cost of the home, not
+including any items that were in the home at the time of sale.
+
+Type OBJBUY to see a list of items available to furnish your home with. The
+items are permanat fixtures, and cannot be removed from the home. Certain items,
+such as lamps and lanterns, will expire over time, and new ones must be bought.
+To purchase an item, type OBJBUY buy <item name>, where item name is the name
+on the far left of the OBJBUY list.
+
+Type MOBBUY to see a list of mobiles available to furnish your home with. The
+mobiles are permanat fixtures, and cannot be removed from the home. Certain mobs,
+such as healers can heal you of illnesses, curses and wounds, so they're very useful
+To purchase an item, type MOBBUY buy <item name>, where item name is the name
+on the far left of the MOBBUY list.
+
+Type HOUSE DESCRIBE to supply a description for your home. Home Describe employs
+the OLC room editor, which uses the following command format:
+
+String help (commands on blank line):   
+
+'/c               - clear string so far '
+'/d n             - delete line number n'
+'/d n1 n2         - delete lines n1 through n2'
+'/f               - format (word wrap) string  '
+'/f n1 [n2]       - word wrap just lines n1 - n2'
+'/h or /?         - get help (this info)'
+'/i n             - insert blank line before line n'
+'/i n <string>    - insert string before line n'
+'/l               - list string with line numbers'
+'/r 'old' 'new'   - replace a substring (recognizes '', "")'
+'                   
+ matches end of line, use to split/merge lines'
+'/r n 'old' 'new' - same, except begin search at line n'
+'/s               - show string so far  '
+'/&               - toggle display of color codes'
+'//               - perform a regular command'
+'@                - done, exit string editor'
+You may use a period (".") in place of a slash in the above commands
+(eg .r 'old' 'new' etc)
+
+Other HOUSE commands may be added as the code progresses.
+~
+1 Seraphim TARGET~
+`P-------------------------------------------------------------------------------`X
+`G    TARGET`X
+`P-------------------------------------------------------------------------------`X
+Syntax :   `Gtarget`X
+           `Gtarget <name>`X
+           `Guntarget`X
+
+Typing target alone will tell you what your current target is. Typing
+untarget will remove whatever target you have; and typing target followed by
+anything will set your target to whatever you typed.
+
+The mud will replace a double dollar sign ('$$') with whatever your target
+is, provided that you have a target. 
+
+Example : untarget
+          'Your current target has been removed.'
+          alias 1 backstab $$
+          '1 is now aliased to backstab $$.'
+          target anthalas
+          'Your current target is now anthalas.'
+          1
+          '<computer reads 1 as 'backstab $$', then reads $$ as 'anthalas'>'  
+          'Your legendary backstab lightly tickles Anthalas.'
+
+Note that you'll have to untarget before you can go moggy with aliases, or
+you'll simply hardcode your aliases to whatever the computer reads $$ as.
+
+Target code provided by Whiskey of Myth! with help from Blade of -E-
+`P-------------------------------------------------------------------------------`X
+~
+1 Seraphim VIRTUE~
+VIRTUE
+Classes: Cleric 1, Druid 1, Paladin 1
+Syntax: `Gc cast virtue`X
+ 
+Virtue grants temporary hitpoints to the caster.
 ~
 
 0 0 $~
@@ -10742,6 +9770,58 @@ AG 0 0 0 0 0 1
 DEO 0 EI 0
 stand stand neutral 0
 0 0 large 0 noset ''
+#24
+zombie~
+(no short description)~
+(no long description)
+~
+~
+zombie~
+AGO 0 0 0 0 0 0
+0 0 1d4+0 0d0+0 0d0+0 none
+0 0 0 0
+O 0 0 0
+stand stand neutral 0
+0 0 medium 0 medium ''
+#25
+mummy~
+(no short description)~
+(no long description)
+~
+~
+zombie~
+AGO 0 0 0 0 0 0
+0 0 1d4+0 0d0+0 0d0+0 none
+0 0 0 0
+O 0 0 0
+stand stand neutral 0
+0 0 medium 0 medium ''
+#26
+skeleton~
+(no short description)~
+(no long description)
+~
+~
+undead~
+AGO 0 0 0 0 0 0
+0 0 1d4+0 0d0+0 0d0+0 none
+0 0 0 0
+O 0 0 0
+stand stand neutral 0
+0 0 medium 0 medium ''
+#27
+hunted animal~
+(no short description)~
+(no long description)
+~
+~
+rabbit~
+AMW 0 0 0 0 0 0
+0 0 1d4+5 1d1+94 1d3+0 none
+20 19 20 20
+FH 0 0 0
+stand stand neutral 0
+0 0 small 0 medium ''
 #80
 no name~
 a peasant~
@@ -10877,67 +9957,67 @@ trash 0 0 A
 0 0 0 0 0 0
 0 50 0 0 D
 0 0 0 0
-0 0 0 0 0
+0 0 0 0 5
 #13
 heart~
 the heart of %s~
 The torn-out heart of %s is lying here.~
 ~
-food 0 0 A
-16 16 0 0 0 0
+food P 0 A
+16 16 0 0 5 0
 0 20 0 0 D
 0 0 0 0
-0 0 0 0 0
+0 0 0 0 5
 #14
 arm~
 the arm of %s~
 The sliced-off arm of %s is lying here.~
 ~
-food 0 0 A
+food P 0 A
 20 20 0 0 0 0
 0 50 0 0 D
 0 0 0 0
-0 0 0 0 0
+0 0 0 0 5
 #15
 leg~
 the leg of %s~
 The sliced-off leg of %s is lying here.~
 ~
-food 0 0 A
-20 20 0 0 0 0
+food P 0 A
+20 20 0 0 5 0
 0 50 0 0 D
 0 0 0 0
-0 0 0 0 0
+0 0 0 0 5
 #16
 guts entrails~
 the guts of %s~
 A steaming pile of %s's entrails is lying here.~
 ~
-food 0 0 A
-5 5 0 1 0 0
+food P 0 A
+5 5 0 1 5 0
 0 20 0 0 D
 0 0 0 0
-0 0 0 0 0
+0 0 0 0 5
 #17
 brains brain~
 the brains of %s~
 The splattered brains of %s are lying here.~
 ~
-food 0 0 A
-10 10 0 0 0 0
+food P 0 A
+10 10 0 0 5 0
 0 20 0 0 D
 0 0 0 0
-0 0 0 0 0
+0 0 0 0 5
 #18
 legs~
 a pair of %s's legs~
 A pair of %s's severed legs are here~
 glass~
-weapon 0 0 AN
+weapon P 0 AN
 club 10 10 crush 0 0
 1 0 0 0 P
 0 0 0 0
-0 0 0 0 0
+0 0 0 0 5
 #19
 berry good goodberry~
 a goodberry~
@@ -11037,11 +10117,11 @@ blood puddle~
 a `Rblood puddle~
 `RBlood`X covers the ground here.~
 ~
-trash 0 0 0
+trash P 0 0
 0 0 0 0 0 0
 1 10 0 0 P
 0 0 0 0
-0 0 0 0 0
+0 0 0 0 5
 #29
 blood trail~
 a blood trail~
@@ -11115,7 +10195,7 @@ questitem AGT 0 AO
 #40
 bear claws~
 spirit claws of the bear~
-Claws conjured from the very essences of the bears of E'dhora are here.~
+Claws conjured from the very essences of the bears of Faerun are here.~
 ~
 trash AM 0 AH
 0 0 0 0 0 0
@@ -11169,7 +10249,7 @@ arrow~
 an arrow~
 An arrow has missed and landed here.~
 ~
-trash 0 0 0
+arrow 0 0 AO
 0 0 0 0 0 0
 0 0 0 0 P
 0 0 0 0
@@ -11179,31 +10259,31 @@ bloodstain stain~
 a `Rblood stain~
 `RBlood`X stains the water here.~
 ~
-trash 0 0 0
+trash P 0 0
 0 0 0 0 0 0
 1 10 0 0 P
 0 0 0 0
-0 0 0 0 0
+0 0 0 0 5
 #47
 tail~
 the tail of %s~
 The severed tail of %s is lying here.~
 ~
-trash 0 0 A
+trash P 0 A
 0 0 0 0 0 0
 0 80 0 0 P
 0 0 0 0
-0 0 0 0 0
+0 0 0 0 5
 #48
 wings~
 the wings from %s~
 The wings from the body of %s lie here.~
 ~
-trash 0 0 A
+trash P 0 A
 0 0 0 0 0 0
 0 160 0 0 P
 0 0 0 0
-0 0 0 0 0
+0 0 0 0 5
 #49
 dummy~
 (no short description)~
@@ -11215,7 +10295,7 @@ trash 0 0 0
 0 0 0 0
 0 0 0 0 0
 #50
-steak~
+butchered steak~
 a butchered steak~
 A slab of raw meat~
 ~
@@ -11234,6 +10314,76 @@ paper 0 0 A
 0 0 0 0 P
 0 0 0 0
 0 0 0 0 0
+#52
+test lute instrument~
+test lute~
+A lute with 'test' burned into the wooden body~
+~
+instrument 0 0 AO
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#53
+bolt~
+a bolt~
+A bolt~
+~
+arrow 0 0 AO
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#54
+foraged~
+(no short description)~
+(no description)~
+~
+food 0 0 A
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#55
+feathers ~
+(no short description)~
+(no description)~
+~
+trash 0 0 A
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#56
+campfire cooking fire~
+a small `Rca`Ym`Op`rf`Yi`Rre`X~
+A small `Rca`Ym`Op`rf`Yi`Rre`X burns brightly~
+~
+light A 0 0
+0 0 20 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 10 10
+#57
+firewood~
+branches and saplings~
+Some branches and saplings, good for building a shelter or a fire~
+wood~
+firewood 0 0 A
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#58
+small wooden shelter leanto lean-to~
+a small wooden lean-to~
+A wooden lean-to made of long branches and saplings lashed together~
+~
+furniture 0 0 0
+2 0 FIL 150 150 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 30 30
 #0
 
 #ROOMS

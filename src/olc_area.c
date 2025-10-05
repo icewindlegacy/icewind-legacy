@@ -63,6 +63,9 @@
 #include "olc.h"
 #include "db.h"
 #include "recycle.h"
+
+/* Forward declaration for instaroom function */
+void instaroom( ROOM_INDEX_DATA *pRoom );
 #include "tables.h"
 
 
@@ -367,7 +370,7 @@ aedit_allset( CHAR_DATA *ch, char *argument )
         {
             if ( pRoom->vnum >= pArea->min_vnum && pRoom->vnum <= pArea->max_vnum )
             {
-                instaroom( ch, pRoom );
+                instaroom( pRoom );
             }
         }
     }

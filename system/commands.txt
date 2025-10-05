@@ -774,6 +774,14 @@ Flags 0
 Sec 0
 End
 
+#CMD target
+Pos dead
+Lvl 0
+Log normal
+Flags A
+Sec 0
+End
+
 #CMD time
 Pos dead
 Lvl 0
@@ -798,6 +806,30 @@ Flags G
 Sec 0
 End
 
+#CMD untarget
+Pos dead
+Lvl 0
+Log normal
+Flags A
+Sec 0
+End
+
+#CMD control
+Pos rest
+Lvl 0
+Log normal
+Flags 0
+Sec 0
+End
+
+#CMD release
+Pos dead
+Lvl 0
+Log normal
+Flags 0
+Sec 0
+End
+
 #CMD typo
 Pos dead
 Lvl 0
@@ -809,6 +841,14 @@ End
 #CMD weather
 Pos rest
 Lvl 0
+Log normal
+Flags 0
+Sec 0
+End
+
+#CMD temperature
+Pos rest
+Lvl Avatar
 Log normal
 Flags 0
 Sec 0
@@ -1486,6 +1526,158 @@ Flags GH
 Sec 0
 End
 
+#CMD forage
+Pos stand
+Lvl 0
+Log normal
+Flags 0
+Sec 0
+End
+
+#CMD hunt
+Pos stand
+Lvl 0
+Log normal
+Flags 0
+Sec 0
+End
+
+#CMD fish
+Pos stand
+Lvl 0
+Log normal
+Flags 0
+Sec 0
+End
+
+#CMD cook
+Pos stand
+Lvl 0
+Log normal
+Flags 0
+Sec 0
+End
+
+#CMD campfire
+Pos stand
+Lvl 0
+Log normal
+Flags 0
+Sec 0
+End
+
+#CMD gather
+Pos stand
+Lvl 0
+Log normal
+Flags 0
+Sec 0
+End
+
+#CMD build_shelter
+Pos stand
+Lvl 0
+Log normal
+Flags 0
+Sec 0
+End
+
+#CMD phouse
+Pos rest
+Lvl 0
+Log always
+Flags 0
+Sec 0
+End
+
+#CMD objbuy
+Pos rest
+Lvl 0
+Log always
+Flags 0
+Sec 0
+End
+
+#CMD mobbuy
+Pos dead
+Lvl 1
+Log normal
+Flags A
+Sec 0
+End
+
+#CMD hdesc
+Pos rest
+Lvl 0
+Log always
+Flags 0
+Sec 0
+End
+
+#CMD invite
+Pos rest
+Lvl 0
+Log always
+Flags 0
+Sec 0
+End
+
+#CMD home
+Pos rest
+Lvl 0
+Log always
+Flags 0
+Sec 0
+End
+
+#CMD hname
+Pos rest
+Lvl 0
+Log always
+Flags 0
+Sec 0
+End
+
+#CMD boot
+Pos rest
+Lvl 0
+Log always
+Flags 0
+Sec 0
+End
+
+#CMD fire
+Pos stand
+Lvl 0
+Log normal
+Flags 0
+Sec 0
+End
+
+#CMD draw
+Pos stand
+Lvl 0
+Log normal
+Flags GH
+Sec 0
+End
+
+#CMD dislodge
+Pos stand
+Lvl 0
+Log normal
+Flags 0
+Sec 0
+End
+
+#CMD reload
+Pos stand
+Lvl 0
+Log normal
+Flags GH
+Sec 0
+End
+
 #CMD give
 Pos rest
 Lvl 0
@@ -1534,7 +1726,7 @@ Flags GH
 Sec 0
 End
 
-#CMD join
+#CMD hjoin
 Pos rest
 Lvl 0
 Log normal
@@ -1846,23 +2038,7 @@ Flags GH
 Sec 0
 End
 
-#CMD draw
-Pos stand
-Lvl 0
-Log normal
-Flags GH
-Sec 0
-End
-
 #CMD nock
-Pos stand
-Lvl 0
-Log normal
-Flags GH
-Sec 0
-End
-
-#CMD reload
 Pos stand
 Lvl 0
 Log normal
@@ -3495,6 +3671,14 @@ Sec 0
 End
 
 #CMD redit
+Pos dead
+Lvl Archangel
+Log build
+Flags 0
+Sec 0
+End
+
+#CMD instaroom
 Pos dead
 Lvl Archangel
 Log build
