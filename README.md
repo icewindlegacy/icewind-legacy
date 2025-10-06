@@ -36,6 +36,11 @@ They're my host of choice, and where I run my personal copy of MARS.
   
 > TO COMPILE & RUN  
 >===========  
+ depends: libmysql libgd  
+As of last build, mysql.h has begun throwing errors so I replaced it with the mysql.h  
+from mariadb on my machine, your mileage may vary so I left it as mysql/mysql.h for  
+the time being.  
+  
  cd to the src directory    
    
  type 'make'    
