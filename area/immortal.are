@@ -14,7 +14,7 @@ Flags       DH
 Color       7
 ExitSize    medium
 Created     1634028838
-Changed     1759546562 Fri Oct  3 22:56:02 2025
+Changed     1759965667 Wed Oct  8 19:21:07 2025
 End
 
 #MOBILES
@@ -223,6 +223,26 @@ firewood 0 0 A
 0 0 0 0 P
 0 0 0 0
 0 0 0 0 0
+#414
+portable tower wizard ~
+a portable wizard tower~
+A huge wizard tower stretches up from the ground~
+~
+tunnel 0 B A
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#415
+wooden doorway~
+(no short description)~
+(no description)~
+~
+trash 0 0 0
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
 #492
 test vorpal dagger~
 vorpal dagger~
@@ -320,7 +340,7 @@ Builder Test 2~
 This room is the second part of the test.
  
 You will type .c to clear the description of
-this room and write a long room description of you own.
+this room and write a long room description of your own.
  
 It needs to be original. Extra points for adding items for flavor
 (you may used VNUMS 401-404 for both objects and mobiles)
@@ -330,6 +350,7 @@ and mobiles, as well as extra descriptions (ed add)
 ~
 ~
 ~
+A faint smell of tobacco and white birch.
 ~
 0 K 0 0
 Dwest medium
@@ -403,6 +424,44 @@ Deast medium
 ~
 0 0 404
 S
+#497
+Mask's Office~
+A large circular room, with a fountain in the center and
+a huge balcony looking out over the lands of Faerun on the far
+side of the room.
+ 
+The walls themselves are bookshelves covered with dusty tomes
+and scrolls of all kinds, on the left side of the room is a large
+wooden desk, solidly constructed, with a high backed chair behind it
+that is adorned with intricate carvings.
+ 
+On the right side of the room is a raised dias with a throne-like
+wooden and bone chair covered in furs.
+~
+~
+~
+~
+~
+~
+0 CK 0 0
+Dwest medium
+~
+~
+~
+~
+1 498 499
+E
+fountain~
+In the center of the large circular room is a simplistic fountain.
+Carved from sandstone with primitive marking gouged deep into the stonework,
+it appears to have been fashioned from a solid piece, possibly having been
+part of a massive tablet, monument or some other work by a primitive people who
+once inhabited the lands of MARS.
+ 
+The fountain is fill with water so clear that if it was still, it would be almost
+impossible to tell that the fountain isn't empty.
+~
+S
 #498
 ~
 ~
@@ -432,7 +491,13 @@ wooden and bone chair covered in furs.
 ~
 ~
 ~
-0 CK 0 0
+0 CDK 0 0
+Deast medium
+~
+~
+~
+~
+1 498 497
 E
 fountain~
 In the center of the large circular room is a simplistic fountain.

@@ -1009,12 +1009,14 @@ reset_char( CHAR_DATA *ch )
 		case APPLY_INT:		ch->mod_stat[STAT_INT]	+= mod; break;
 		case APPLY_WIS:		ch->mod_stat[STAT_WIS]	+= mod; break;
 		case APPLY_CON:		ch->mod_stat[STAT_CON]	+= mod; break;
+		case APPLY_CHA:		ch->mod_stat[STAT_CHA]	+= mod; break;
         case APPLY_ALL_STATS:
     ch->mod_stat[STAT_STR] += mod;
     ch->mod_stat[STAT_INT] += mod;
     ch->mod_stat[STAT_WIS] += mod;
     ch->mod_stat[STAT_DEX] += mod;
     ch->mod_stat[STAT_CON] += mod;
+    ch->mod_stat[STAT_CHA] += mod;
     break;
 
 		case APPLY_SEX:		ch->sex			+= mod; break;
@@ -1047,6 +1049,7 @@ reset_char( CHAR_DATA *ch )
                 case APPLY_INT:         ch->mod_stat[STAT_INT]  += mod; break;
                 case APPLY_WIS:         ch->mod_stat[STAT_WIS]  += mod; break;
                 case APPLY_CON:         ch->mod_stat[STAT_CON]  += mod; break;
+                case APPLY_CHA:         ch->mod_stat[STAT_CHA]  += mod; break;
 
                 case APPLY_SEX:         ch->sex                 += mod; break;
                 case APPLY_MANA:        ch->max_mana            += mod; break;
@@ -1080,6 +1083,7 @@ reset_char( CHAR_DATA *ch )
                 case APPLY_INT:         ch->mod_stat[STAT_INT]  += mod; break;
                 case APPLY_WIS:         ch->mod_stat[STAT_WIS]  += mod; break;
                 case APPLY_CON:         ch->mod_stat[STAT_CON]  += mod; break;
+                case APPLY_CHA:         ch->mod_stat[STAT_CHA]  += mod; break;
 
                 case APPLY_SEX:         ch->sex                 += mod; break;
                 case APPLY_MANA:        ch->max_mana            += mod; break;
@@ -1180,6 +1184,8 @@ get_curr_stat( CHAR_DATA *ch, int stat )
 		mod_stat -= drunk / 8;
 		break;
 	    case STAT_CON:
+		break;
+	    case STAT_CHA:
 		break;
 	}
 
@@ -1459,6 +1465,7 @@ affect_modify( CHAR_DATA *ch, AFFECT_DATA *paf, bool fAdd )
     case APPLY_INT:           ch->mod_stat[STAT_INT]	+= mod;	break;
     case APPLY_WIS:           ch->mod_stat[STAT_WIS]	+= mod;	break;
     case APPLY_CON:           ch->mod_stat[STAT_CON]	+= mod;	break;
+    case APPLY_CHA:           ch->mod_stat[STAT_CHA]	+= mod;	break;
     case APPLY_SEX:           ch->sex			+= mod;	break;
     case APPLY_CLASS:						break;
     case APPLY_LEVEL:						break;
@@ -3696,6 +3703,10 @@ can_see( CHAR_DATA *ch, CHAR_DATA *victim )
     &&   !IS_AFFECTED(ch, AFF_DETECT_INVIS) )
 	return FALSE;
 
+    if ( IS_AFFECTED(victim, AFF_OBSCURING_MIST)
+    &&   !IS_AFFECTED(ch, AFF_DETECT_INVIS) )
+	return FALSE;
+
 #if 0
     /* sneaking */
     if ( IS_AFFECTED(victim, AFF_SNEAK)
@@ -4069,6 +4080,7 @@ affect_loc_name( int location )
     case APPLY_INT:		return "intelligence";
     case APPLY_WIS:		return "wisdom";
     case APPLY_CON:		return "constitution";
+    case APPLY_CHA:		return "charisma";
     case APPLY_SEX:		return "sex";
     case APPLY_CLASS:		return "class";
     case APPLY_LEVEL:		return "level";
@@ -5561,4 +5573,38 @@ int god_lookup (const char *name)
     sprintf(debug_buf, "[DEBUG_GOD_LOOKUP] No match found for '%s'\n\r", name);
     log_string(debug_buf);
     return -1;
+}
+
+bool auto_quaff(CHAR_DATA *ch, OBJ_DATA *obj)
+{
+   int i,skill;
+
+    if ( obj->item_type != ITEM_POTION )
+    {
+        bug("auto_quaff invalide item type %d",obj->item_type );
+        return FALSE;
+    }
+
+    if (ch->level < obj->level)
+    {
+        send_to_char("This liquid is too powerful for you to drink.\n\r",ch);
+        return FALSE;
+    }
+
+    if ( ( IS_OBJ_STAT(obj, ITEM_ANTI_EVIL)    && IS_EVIL(ch)    )
+    ||   ( IS_OBJ_STAT(obj, ITEM_ANTI_GOOD)    && IS_GOOD(ch)    )
+    ||   ( IS_OBJ_STAT(obj, ITEM_ANTI_NEUTRAL) && IS_NEUTRAL(ch) ) )
+    {
+        act( "You are burned by the liquid and you split it.", ch, NULL, NULL, TO_CHAR );
+        act( "$n is burned by the liquid and split it.",  ch, NULL, NULL, TO_ROOM );
+        return FALSE;
+    }
+
+   for(i=1;( i < 4) && (ch != NULL ) && (ch->position > POS_DEAD);i++)
+     {
+       if( obj->value[i] != 0 )
+           obj_cast_spell(   obj->value[i],   obj->value[0], ch, ch, NULL );
+      }
+  extract_obj(obj);
+  return TRUE;
 }

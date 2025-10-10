@@ -1,0 +1,38 @@
+#AREADATA
+Version     9
+Name        Tier Breche~
+Credits     ~
+Builders    None~
+Kingdom     'Menzoberranzan'
+Continent   Underdark
+World       'All'
+VNUMs       1401 1501
+Levels      0 0
+Security    0
+Recall      900
+Flags       B
+Color       7
+ExitSize    medium
+Created     1759784485
+Changed     1759784566 Mon Oct  6 17:02:46 2025
+End
+
+#MOBILES
+#0
+
+#OBJECTS
+#0
+
+#ROOMS
+#0
+
+#RESETS
+S
+
+#SHOPS
+0
+
+#SPECIALS
+S
+
+#$

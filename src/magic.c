@@ -73,6 +73,7 @@ char *target_name;
 bool	event_char_heal	args( ( EVENT_DATA *pEvent ) );
 int	get_heal_rate	args( ( int level ) );
 bool	heal_spell	args( ( CHAR_DATA *victim, int total, int amt, int level ) );
+extern int	get_hardcoded_damage	args( ( int level ) );
 bool	is_sn		args( ( int sn ) );
 void	magic_mob	args( ( CHAR_DATA *ch, OBJ_DATA *obj, int vnum ) );
 void	say_spell	args( ( CHAR_DATA *ch, int sn ) );
@@ -256,36 +257,7 @@ get_heal_rate( int level )
     else
         return ( 12 - ( (int)( level / 10 ) ) );
 }
-/*
-int
-get_heal_rate( int level )
-{
-    if ( level >= LEVEL_IMMORTAL )
-	return 1;
-    else if ( level >= LEVEL_HERO )
-	return 2;
-    else if ( level >= 90 )
-	return 3;
-    else if ( level >= 80 )
-	return 4;
-    else if ( level >= 70 )
-	return 5;
-    else if ( level >= 60 )
-	return 6;
-    else if ( level >= 50 )
-	return 7;
-    else if ( level >= 40 )
-	return 8;
-    else if ( level >= 30 )
-	return 9;
-    else if ( level >= 20 )
-	return 10;
-    else if ( level >= 10 )
-	return 11;
-    else
-	return 12;
-}
-*/
+
 
 bool
 heal_spell( CHAR_DATA *victim, int total, int amt, int level )
@@ -1933,7 +1905,10 @@ if ((!IS_NPC (ch) && IS_NPC (victim) &&
 
 void spell_cause_light( int sn, int level, CHAR_DATA *ch, void *vo,int target )
 {
-    damage( ch, (CHAR_DATA *) vo, dice(1, 8) + level / 3, sn,DAM_HARM,TRUE);
+    if ( IS_NPC( ch ) )
+        damage( ch, (CHAR_DATA *) vo, get_hardcoded_damage( ch->level ), sn,DAM_HARM,TRUE);
+    else
+        damage( ch, (CHAR_DATA *) vo, dice(1, 8) + level / 3, sn,DAM_HARM,TRUE);
     return;
 }
 
@@ -1941,7 +1916,10 @@ void spell_cause_light( int sn, int level, CHAR_DATA *ch, void *vo,int target )
 
 void spell_cause_critical(int sn,int level,CHAR_DATA *ch,void *vo,int target)
 {
-    damage( ch, (CHAR_DATA *) vo, dice(3, 8) + level - 6, sn,DAM_HARM,TRUE);
+    if ( IS_NPC( ch ) )
+        damage( ch, (CHAR_DATA *) vo, get_hardcoded_damage( ch->level ), sn,DAM_HARM,TRUE);
+    else
+        damage( ch, (CHAR_DATA *) vo, dice(3, 8) + level - 6, sn,DAM_HARM,TRUE);
     return;
 }
 
@@ -1949,7 +1927,10 @@ void spell_cause_critical(int sn,int level,CHAR_DATA *ch,void *vo,int target)
 
 void spell_cause_serious(int sn,int level,CHAR_DATA *ch,void *vo,int target)
 {
-    damage( ch, (CHAR_DATA *) vo, dice(2, 8) + level / 2, sn,DAM_HARM,TRUE);
+    if ( IS_NPC( ch ) )
+        damage( ch, (CHAR_DATA *) vo, get_hardcoded_damage( ch->level ), sn,DAM_HARM,TRUE);
+    else
+        damage( ch, (CHAR_DATA *) vo, dice(2, 8) + level / 2, sn,DAM_HARM,TRUE);
     return;
 }
 
@@ -1969,7 +1950,10 @@ void spell_chain_lightning(int sn,int level,CHAR_DATA *ch, void *vo,int target)
     act("A lightning bolt leaps from $n's hand and hits you!",
 	ch,NULL,victim,TO_VICT);
 
-    dam = dice(level,6);
+    if ( IS_NPC( ch ) )
+        dam = get_hardcoded_damage( ch->level );
+    else
+        dam = dice(level,6);
     if (saves_spell(level,victim,DAM_LIGHTNING))
  	dam /= 3;
     damage(ch,victim,dam,sn,DAM_LIGHTNING,TRUE);
@@ -3481,7 +3465,10 @@ void spell_fireball(int sn,int level,CHAR_DATA *ch, void *vo,int target)
     act("A small flame from $n's hand grows into a massive fireball and engulfs you!",
 	ch,NULL,victim,TO_VICT);
 
-    dam = dice(level,6);
+    if ( IS_NPC( ch ) )
+        dam = get_hardcoded_damage( ch->level );
+    else
+        dam = dice(level,6);
     if (saves_spell(level,victim,DAM_FIRE))
  	dam /= 3;
     damage(ch,victim,dam,sn,DAM_FIRE,TRUE);
@@ -3571,7 +3558,10 @@ void spell_flamestrike( int sn, int level, CHAR_DATA *ch, void *vo,int target )
     CHAR_DATA *victim = (CHAR_DATA *) vo;
     int dam;
 
-    dam = dice(6 + level / 2, 8);
+    if ( IS_NPC( ch ) )
+        dam = get_hardcoded_damage( ch->level );
+    else
+        dam = dice(6 + level / 2, 8);
     if ( saves_spell( level, victim,DAM_FIRE) )
 	dam /= 2;
     damage( ch, victim, dam, sn, DAM_FIRE ,TRUE);
@@ -4658,7 +4648,82 @@ void spell_know_alignment(int sn,int level,CHAR_DATA *ch,void *vo,int target )
     return;
 }
 
+/* Redkoala MUD Knock Spell coded by Lord Siron. Version 1.00 */
+void spell_knock( int sn, int level, CHAR_DATA *ch, void *vo , int target)
+{
+    char arg[MAX_INPUT_LENGTH];
+    int chance=0;
+    int door;
 
+    target_name = one_argument(target_name,arg);
+
+    if (arg[0] == '\0')
+    {
+    send_to_char("Knock which door or direction.\n\r",ch);
+    return;
+    }
+
+    if (ch->fighting)
+    {
+        send_to_char("Wait until the fight finishes.\n\r",ch);
+        return;
+    }
+
+    if ( ( door = find_door( ch, arg, FALSE ) ) >= 0 )
+    {
+        ROOM_INDEX_DATA *to_room;
+        EXIT_DATA *pexit;
+        EXIT_DATA *pexit_rev;
+
+        pexit = ch->in_room->exit[door];
+        if ( !IS_SET(pexit->exit_info, EX_CLOSED) )
+            { send_to_char( "It's already open.\n\r",      ch ); return; }
+        if ( !IS_SET(pexit->exit_info, EX_LOCKED) )
+            { send_to_char( "Just try to open it.\n\r",     ch ); return; }
+        if ( IS_SET(pexit->exit_info, EX_NOPASS) )
+            { send_to_char( "A mystical shield protects the exit.\n\r",ch ); return; };
+    chance = ch->level / 5 + get_curr_stat(ch,STAT_INT) + get_skill(ch,sn) / 5;
+
+    act("You cast knock on the $d, and try to open the $d!",
+             ch,NULL,pexit->keyword,TO_CHAR);
+
+    if (room_is_dark(ch->in_room))
+                chance /= 2;
+
+    /* now the attack */
+    if (number_percent() < chance )
+     {
+        REMOVE_BIT(pexit->exit_info, EX_LOCKED);
+        REMOVE_BIT(pexit->exit_info, EX_CLOSED);
+        act( "$n knocks on the $d and opens the lock.", ch, NULL,
+                pexit->keyword, TO_ROOM );
+        send_to_char( "You successfully open the door.\n\r", ch );
+
+        /* open the other side */
+        if ( ( to_room   = pexit->u1.to_room            ) != NULL
+        &&   ( pexit_rev = to_room->exit[rev_dir[door]] ) != NULL
+        &&   pexit_rev->u1.to_room == ch->in_room )
+        {
+            CHAR_DATA *rch;
+               REMOVE_BIT( pexit_rev->exit_info, EX_CLOSED );
+            REMOVE_BIT( pexit_rev->exit_info, EX_LOCKED );
+            for ( rch = to_room->people; rch != NULL; rch = rch->next_in_room )
+                act( "The $d opens.", rch, NULL, pexit_rev->keyword, TO_CHAR );
+        }
+     }
+    else
+     {
+        act("You couldn't magically open the $d!",
+            ch,NULL,pexit->keyword,TO_CHAR);
+        act("$n failed to magically open the $d.",
+            ch,NULL,pexit->keyword,TO_ROOM);
+     }
+    return;
+    }
+
+  send_to_char("You can't see that here.\n\r",ch);
+  return;
+}
 
 void spell_lightning_bolt(int sn,int level,CHAR_DATA *ch,void *vo,int target)
 {
@@ -5204,6 +5269,471 @@ spell_refresh( int sn, int level, CHAR_DATA *ch, void *vo, int target )
         send_to_char( "You feel less tired.\n\r", victim );
     if ( ch != victim )
         send_to_char( "Ok.\n\r", ch );
+    return;
+}
+
+
+void
+spell_longstrider( int sn, int level, CHAR_DATA *ch, void *vo, int target )
+{
+    CHAR_DATA *	victim = (CHAR_DATA *) vo;
+    AFFECT_DATA af;
+
+    if ( is_affected( victim, sn ) )
+    {
+        if ( victim == ch )
+            send_to_char( "You already have longstrider active.\n\r", ch );
+        else
+            act( "$N already has longstrider active.", ch, NULL, victim, TO_CHAR );
+        return;
+    }
+
+    act( "$n's steps become longer and more fluid.", victim, NULL, NULL, TO_ROOM );
+    send_to_char( "Your steps become longer and more fluid.\n\r", victim );
+
+    af.where     = TO_AFFECTS;
+    af.type      = sn;
+    af.level     = level;
+    af.duration  = level + 12;
+    af.location  = APPLY_MOVE;
+    af.modifier  = 30;
+    af.bitvector = 0;
+    affect_to_char( victim, &af );
+
+    return;
+}
+
+
+void
+spell_obscuring_mist( int sn, int level, CHAR_DATA *ch, void *vo, int target )
+{
+    CHAR_DATA *	victim = (CHAR_DATA *) vo;
+    AFFECT_DATA af;
+
+    if ( IS_AFFECTED( victim, AFF_OBSCURING_MIST ) )
+    {
+        if ( victim == ch )
+            send_to_char( "You are already shrouded in mist.\n\r", ch );
+        else
+            act( "$N is already shrouded in mist.", ch, NULL, victim, TO_CHAR );
+        return;
+    }
+
+    act( "A thick cloud of mist swirls around $n, obscuring $s form.", victim, NULL, NULL, TO_ROOM );
+    send_to_char( "A thick cloud of mist swirls around you, obscuring your form.\n\r", victim );
+
+    af.where     = TO_AFFECTS;
+    af.type      = sn;
+    af.level     = level;
+    af.duration  = level + 12;
+    af.location  = APPLY_NONE;
+    af.modifier  = 0;
+    af.bitvector = AFF_OBSCURING_MIST;
+    affect_to_char( victim, &af );
+
+    return;
+}
+
+
+void
+spell_pass_without_trace( int sn, int level, CHAR_DATA *ch, void *vo, int target )
+{
+    CHAR_DATA *	victim = (CHAR_DATA *) vo;
+    AFFECT_DATA af;
+
+    if ( IS_AFFECTED( victim, AFF_PASS_WITHOUT_TRACE ) )
+    {
+        if ( victim == ch )
+            send_to_char( "You already leave no trace.\n\r", ch );
+        else
+            act( "$N already leaves no trace.", ch, NULL, victim, TO_CHAR );
+        return;
+    }
+
+    act( "$n's footsteps become silent and leave no trace.", victim, NULL, NULL, TO_ROOM );
+    send_to_char( "Your footsteps become silent and leave no trace.\n\r", victim );
+
+    af.where     = TO_AFFECTS;
+    af.type      = sn;
+    af.level     = level;
+    af.duration  = level + 12;
+    af.location  = APPLY_NONE;
+    af.modifier  = 0;
+    af.bitvector = AFF_PASS_WITHOUT_TRACE;
+    affect_to_char( victim, &af );
+
+    return;
+}
+
+
+void
+spell_shillelagh( int sn, int level, CHAR_DATA *ch, void *vo, int target )
+{
+    OBJ_DATA *	weapon;
+    AFFECT_DATA af;
+
+    weapon = get_eq_char( ch, WEAR_WIELD );
+    if ( weapon == NULL )
+    {
+        send_to_char( "You must be wielding a club or staff to cast this spell.\n\r", ch );
+        return;
+    }
+
+    if ( weapon->item_type != ITEM_WEAPON )
+    {
+        send_to_char( "You must be wielding a club or staff to cast this spell.\n\r", ch );
+        return;
+    }
+
+    if ( weapon->value[0] != WEAPON_CLUB && weapon->value[0] != WEAPON_STAFF )
+    {
+        send_to_char( "You must be wielding a club or staff to cast this spell.\n\r", ch );
+        return;
+    }
+
+    if ( affect_find( weapon->affected, sn ) != NULL )
+    {
+        send_to_char( "Your weapon is already enchanted with shillelagh.\n\r", ch );
+        return;
+    }
+
+    act( "$p glows with a warm, woody light.", ch, weapon, NULL, TO_CHAR );
+    act( "$n's $p glows with a warm, woody light.", ch, weapon, NULL, TO_ROOM );
+
+    /* Add hitroll bonus */
+    af.where     = TO_OBJECT;
+    af.type      = sn;
+    af.level     = level;
+    af.duration  = level + 12;
+    af.location  = APPLY_HITROLL;
+    af.modifier  = 10;
+    af.bitvector = 0;
+    affect_to_obj( weapon, &af );
+
+    /* Add damroll bonus */
+    af.location  = APPLY_DAMROLL;
+    affect_to_obj( weapon, &af );
+
+    return;
+}
+
+
+void
+spell_chill_metal( int sn, int level, CHAR_DATA *ch, void *vo, int target )
+{
+    CHAR_DATA *	victim = (CHAR_DATA *) vo;
+    OBJ_DATA *	obj_lose;
+    OBJ_DATA *	obj_next;
+    int		dam = 0;
+    bool	fail;
+
+    fail = TRUE;
+    dam = 0;
+
+    if ( !saves_spell( level + 2, victim, DAM_COLD )
+    &&   !IS_SET( victim->imm_flags, IMM_COLD ) )
+    {
+        for ( obj_lose = victim->carrying;
+	      obj_lose != NULL;
+	      obj_lose = obj_next)
+        {
+	    obj_next = obj_lose->next_content;
+            if ( number_range( 1, 2 * level ) > obj_lose->level
+	    &&   !saves_spell( level, victim, DAM_COLD )
+	    &&	 is_metal( obj_lose )
+	    &&   !IS_OBJ_STAT( obj_lose, ITEM_BURN_PROOF ) )
+            {
+                switch ( obj_lose->item_type )
+                {
+               	case ITEM_ARMOR:
+		if ( obj_lose->wear_loc != WEAR_NONE ) /* remove the item */
+		{
+		    if ( can_drop_obj( victim, obj_lose )
+		    &&  ( obj_lose->weight / 160 ) <
+			number_range( 1, 2 * get_curr_stat( victim, STAT_DEX ) )
+		    &&  remove_obj( victim, obj_lose->wear_loc, TRUE ) )
+		    {
+		        act_color( AT_ACTION, "$n yelps and throws $p to the ground!",
+			    victim, obj_lose, NULL, TO_ROOM, POS_RESTING );
+		        act_color( AT_ACTION, "You remove and drop $p before it freezes you.",
+			    victim, obj_lose, NULL, TO_CHAR, POS_RESTING );
+			dam += ( number_range( 1, obj_lose->level ) / 3 );
+                        obj_from_char( obj_lose );
+                        obj_to_room( obj_lose, victim->in_room );
+                        add_obj_fall_event( obj_lose );
+                        fail = FALSE;
+                    }
+		    else /* stuck on the body! ouch! */
+		    {
+			act_color( AT_MAGIC, "Your skin is frozen by $p!",
+			    victim, obj_lose, NULL, TO_CHAR, POS_RESTING );
+			dam += (number_range( 1, obj_lose->level ) );
+			fail = FALSE;
+		    }
+		}
+		break;
+
+		case ITEM_WEAPON:
+		if ( obj_lose->wear_loc == WEAR_WIELD )
+		{
+		    if ( can_drop_obj( victim, obj_lose )
+		    &&  remove_obj( victim, WEAR_WIELD, TRUE ) )
+		    {
+		        act_color( AT_ACTION, "$n drops $p as it freezes $s hand!",
+			    victim, obj_lose, NULL, TO_ROOM, POS_RESTING );
+		        act_color( AT_ACTION, "You drop $p as it freezes your hand!",
+			    victim, obj_lose, NULL, TO_CHAR, POS_RESTING );
+			dam += ( number_range( 1, obj_lose->level ) / 2 );
+                        obj_from_char( obj_lose );
+                        obj_to_room( obj_lose, victim->in_room );
+                        add_obj_fall_event( obj_lose );
+                        fail = FALSE;
+		    }
+		    else
+		    {
+			act_color( AT_MAGIC, "Your hand is frozen to $p!",
+			    victim, obj_lose, NULL, TO_CHAR, POS_RESTING );
+			dam += ( number_range( 1, obj_lose->level ) );
+			fail = FALSE;
+		    }
+		}
+		break;
+                }
+            }
+        }
+    }
+
+    if ( fail )
+    {
+        send_to_char( "Nothing happens.\n\r", ch );
+        return;
+    }
+
+    act_color( AT_MAGIC, "$n's metal equipment freezes and burns $m!",
+        victim, NULL, NULL, TO_ROOM, POS_RESTING );
+    act_color( AT_MAGIC, "Your metal equipment freezes and burns you!",
+        victim, NULL, NULL, TO_CHAR, POS_RESTING );
+
+    damage( victim, victim, dam, sn, DAM_COLD, FALSE );
+    return;
+}
+
+
+void
+spell_flame_blade( int sn, int level, CHAR_DATA *ch, void *vo, int target )
+{
+    CHAR_DATA *	victim = (CHAR_DATA *) vo;
+    int		dam;
+
+    if ( victim == ch )
+    {
+        send_to_char( "You can't flame blade yourself!\n\r", ch );
+        return;
+    }
+
+    if ( IS_SET( victim->imm_flags, IMM_FIRE ) )
+    {
+        act_color( AT_MAGIC, "$n is immune to fire!", victim, NULL, NULL, TO_ROOM, POS_RESTING );
+        act_color( AT_MAGIC, "$n is immune to fire!", victim, NULL, NULL, TO_CHAR, POS_RESTING );
+        return;
+    }
+
+    act_color( AT_MAGIC, "$n summons a flaming blade and strikes at $N!",
+        ch, NULL, victim, TO_ROOM, POS_RESTING );
+    act_color( AT_MAGIC, "You summon a flaming blade and strike at $N!",
+        ch, NULL, victim, TO_CHAR, POS_RESTING );
+    act_color( AT_MAGIC, "$n summons a flaming blade and strikes at you!",
+        ch, NULL, victim, TO_VICT, POS_RESTING );
+
+    dam = dice( 1, 8 ) + level / 2;
+    damage( ch, victim, dam, sn, DAM_FIRE, TRUE );
+    return;
+}
+
+
+void
+spell_flaming_sphere( int sn, int level, CHAR_DATA *ch, void *vo, int target )
+{
+    CHAR_DATA *	victim;
+    CHAR_DATA *	victim_next;
+    int		dam;
+
+    act_color( AT_MAGIC, "A flaming sphere rolls through the room!",
+        ch, NULL, NULL, TO_ROOM, POS_RESTING );
+    act_color( AT_MAGIC, "You summon a flaming sphere that rolls through the room!",
+        ch, NULL, NULL, TO_CHAR, POS_RESTING );
+
+    for ( victim = ch->in_room->people; victim != NULL; victim = victim_next )
+    {
+        victim_next = victim->next_in_room;
+
+        if ( victim == ch )
+            continue;
+
+        if ( !can_see( ch, victim ) )
+            continue;
+
+        if ( IS_SET( victim->imm_flags, IMM_FIRE ) )
+        {
+            act_color( AT_MAGIC, "The flaming sphere rolls harmlessly past $n.",
+                victim, NULL, NULL, TO_ROOM, POS_RESTING );
+            continue;
+        }
+
+        act_color( AT_MAGIC, "The flaming sphere rolls over $n!",
+            victim, NULL, NULL, TO_ROOM, POS_RESTING );
+        act_color( AT_MAGIC, "The flaming sphere rolls over you!",
+            victim, NULL, NULL, TO_CHAR, POS_RESTING );
+
+        dam = dice( 2, 6 ) + level / 3;
+        damage( ch, victim, dam, sn, DAM_FIRE, TRUE );
+    }
+
+    return;
+}
+
+
+void
+spell_fog_cloud( int sn, int level, CHAR_DATA *ch, void *vo, int target )
+{
+    CHAR_DATA *	victim;
+    CHAR_DATA *	victim_next;
+
+    if ( IS_SET( ch->in_room->affect_flags, ROOM_AFF_FOG ) )
+    {
+        send_to_char( "The room is already filled with fog.\n\r", ch );
+        return;
+    }
+
+    act_color( AT_MAGIC, "A thick cloud of fog fills the room!",
+        ch, NULL, NULL, TO_ROOM, POS_RESTING );
+    act_color( AT_MAGIC, "You summon a thick cloud of fog that fills the room!",
+        ch, NULL, NULL, TO_CHAR, POS_RESTING );
+
+    /* Set the fog affect on the room */
+    SET_BIT( ch->in_room->affect_flags, ROOM_AFF_FOG );
+
+    /* Stop all combat in the room */
+    for ( victim = ch->in_room->people; victim != NULL; victim = victim_next )
+    {
+        victim_next = victim->next_in_room;
+
+        if ( victim->fighting != NULL )
+        {
+            act_color( AT_MAGIC, "The thick fog makes it impossible to see anyone to fight.",
+                victim, NULL, NULL, TO_CHAR, POS_RESTING );
+            stop_fighting( victim, FALSE );
+        }
+    }
+
+    /* The fog will persist until manually removed or the room resets */
+
+    return;
+}
+
+
+void
+spell_summon_swarm( int sn, int level, CHAR_DATA *ch, void *vo, int target )
+{
+    CHAR_DATA *	victim = (CHAR_DATA *) vo;
+    int		dam;
+    int		swarm_type;
+    AFFECT_DATA af;
+
+    if ( victim == ch )
+    {
+        send_to_char( "You can't summon a swarm on yourself!\n\r", ch );
+        return;
+    }
+
+    /* Randomly choose swarm type: 1=bats, 2=rats, 3=spiders */
+    swarm_type = number_range( 1, 3 );
+
+    switch ( swarm_type )
+    {
+    case 1: /* Bats */
+        act_color( AT_MAGIC, "$n summons a swarm of bats that attack $N!",
+            ch, NULL, victim, TO_ROOM, POS_RESTING );
+        act_color( AT_MAGIC, "You summon a swarm of bats that attack $N!",
+            ch, NULL, victim, TO_CHAR, POS_RESTING );
+        act_color( AT_MAGIC, "$n summons a swarm of bats that attack you!",
+            ch, NULL, victim, TO_VICT, POS_RESTING );
+        break;
+
+    case 2: /* Rats */
+        act_color( AT_MAGIC, "$n summons a swarm of rats that attack $N!",
+            ch, NULL, victim, TO_ROOM, POS_RESTING );
+        act_color( AT_MAGIC, "You summon a swarm of rats that attack $N!",
+            ch, NULL, victim, TO_CHAR, POS_RESTING );
+        act_color( AT_MAGIC, "$n summons a swarm of rats that attack you!",
+            ch, NULL, victim, TO_VICT, POS_RESTING );
+        break;
+
+    case 3: /* Spiders */
+        act_color( AT_MAGIC, "$n summons a swarm of spiders that attack $N!",
+            ch, NULL, victim, TO_ROOM, POS_RESTING );
+        act_color( AT_MAGIC, "You summon a swarm of spiders that attack $N!",
+            ch, NULL, victim, TO_CHAR, POS_RESTING );
+        act_color( AT_MAGIC, "$n summons a swarm of spiders that attack you!",
+            ch, NULL, victim, TO_VICT, POS_RESTING );
+        break;
+    }
+
+    dam = dice( 2, 4 ) + level / 3;
+    damage( ch, victim, dam, sn, DAM_PIERCE, TRUE );
+
+    /* Apply secondary effects */
+    if ( !saves_spell( level, victim, DAM_OTHER ) )
+    {
+        switch ( swarm_type )
+        {
+        case 1: /* Bats - chance of disease */
+        case 2: /* Rats - chance of disease */
+            if ( number_percent() < 25 )
+            {
+                if ( !IS_AFFECTED( victim, AFF_PLAGUE ) )
+                {
+                    af.where     = TO_AFFECTS;
+                    af.type      = sn;
+                    af.level     = level;
+                    af.duration  = level / 2;
+                    af.location  = APPLY_NONE;
+                    af.modifier  = 0;
+                    af.bitvector = AFF_PLAGUE;
+                    affect_to_char( victim, &af );
+
+                    act_color( AT_MAGIC, "The swarm carries disease!",
+                        victim, NULL, NULL, TO_ROOM, POS_RESTING );
+                    act_color( AT_MAGIC, "You feel ill from the disease!",
+                        victim, NULL, NULL, TO_CHAR, POS_RESTING );
+                }
+            }
+            break;
+
+        case 3: /* Spiders - chance of poison */
+            if ( number_percent() < 30 )
+            {
+                if ( !IS_AFFECTED( victim, AFF_POISON ) )
+                {
+                    af.where     = TO_AFFECTS;
+                    af.type      = sn;
+                    af.level     = level;
+                    af.duration  = level / 2;
+                    af.location  = APPLY_NONE;
+                    af.modifier  = 0;
+                    af.bitvector = AFF_POISON;
+                    affect_to_char( victim, &af );
+
+                    act_color( AT_MAGIC, "The spiders are venomous!",
+                        victim, NULL, NULL, TO_ROOM, POS_RESTING );
+                    act_color( AT_MAGIC, "You feel poisoned!",
+                        victim, NULL, NULL, TO_CHAR, POS_RESTING );
+                }
+            }
+            break;
+        }
+    }
+
     return;
 }
 
@@ -6047,7 +6577,10 @@ void
 spell_hellfire(int sn, int level, CHAR_DATA *ch, void *vo, int target)
 {
         CHAR_DATA *victim = (CHAR_DATA *) vo;
-        damage(ch, victim, dice(level, 7), sn, DAM_FIRE, TRUE);
+        if ( IS_NPC( ch ) )
+            damage(ch, victim, get_hardcoded_damage( ch->level ), sn, DAM_FIRE, TRUE);
+        else
+            damage(ch, victim, dice(level, 7), sn, DAM_FIRE, TRUE);
 }
 
 void spell_acid_arrow(int sn, int level, CHAR_DATA *ch, void *vo, int target)
@@ -6731,6 +7264,33 @@ spell_cats_grace(int sn,int level,CHAR_DATA *ch,void *vo,int target)
 }
 
 void
+spell_eagles_splendor(int sn,int level,CHAR_DATA *ch,void *vo,int target)
+{
+    CHAR_DATA *victim = (CHAR_DATA *) vo;
+    AFFECT_DATA af;
+
+    if ( is_affected( victim, sn ) )
+    {
+	if (victim == ch)
+	  send_to_char("You are already as splendid as you can be!\n\r",ch);
+	else
+	  act("$N can't get any more splendid.",ch,NULL,victim,TO_CHAR);
+	return;
+    }
+
+    af.where     = TO_AFFECTS;
+    af.type      = sn;
+    af.level	 = level;
+    af.duration  = level;
+    af.location  = APPLY_CHA;
+    af.modifier  = 1 + (level >= 18) + (level >= 25) + (level >= 32);
+    af.bitvector = 0;
+    affect_to_char( victim, &af );
+    send_to_char( "You become as splendid as an eagle!\n\r", victim );
+    act("$n's becomes as splendid as an eagle.",victim,NULL,NULL,TO_ROOM);
+    return;
+}
+void
 spell_fox_cunning(int sn,int level,CHAR_DATA *ch,void *vo,int target)
 {
     CHAR_DATA *victim = (CHAR_DATA *) vo;
@@ -7407,5 +7967,95 @@ void spell_entangle( int sn, int level, CHAR_DATA *ch, void *vo, int target )
     act( "Tangling roots and brambles spring up from the ground!", ch, NULL, NULL, TO_ROOM );
     send_to_char( "You call upon the earth to entangle the area.\n\r", ch );
     
+    return;
+}
+
+void
+spell_endure_elements( int sn, int level, CHAR_DATA *ch, void *vo, int target )
+{
+    CHAR_DATA *victim = (CHAR_DATA *) vo;
+    AFFECT_DATA af;
+
+    if ( is_affected( victim, sn ) )
+    {
+	if (victim == ch)
+	    send_to_char("You are already protected from the elements.\n\r", ch);
+	else
+	    act("$N is already protected from the elements.", ch, NULL, victim, TO_CHAR);
+	return;
+    }
+
+    af.where	 = TO_AFFECTS;
+    af.type      = sn;
+    af.level	 = level;
+    af.duration  = 12 + level / 4;
+    af.modifier  = 0;
+    af.location  = APPLY_NONE;
+    af.bitvector = AFF_ENDURE_ELEMENTS;
+    affect_to_char( victim, &af );
+
+    send_to_char( "You feel protected from the harsh elements.\n\r", victim );
+    if ( ch != victim )
+	act("$N is protected from the elements by your magic.", ch, NULL, victim, TO_CHAR);
+    return;
+}
+
+void
+spell_water_breathing( int sn, int level, CHAR_DATA *ch, void *vo, int target )
+{
+    CHAR_DATA *victim = (CHAR_DATA *) vo;
+    AFFECT_DATA af;
+
+    if ( is_affected( victim, sn ) )
+    {
+	if (victim == ch)
+	    send_to_char("You can already breathe underwater.\n\r", ch);
+	else
+	    act("$N can already breathe underwater.", ch, NULL, victim, TO_CHAR);
+	return;
+    }
+
+    af.where	 = TO_AFFECTS;
+    af.type      = sn;
+    af.level	 = level;
+    af.duration  = 12 + level / 4;
+    af.modifier  = 0;
+    af.location  = APPLY_NONE;
+    af.bitvector = AFF_WATER_BREATHING;
+    affect_to_char( victim, &af );
+
+    send_to_char( "You feel your lungs adapt to breathe underwater.\n\r", victim );
+    if ( ch != victim )
+	act("$N can now breathe underwater thanks to your magic.", ch, NULL, victim, TO_CHAR);
+    return;
+}
+
+void
+spell_water_walking( int sn, int level, CHAR_DATA *ch, void *vo, int target )
+{
+    CHAR_DATA *victim = (CHAR_DATA *) vo;
+    AFFECT_DATA af;
+
+    if ( is_affected( victim, sn ) )
+    {
+	if (victim == ch)
+	    send_to_char("You can already walk on water.\n\r", ch);
+	else
+	    act("$N can already walk on water.", ch, NULL, victim, TO_CHAR);
+	return;
+    }
+
+    af.where	 = TO_AFFECTS;
+    af.type      = sn;
+    af.level	 = level;
+    af.duration  = 12 + level / 4;
+    af.modifier  = 0;
+    af.location  = APPLY_NONE;
+    af.bitvector = AFF_WATER_WALKING;
+    affect_to_char( victim, &af );
+
+    send_to_char( "You feel your feet become buoyant, able to walk on water.\n\r", victim );
+    if ( ch != victim )
+	act("$N can now walk on water thanks to your magic.", ch, NULL, victim, TO_CHAR);
     return;
 }

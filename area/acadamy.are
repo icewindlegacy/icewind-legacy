@@ -14,7 +14,7 @@ Flags       0
 Color       7
 ExitSize    huge
 Created     1632789381
-Changed     1759298960 Wed Oct  1 02:09:20 2025
+Changed     1759899968 Wed Oct  8 01:06:08 2025
 End
 
 #MOBILES
@@ -220,6 +220,19 @@ ABG 0 0 0 0 0 0
 0 0 0 0
 stand stand male 300
 0 0 medium 0 hard ''
+#911
+Dahlia Clan Vendor~
+Dahlia, the Clan Vendor~
+Dahlia is here, ready to fulfill all your clan needs
+~
+~
+elf~
+ABG JZ 0 0 0 0 0
+30 5 3d12+850 1d1+249 4d9+0 none
+-3 -3 -3 -3
+0 0 B 0
+stand stand female 300
+0 0 medium 0 hard ''
 #993
 horse sleipnir~
 The Eight Legged Steed, Sleipnir~
@@ -266,7 +279,7 @@ an iron mace~
 A mace made of iron and wood lies here~
 iron~
 weapon 0 0 AN
-mace 1 6 pound 0 2
+mace 1 8 beating 0 2
 1 960 50 0 P
 0 0 0 0
 0 0 0 0 0
@@ -908,7 +921,7 @@ Adventurer's Guild~
 ~
 ~
 ~
-0 DKa 0 0
+0 DKUa 0 0
 Deast huge
 ~
 ~
@@ -1083,10 +1096,42 @@ S
 #RESETS
 M 0 904 1 900 1
 O 0 944 -1 900
-O 0 945 -1 901
-M 0 908 1 940 1
-G 1 211 -1
-G 1 202 -1
+M 0 911 1 901 3
+G 1 238 1
+G 1 237 1
+G 1 236 1
+G 1 235 1
+G 1 234 1
+O 0 945 1 901
+M 0 908 1 940 3
+G 1 228 1
+G 1 227 1
+G 1 226 1
+G 1 225 1
+G 1 224 1
+G 1 223 1
+G 1 222 1
+G 1 221 1
+G 1 220 1
+G 1 219 1
+G 1 218 1
+G 1 217 1
+G 1 216 1
+G 1 215 1
+G 1 214 1
+G 1 213 1
+G 1 212 1
+G 1 210 1
+G 1 209 1
+G 1 208 1
+G 1 207 1
+G 1 206 1
+G 1 205 1
+G 1 204 1
+G 1 203 1
+G 1 200 1
+G 1 202 1
+G 1 211 1
 M 0 910 1 951 1
 G 1 957 -1
 O 0 958 -1 951
@@ -1098,12 +1143,14 @@ S
 908  0  0  0  0  0      100  75    0 23
 909  5  9 10  8  0      100  75   12 20
 910 19  0  0  0  0      100  75    1 23
+911  0  0  0  0  0      100  75    0 23
 0
 
 #SPECIALS
 M 903 spec_nasty
 M 904 spec_resurrect
 M 908 spec_questmaster
+M 911 spec_questmaster
 S
 
 #$

@@ -277,6 +277,7 @@ const struct olc_cmd_type medit_table[] =
     {	"position",	medit_position		},
     {	"resistant",	medit_resistant		},
     {	"shop",		medit_shop		},
+    {	"qshop",	medit_qshop		},
     {	"short",	medit_short		},
     {	"show",		medit_show		},
     {	"size",		medit_size		},

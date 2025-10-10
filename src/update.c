@@ -118,12 +118,16 @@ advance_level( CHAR_DATA *ch, bool hide )
     ch->pcdata->last_level =
 	( ch->played + (int) (current_time - ch->logon) ) / 3600;
 
-    /* Use effective class for multiclass characters */
-    effective_class = get_effective_class( ch );
+    /* Use leveling class if set, otherwise use effective class for multiclass characters */
+    if ( ch->leveling_class != -1 )
+        effective_class = ch->leveling_class;
+    else
+        effective_class = get_effective_class( ch );
 
-    add_hp	= con_app[get_curr_stat(ch,STAT_CON)].hitp + number_range(
+    add_hp	= number_range(
 		    class_table[effective_class].hp_min,
-		    class_table[effective_class].hp_max );
+		    class_table[effective_class].hp_max ) 
+		    + stat_mod[get_curr_stat(ch,STAT_CON)];
     add_mana 	= number_range(2,(2*get_curr_stat(ch,STAT_INT)
 				  + get_curr_stat(ch,STAT_WIS))/5);
     if ( !IS_SET( class_table[effective_class].flags, CLASS_FMANA ) )
@@ -132,11 +136,8 @@ advance_level( CHAR_DATA *ch, bool hide )
 				  + get_curr_stat(ch,STAT_DEX))/6 );
     add_prac	= wis_app[get_curr_stat(ch,STAT_WIS)].practice;
 
-    add_hp = add_hp * 9/10;
-    add_mana = add_mana * 9/10;
-    add_move = add_move * 9/10;
-
-    add_hp	= UMAX(  2, add_hp   );
+    /* Ensure minimum values */
+    add_hp	= UMAX(  1, add_hp   );
     add_mana	= UMAX(  2, add_mana );
     add_move	= UMAX(  6, add_move );
 
@@ -144,7 +145,13 @@ advance_level( CHAR_DATA *ch, bool hide )
     ch->max_mana	+= add_mana;
     ch->max_move	+= add_move;
     ch->practice	+= add_prac;
-    ch->train		+= 1;
+    
+    /* New training system: trains only at levels 4, 8, 12, 16, 20 */
+    if ( ch->level == 4 || ch->level == 8 || ch->level == 12 || 
+         ch->level == 16 || ch->level == 20 )
+    {
+        ch->train += 1;
+    }
 
     ch->pcdata->perm_hit	+= add_hp;
     ch->pcdata->perm_mana	+= add_mana;
@@ -1217,6 +1224,10 @@ void char_update( void )
 	    bool has_campfire = FALSE;
 	    bool has_shelter = FALSE;
 	    OBJ_DATA *obj;
+	    int wet_level = ch->pcdata->condition[COND_WET];
+	    int freezing_level = ch->pcdata->condition[COND_FREEZING];
+	    bool was_freezing = (freezing_level > 0);
+	    bool was_wet = (wet_level > 0);
 	    
 	    /* Check for campfire in room */
 	    for ( obj = ch->in_room->contents; obj != NULL; obj = obj->next_content )
@@ -1232,75 +1243,289 @@ void char_update( void )
 	    if ( ch->furniture_in != NULL && ch->furniture_in->item_type == ITEM_FURNITURE )
 		has_shelter = TRUE;
 	    
-	    /* Indoor recovery - always recover from wet/freezing when indoors */
-	    if ( !IS_OUTSIDE( ch ) )
+	    /* Recovery from cold and wet conditions */
+	    if ( !IS_OUTSIDE( ch ) || has_campfire || has_shelter )
 	    {
-		
-		if ( IS_SET( ch->act2, PLR_FREEZING ) )
+		/* Decrease freezing - faster recovery indoors or near fire/shelter */
+		if ( freezing_level > 0 )
 		{
-		    REMOVE_BIT( ch->act2, PLR_FREEZING );
+		    int recovery_rate = 1;  /* Base recovery */
+		    
+		    if ( !IS_OUTSIDE( ch ) )
+			recovery_rate = 3;  /* Much faster indoors */
+		    else if ( has_campfire )
+			recovery_rate = 4;  /* Fastest near fire */
+		    else if ( has_shelter )
+			recovery_rate = 2;  /* Moderate in shelter */
+		    
+		    gain_condition( ch, COND_FREEZING, -recovery_rate );
+		    
+		    int new_freezing = ch->pcdata->condition[COND_FREEZING];
+		    
+		    /* Send message when significantly warming up */
+		    if ( freezing_level > 4 && new_freezing <= 4 )
+		    {
+			if ( !IS_OUTSIDE( ch ) )
 		    send_to_char( "You warm up indoors.\n\r", ch );
+			else if ( has_campfire )
+			    send_to_char( "You warm up by the fire.\n\r", ch );
+			else if ( has_shelter )
+			    send_to_char( "You warm up in the shelter.\n\r", ch );
+		    }
 		}
-		if ( IS_SET( ch->act2, PLR_WET ) && number_percent() < 50 )  /* 50% chance per tick indoors */
+		
+		/* Decrease wetness - faster recovery indoors or near fire */
+		if ( wet_level > 0 )
 		{
-		    REMOVE_BIT( ch->act2, PLR_WET );
+		    int wet_recovery_chance = 30;  /* Base 30% chance */
+		    
+		    if ( !IS_OUTSIDE( ch ) )
+			wet_recovery_chance = 60;  /* 60% chance indoors */
+		    else if ( has_campfire )
+			wet_recovery_chance = 80;  /* 80% chance near fire */
+		    else if ( has_shelter )
+			wet_recovery_chance = 40;  /* 40% chance in shelter */
+		    
+		    if ( number_percent() < wet_recovery_chance )
+		    {
+			gain_condition( ch, COND_WET, -1 );
+			if ( wet_level > 1 && ch->pcdata->condition[COND_WET] <= 1 )
+			{
+			    if ( !IS_OUTSIDE( ch ) )
 		    send_to_char( "You dry off indoors.\n\r", ch );
+			    else if ( has_campfire )
+				send_to_char( "You dry off by the fire.\n\r", ch );
+			    else if ( has_shelter )
+				send_to_char( "You dry off in the shelter.\n\r", ch );
+			}
+		    }
 		}
 	    }
 	    
 	    /* Outdoor weather effects */
 	    if ( IS_OUTSIDE( ch ) )
 	    {
-	    
-	    /* Cold effects */
-	    if ( weather_info.temperature < 32 )  /* Freezing */
+		/* Cold effects - start at 45F and below */
+		if ( weather_info.temperature < 45 )
 	    {
 		if ( !has_campfire && !has_shelter )
 		{
-		    /* Get wet from snow/rain */
+			/* Get wet from snow/rain - higher wetness in worse conditions */
 		    if ( weather_info.sky == SKY_RAINING || weather_info.sky == SKY_LIGHTNING )
 		    {
-			if ( !IS_SET( ch->act2, PLR_WET ) )
+			    int wet_gain = 2;  /* Base wetness gain */
+			    if ( weather_info.temperature < 20 )
+				wet_gain = 3;  /* Freezing rain is worse */
+			    
+			    gain_condition( ch, COND_WET, wet_gain );  /* Positive = increase */
+			    
+			    if ( !was_wet )
 			    send_to_char( "You get soaked by the rain!\n\r", ch );
-			SET_BIT( ch->act2, PLR_WET );
-		    }
-		    
-		    /* Snow makes it worse */
-		    if ( weather_info.sky == SKY_RAINING && weather_info.temperature < 20 )
-		    {
-			if ( !IS_SET( ch->act2, PLR_FREEZING ) )
-			    send_to_char( "The freezing rain makes you start shivering!\n\r", ch );
-			SET_BIT( ch->act2, PLR_FREEZING );
-		    }
-		    else if ( weather_info.temperature < 10 )
-		    {
-			if ( !IS_SET( ch->act2, PLR_FREEZING ) )
-			    send_to_char( "The bitter cold makes you start freezing!\n\r", ch );
-			SET_BIT( ch->act2, PLR_FREEZING );
-		    }
-		    
-		    /* Wet + freezing = faster death */
-		    if ( IS_SET( ch->act2, PLR_WET ) && IS_SET( ch->act2, PLR_FREEZING ) )
-		    {
-			damage( ch, ch, 2, TYPE_HIT + 31, DAM_COLD, TRUE );
-			send_to_char( "The freezing cold and wet conditions are deadly!\n\r", ch );
-		    }
-		    else if ( IS_SET( ch->act2, PLR_FREEZING ) )
-		    {
-			damage( ch, ch, 1, TYPE_HIT + 31, DAM_COLD, TRUE );
+			    else if ( ch->pcdata->condition[COND_WET] >= 8 )
+				send_to_char( "You are completely drenched!\n\r", ch );
+			}
+			
+			/* Increase freezing based on temperature - much more gradual */
+			int freezing_gain = 0;
+			if ( weather_info.temperature <= 0 )
+			    freezing_gain = 3;  /* Extreme cold - 1 tick for chattering, damage starts immediately */
+			else if ( weather_info.temperature <= 10 )
+			    freezing_gain = 2;  /* Very cold - 1 tick chattering, 2 ticks damage */
+			else if ( weather_info.temperature <= 28 )
+			    freezing_gain = 2;  /* Cold - 1 tick chattering, 3 ticks damage */
+			else if ( weather_info.temperature <= 32 )
+			    freezing_gain = 1;  /* Freezing - 2 ticks chattering, 4-5 ticks damage */
+			else if ( weather_info.temperature <= 40 )
+			    freezing_gain = 1;  /* Chilly - slower buildup */
+			else if ( weather_info.temperature <= 45 )
+			    freezing_gain = 1;  /* Cool - very slow buildup */
+			
+			/* Wetness makes freezing worse */
+			if ( wet_level > 0 )
+			    freezing_gain += (wet_level / 2);
+			
+			/* Material effects on freezing */
+			int material_modifier = 0;
+			OBJ_DATA *obj;
+			int i;
+			
+			/* Check all equipped items for material effects */
+			for ( i = 0; i < MAX_WEAR; i++ )
+			{
+			    obj = get_eq_char( ch, i );
+			    if ( obj != NULL )
+			    {
+				/* Insulating materials - slow freezing */
+				if ( xIS_SET( obj->material, MAT_LEATHER ) ||
+				     xIS_SET( obj->material, MAT_WOOD ) ||
+				     xIS_SET( obj->material, MAT_STRAW ) ||
+				     xIS_SET( obj->material, MAT_CLOTH ) ||
+				     xIS_SET( obj->material, MAT_FIBER ) ||
+				     xIS_SET( obj->material, MAT_FLAX ) ||
+				     xIS_SET( obj->material, MAT_HEMP ) ||
+				     xIS_SET( obj->material, MAT_SILK ) ||
+				     xIS_SET( obj->material, MAT_VELVET ) )
+				{
+				    material_modifier -= 1;  /* Slow freezing by 1 */
+				}
+				
+				/* Highly insulating materials - slow freezing more */
+				if ( xIS_SET( obj->material, MAT_FUR ) ||
+				     xIS_SET( obj->material, MAT_WOOL ) ||
+				     xIS_SET( obj->material, MAT_FEATHER ) )
+				{
+				    material_modifier -= 2;  /* Slow freezing by 2 */
+				}
+				
+				/* Conductive materials - speed up freezing */
+				if ( xIS_SET( obj->material, MAT_STEEL ) ||
+				     xIS_SET( obj->material, MAT_IRON ) ||
+				     xIS_SET( obj->material, MAT_MITHRIL ) ||
+				     xIS_SET( obj->material, MAT_SILVER ) ||
+				     xIS_SET( obj->material, MAT_GOLD ) ||
+				     xIS_SET( obj->material, MAT_COPPER ) ||
+				     xIS_SET( obj->material, MAT_BRONZE ) ||
+				     xIS_SET( obj->material, MAT_BRASS ) ||
+				     xIS_SET( obj->material, MAT_GLASS ) ||
+				     xIS_SET( obj->material, MAT_JADE ) ||
+				     xIS_SET( obj->material, MAT_MARBLE ) ||
+				     xIS_SET( obj->material, MAT_CRYSTAL ) ||
+				     xIS_SET( obj->material, MAT_DIAMOND ) ||
+				     xIS_SET( obj->material, MAT_EMERALD ) ||
+				     xIS_SET( obj->material, MAT_RUBY ) ||
+				     xIS_SET( obj->material, MAT_SAPPHIRE ) ||
+				     xIS_SET( obj->material, MAT_PEARL ) ||
+				     xIS_SET( obj->material, MAT_PLATINUM ) ||
+				     xIS_SET( obj->material, MAT_TIN ) ||
+				     xIS_SET( obj->material, MAT_LEAD ) ||
+				     xIS_SET( obj->material, MAT_ZINC ) )
+				{
+				    material_modifier += 1;  /* Speed up freezing by 1 */
+				}
+			    }
+			}
+			
+			/* Apply material modifier to freezing gain */
+			freezing_gain += material_modifier;
+			
+			/* Only gain freezing if we have a gain amount */
+			if ( freezing_gain > 0 )
+			{
+			    gain_condition( ch, COND_FREEZING, freezing_gain );
+			    
+			    /* Progressive warning messages */
+			    int current_freezing = ch->pcdata->condition[COND_FREEZING];
+			    if ( current_freezing == 1 )
+				send_to_char( "You feel a chill in the air.\n\r", ch );
+			    else if ( current_freezing == 2 )
+				send_to_char( "You start to feel cold.\n\r", ch );
+			    else if ( current_freezing == 3 )
+				send_to_char( "You are getting quite cold.\n\r", ch );
+			    else if ( current_freezing == 4 )
+				send_to_char( "You shiver uncontrollably and your teeth chatter together.\n\r", ch );
+			    else if ( current_freezing == 5 )
+				send_to_char( "You are freezing and can barely feel your extremities.\n\r", ch );
+			    else if ( current_freezing >= 6 )
+				send_to_char( "You are in severe danger from hypothermia!\n\r", ch );
+			}
+			
+			/* Hypothermia damage - starts at different levels based on temperature */
+			int current_freezing = ch->pcdata->condition[COND_FREEZING];
+			int damage_threshold = 10;  /* Default high threshold */
+			
+			if ( weather_info.temperature <= 0 )
+			    damage_threshold = 3;  /* Damage starts at level 3 */
+			else if ( weather_info.temperature <= 10 )
+			    damage_threshold = 4;  /* Damage starts at level 4 */
+			else if ( weather_info.temperature <= 28 )
+			    damage_threshold = 5;  /* Damage starts at level 5 */
+			else if ( weather_info.temperature <= 32 )
+			    damage_threshold = 6;  /* Damage starts at level 6 */
+			else if ( weather_info.temperature <= 40 )
+			    damage_threshold = 8;  /* Damage starts at level 8 */
+			else if ( weather_info.temperature <= 45 )
+			    damage_threshold = 10; /* Damage starts at level 10 */
+			
+			if ( current_freezing >= damage_threshold )
+			{
+			    int damage_amount = 1;
+			    if ( wet_level > 0 )
+				damage_amount = 2;  /* Wet + freezing = worse */
+			    
+			    /* Damage scales with freezing level */
+			    if ( current_freezing > damage_threshold )
+				damage_amount += (current_freezing - damage_threshold);
+			    
+			    damage( ch, ch, damage_amount, TYPE_HIT, DAM_COLD, TRUE );
+			    
+			    if ( wet_level > 0 )
+				send_to_char( "The freezing cold and wet conditions are deadly!\n\r", ch );
+			    else
 			send_to_char( "You are freezing to death!\n\r", ch );
 		    }
+			
+			/* Cold hands - drop items if not wearing gloves and very cold */
+			if ( current_freezing >= 4 )
+			{
+			    OBJ_DATA *gloves = get_eq_char( ch, WEAR_HANDS );
+			    if ( gloves == NULL || gloves->item_type != ITEM_ARMOR )
+			    {
+				/* Check for items in hands that might be dropped */
+				OBJ_DATA *wield = get_eq_char( ch, WEAR_WIELD );
+				OBJ_DATA *hold = get_eq_char( ch, WEAR_HOLD );
+				OBJ_DATA *shield = get_eq_char( ch, WEAR_SHIELD );
+				OBJ_DATA *dual = get_eq_char( ch, WEAR_DUAL );
+				
+				/* Must drop dual wield first to prevent exploits */
+				if ( dual != NULL && number_percent() < 20 )
+				{
+				    act( "Your cold hands can't maintain their grip on $p!", ch, dual, NULL, TO_CHAR );
+				    act( "$n drops $p from $s cold hands!", ch, dual, NULL, TO_ROOM );
+				    unequip_char( ch, dual );
+				    obj_to_room( dual, ch->in_room );
+				}
+				else if ( wield != NULL && number_percent() < 15 )
+				{
+				    act( "Your cold hands can't maintain their grip on $p!", ch, wield, NULL, TO_CHAR );
+				    act( "$n drops $p from $s cold hands!", ch, wield, NULL, TO_ROOM );
+				    unequip_char( ch, wield );
+				    obj_to_room( wield, ch->in_room );
+				}
+				else if ( shield != NULL && number_percent() < 15 )
+				{
+				    act( "Your cold hands can't maintain their grip on $p!", ch, shield, NULL, TO_CHAR );
+				    act( "$n drops $p from $s cold hands!", ch, shield, NULL, TO_ROOM );
+				    unequip_char( ch, shield );
+				    obj_to_room( shield, ch->in_room );
+				}
+				else if ( hold != NULL && number_percent() < 15 )
+				{
+				    act( "Your cold hands can't maintain their grip on $p!", ch, hold, NULL, TO_CHAR );
+				    act( "$n drops $p from $s cold hands!", ch, hold, NULL, TO_ROOM );
+				    unequip_char( ch, hold );
+				    obj_to_room( hold, ch->in_room );
+				}
+			    }
+			}
 		}
 		else
 		{
 		    /* Warm up near fire or in shelter */
 		    if ( has_campfire || has_shelter )
 		    {
-			REMOVE_BIT( ch->act2, PLR_FREEZING );
-			if ( number_percent() < 20 )  /* 20% chance per tick */
-			    REMOVE_BIT( ch->act2, PLR_WET );
-			if ( IS_SET( ch->act2, PLR_FREEZING ) == FALSE )
+			    /* Decrease freezing faster near fire */
+			    if ( freezing_level > 0 )
+			    {
+			    gain_condition( ch, COND_FREEZING, -3 );  /* Negative = decrease */
+				if ( freezing_level > 3 && ch->pcdata->condition[COND_FREEZING] <= 3 )
 			    send_to_char( "You warm up by the fire.\n\r", ch );
+			    }
+			    
+			    /* Decrease wetness near fire */
+			    if ( wet_level > 0 && number_percent() < 20 )  /* 20% chance per tick */
+			    {
+				gain_condition( ch, COND_WET, -1 );  /* Negative = decrease */
+			    }
 		    }
 		}
 	    }
@@ -1309,17 +1534,11 @@ void char_update( void )
 		/* Can get wet but not freezing */
 		if ( weather_info.sky == SKY_RAINING || weather_info.sky == SKY_LIGHTNING )
 		{
-		    if ( !IS_SET( ch->act2, PLR_WET ) )
+			gain_condition( ch, COND_WET, 1 );  /* Positive = increase */
+			if ( !was_wet )
 			send_to_char( "You get wet from the rain.\n\r", ch );
-		    SET_BIT( ch->act2, PLR_WET );
-		}
-		
-		/* Warm up if near fire or in shelter */
-		if ( has_campfire || has_shelter )
-		{
-		    if ( number_percent() < 30 )  /* 30% chance per tick */
-			REMOVE_BIT( ch->act2, PLR_WET );
-		}
+		    }
+		    
 	    }
 	    
 	    /* Heat effects */
@@ -1339,12 +1558,24 @@ void char_update( void )
 		gain_condition( ch, COND_TIRED, -1 );
 	    }
 	    
-	    /* Wet penalty - double move loss when walking */
-	    if ( IS_SET( ch->act2, PLR_WET ) && ch->move > 0 )
+		/* Wet penalty - movement difficulty based on wetness level */
+		int current_wet = ch->pcdata->condition[COND_WET];
+		if ( current_wet > 0 && ch->move > 0 )
 	    {
-		ch->move = UMAX( 0, ch->move - 1 );  /* Extra move loss */
+		    int move_loss = (current_wet + 1) / 2;  /* More wet = more move loss */
+		    ch->move = UMAX( 0, ch->move - move_loss );
 		if ( number_percent() < 5 )  /* 5% chance per tick */
 		    send_to_char( "Your wet clothes slow you down.\n\r", ch );
+		}
+		
+		/* Freezing penalty - movement difficulty based on freezing level */
+		int current_freezing = ch->pcdata->condition[COND_FREEZING];
+		if ( current_freezing > 0 && ch->move > 0 )
+		{
+		    int move_loss = (current_freezing + 2) / 3;  /* Cold limbs make movement harder */
+		    ch->move = UMAX( 0, ch->move - move_loss );
+		    if ( number_percent() < 8 )  /* 8% chance per tick */
+			send_to_char( "Your cold limbs make movement difficult.\n\r", ch );
 	    }
 	    }  /* End of outdoor weather effects */
 	}
@@ -1456,7 +1687,7 @@ void char_update( void )
  if(ch->desc && ch->desc->connected == CON_PLAYING)
 	  if(!IS_NPC(ch))
 	    {
-	      if( ch->in_room && (ch->in_room->sector_type == SECT_WATER_SWIM && !IS_AFFECTED(ch,AFF_FLYING)))
+	      if( ch->in_room && (ch->in_room->sector_type == SECT_WATER_SWIM && !IS_AFFECTED(ch,AFF_FLYING) && !IS_AFFECTED(ch, AFF_WATER_WALKING)))
 		{
 		  OBJ_DATA *obj;
 		  bool has_boat;
@@ -2047,7 +2278,8 @@ void aggr_update( void )
                                                                                                     
     if (!IS_NPC(ch)                                                                                 
     && !IS_IMMORTAL(ch)                                                                             
-    && IS_SET(ch->in_room->sector_type, SECT_UNDERWATER) )                                          
+    && IS_SET(ch->in_room->sector_type, SECT_UNDERWATER) 
+    && !IS_AFFECTED(ch, AFF_WATER_BREATHING) )                                          
     {                                                                                               
                                                                                                     
      if ( ch->hit > 20)                                                                             
@@ -2244,10 +2476,33 @@ update_handler( void )
    
    {
       if (IS_SET(ch->act2,PLR_AUTOTICK))
-           send_to_char(tick_table[number_range(0, count - 1)], d->character );
+      {
+          if (ch->position == POS_SLEEPING)
+              send_to_char("zzZzzZzzZz\n\r", d->character);
+          else
+              send_to_char(tick_table[number_range(0, count - 1)], d->character);
+      }
    }
 		}
 	}
+	
+	/* Check for talking weapons out of combat */
+	for ( ch = char_list; ch != NULL; ch = ch->next )
+	{
+	    OBJ_DATA *weapon;
+	    
+	    if ( IS_NPC( ch ) || ch->desc == NULL )
+		continue;
+		    
+	    /* Check wielded weapon */
+	    if ( ( weapon = get_eq_char( ch, WEAR_WIELD ) ) != NULL )
+		check_talking_weapon_out_of_combat( ch, weapon );
+	    
+	    /* Check dual wielded weapon */
+	    if ( ( weapon = get_eq_char( ch, WEAR_DUAL ) ) != NULL )
+		check_talking_weapon_out_of_combat( ch, weapon );
+	}
+	
 	sprintf( buf, "TICK!  %ld", current_time - last_tick );
 	last_tick = current_time;
 	wiznet( buf, NULL, NULL, WIZ_TICKS, 0, 0 );

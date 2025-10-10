@@ -299,7 +299,13 @@ struct	skill_type	skill_table	[]	=
 	"",			"You feel less graceful.",
 	"",			"$n looks less graceful."
     },
-
+	{
+	"eagles splendor",			{-1,-1,-1,-1,-1,-1,-1,-1,-1},	{0,0,0,0,0,0,0,0,0},	{ },
+	spell_eagles_splendor,		TAR_CHAR_DEFENSIVE,	POS_STANDING,
+	NULL,			SPELL_NONE,	15,	12,	0,
+	"",			"You feel less splendid.",
+	"",			"$n looks less splendid."
+    },
     {
 	"cause critical",	{ },	{ },	{ },
 	spell_cause_critical,	TAR_CHAR_OFFENSIVE,	POS_FIGHTING,
@@ -352,6 +358,13 @@ struct	skill_type	skill_table	[]	=
 	spell_charm_person,	TAR_CHAR_OFFENSIVE,	POS_STANDING,
 	&gsn_charm_person,	SPELL_NONE,	 5,	12,	0,
 	"",			"You feel more self-confident.",	""
+    },
+
+    {
+	"chill metal",		{-1,-1,-1,-1,-1,-1,-1,-1,-1},	{0,0,0,0,0,0,0,0,0},	{ },
+	spell_chill_metal,	TAR_CHAR_OFFENSIVE,	POS_FIGHTING,
+	NULL,			SPELL_NONE,	25,	18,	0,
+	"spell",		"!Chill Metal!",	""
     },
 
     {
@@ -719,6 +732,27 @@ struct	skill_type	skill_table	[]	=
     },
 
     {
+	"flame blade",		{-1,-1,-1,-1,-1,-1,-1,-1,-1},	{0,0,0,0,0,0,0,0,0},	{ },
+	spell_flame_blade,	TAR_CHAR_OFFENSIVE,	POS_FIGHTING,
+	NULL,			SPELL_NONE,	20,	12,	0,
+	"flame blade",		"!Flame Blade!",	""
+    },
+
+    {
+	"flaming sphere",	{-1,-1,-1,-1,-1,-1,-1,-1,-1},	{0,0,0,0,0,0,0,0,0},	{ },
+	spell_flaming_sphere,	TAR_IGNORE,	POS_FIGHTING,
+	NULL,			SPELL_NONE,	25,	12,	0,
+	"flaming sphere",	"!Flaming Sphere!",	""
+    },
+
+    {
+	"fog cloud",		{-1,-1,-1,-1,-1,-1,-1,-1,-1},	{0,0,0,0,0,0,0,0,0},	{ },
+	spell_fog_cloud,	TAR_IGNORE,	POS_STANDING,
+	NULL,			SPELL_NONE,	30,	12,	0,
+	"fog cloud",		"The fog dissipates.",	""
+    },
+
+    {
 	"fireproof",		{-1,-1,-1,-1,-1,-1,-1,-1,-1},	{0,0,0,0,0,0,0,0,0},	{ },
 	spell_fireproof,	TAR_OBJ_INV,		POS_STANDING,
 	NULL,			SPELL_NONE,	10,	12,	0,
@@ -911,6 +945,13 @@ struct	skill_type	skill_table	[]	=
     },
 
     {
+	"knock",		{-1,-1,-1,-1,-1,-1,-1,-1,-1},	{0,0,0,0,0,0,0,0,0},	{ },
+	spell_knock,		TAR_IGNORE,		POS_STANDING,
+	&gsn_knock,		SPELL_NONE,	15,	12,	0,
+	"",			"",			""
+    },
+
+    {
 	"lightning bolt",	{-1,-1,-1,-1,-1,-1,-1,-1,-1},	{0,0,0,0,0,0,0,0,0},	{ },
 	spell_lightning_bolt,	TAR_CHAR_OFFENSIVE,	POS_FIGHTING,
 	NULL,			SPELL_NONE,	15,	12,	0,
@@ -1055,10 +1096,38 @@ struct	skill_type	skill_table	[]	=
     },
 
     {
+	"longstrider",		{-1,-1,-1,-1,-1,-1,-1,-1,-1},	{0,0,0,0,0,0,0,0,0},	{ },
+	spell_longstrider,	TAR_CHAR_DEFENSIVE,	POS_STANDING,
+	NULL,			SPELL_NONE,	15,	12,	0,
+	"longstrider",		"Your steps return to normal.",	""
+    },
+
+    {
+	"obscuring mist",	{-1,-1,-1,-1,-1,-1,-1,-1,-1},	{0,0,0,0,0,0,0,0,0},	{ },
+	spell_obscuring_mist,	TAR_CHAR_DEFENSIVE,	POS_STANDING,
+	NULL,			SPELL_NONE,	20,	12,	0,
+	"obscuring mist",	"The mist around you dissipates.",	""
+    },
+
+    {
+	"pass without trace",	{-1,-1,-1,-1,-1,-1,-1,-1,-1},	{0,0,0,0,0,0,0,0,0},	{ },
+	spell_pass_without_trace,	TAR_CHAR_DEFENSIVE,	POS_STANDING,
+	NULL,			SPELL_NONE,	15,	12,	0,
+	"pass without trace",	"You begin to leave traces again.",	""
+    },
+
+    {
 	"remove curse",		{-1,-1,-1,-1,-1,-1,-1,-1,-1},	{0,0,0,0,0,0,0,0,0},	{ },
 	spell_remove_curse,	TAR_OBJ_CHAR_DEF,	POS_STANDING,
 	NULL,			SPELL_NONE,	 5,	12,	0,
 	"",			"!Remove Curse!",	"",	""
+    },
+
+    {
+	"shillelagh",		{-1,-1,-1,-1,-1,-1,-1,-1,-1},	{0,0,0,0,0,0,0,0,0},	{ },
+	spell_shillelagh,	TAR_IGNORE,	POS_STANDING,
+	NULL,			SPELL_NONE,	20,	12,	0,
+	"shillelagh",		"The warm glow fades from your weapon.",	""
     },
 
     {
@@ -1163,6 +1232,13 @@ struct	skill_type	skill_table	[]	=
 	spell_summon,		TAR_IGNORE,		POS_STANDING,
 	NULL,			SPELL_NONE,	50,	12,	0,
 	"",			"!Summon!",		""
+    },
+
+    {
+	"summon swarm",		{-1,-1,-1,-1,-1,-1,-1,-1,-1},	{0,0,0,0,0,0,0,0,0},	{ },
+	spell_summon_swarm,	TAR_CHAR_OFFENSIVE,	POS_FIGHTING,
+	NULL,			SPELL_NONE,	25,	12,	0,
+	"summon swarm",		"!Summon Swarm!",	""
     },
 
 {
@@ -2016,6 +2092,30 @@ struct	skill_type	skill_table	[]	=
 	spell_entangle,		TAR_CHAR_OFFENSIVE,	POS_FIGHTING,
 	&gsn_entangle,		SPELL_NONE,	15,	0,	0,
 	"",			"!Entangle!",		""
+    },
+
+    {
+	"endure elements",	{-1,-1,-1,-1,-1,-1,-1,-1,-1},	{0,0,0,0,0,0,0,0,0},	{ },
+	spell_endure_elements,	TAR_CHAR_DEFENSIVE,	POS_STANDING,
+	&gsn_endure_elements,	SPELL_NONE,	25,	12,	0,
+	"",			"You are no longer protected from the elements.",
+	"",			"$n's protection from the elements fades."
+    },
+
+    {
+	"water breathing",	{-1,-1,-1,-1,-1,-1,-1,-1,-1},	{0,0,0,0,0,0,0,0,0},	{ },
+	spell_water_breathing,	TAR_CHAR_DEFENSIVE,	POS_STANDING,
+	&gsn_water_breathing,	SPELL_NONE,	30,	12,	0,
+	"",			"You can no longer breathe underwater.",
+	"",			"$n can no longer breathe underwater."
+    },
+
+    {
+	"water walking",	{-1,-1,-1,-1,-1,-1,-1,-1,-1},	{0,0,0,0,0,0,0,0,0},	{ },
+	spell_water_walking,	TAR_CHAR_DEFENSIVE,	POS_STANDING,
+	&gsn_water_walking,	SPELL_NONE,	35,	12,	0,
+	"",			"You can no longer walk on water.",
+	"",			"$n can no longer walk on water."
     },
 
 

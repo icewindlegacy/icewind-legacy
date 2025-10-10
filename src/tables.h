@@ -156,4 +156,6 @@ extern	const	struct	flag_type	wear_loc_strings[];
 extern	const	struct	flag_type	wear_loc_types[];
 extern	const	struct	flag_type	windspeed_types[];
 extern	const	struct	flag_type	world_types[];
+extern	const	char	*talking_weapon_messages[];
+extern	const	char	*talking_weapon_messages2[];
 

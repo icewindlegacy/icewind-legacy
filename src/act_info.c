@@ -142,6 +142,7 @@ struct inventory_list_type inventory_table[] =
     {	ITEM_WAND,	NULL		},
     {	ITEM_PORTAL,	NULL		},
     {	ITEM_WARP_STONE,NULL		},
+    {	ITEM_TUNNEL,	NULL		},
     {	ITEM_FOOD,	"Cooking"		},
     {	ITEM_LIGHT,	"Misc"		},
     {	ITEM_TREASURE,	NULL		},
@@ -155,6 +156,8 @@ struct inventory_list_type inventory_table[] =
     {	ITEM_CORPSE_NPC,NULL		},
     {	ITEM_CORPSE_PC,	NULL		},
     {	ITEM_FOUNTAIN,	NULL		},
+    {	ITEM_FLINT,	NULL		},
+    {	ITEM_FIRESTEEL,	NULL		},
 /*  {	ITEM_PROTECT,	NULL		}, */
     {	ITEM_MAP,	NULL		},
 /*  {	ITEM_ROOM_KEY,	NULL		}, */
@@ -453,6 +456,7 @@ show_char_to_char_0( CHAR_DATA *victim, CHAR_DATA *ch )
 						strcat( buf, "(`c[`CT`BA`WRG`BE`CT`c]`X) "     );
     if ( IS_DEAD( victim ) )			strcat( buf, "(Spirit) " );
     if ( IS_AFFECTED(victim, AFF_INVISIBLE)   ) strcat( buf, "(Invis) "      );
+    if ( IS_AFFECTED(victim, AFF_OBSCURING_MIST) ) strcat( buf, "(Mist) "      );
     if ( victim->invis_level >= LEVEL_HERO    )
     {
 	sprintf( buf1, "(Wiz%d)", victim->invis_level );
@@ -536,7 +540,10 @@ show_char_to_char_0( CHAR_DATA *victim, CHAR_DATA *ch )
 
 
     p = buf + strlen( buf );
-    strcpy( p, PERS( victim, ch ) );
+    if ( IS_AFFECTED(victim, AFF_OBSCURING_MIST) && !IS_AFFECTED(ch, AFF_DETECT_INVIS) )
+        strcpy( p, "a thick cloud of mist" );
+    else
+        strcpy( p, PERS( victim, ch ) );
     while ( is_colcode( p ) )
         p += 2;
     *p = UPPER( *p );
@@ -3344,7 +3351,7 @@ void do_oldscore( CHAR_DATA *ch, char *argument )
     send_to_char( buf, ch );
 
     sprintf( buf,
-	"Str: %d(%d)  Int: %d(%d)  Wis: %d(%d)  Dex: %d(%d)  Con: %d(%d)\n\r",
+	"Str: %d(%d)  Int: %d(%d)  Wis: %d(%d)  Dex: %d(%d)  Con: %d(%d)  Cha: %d(%d)\n\r",
 	ch->perm_stat[STAT_STR],
 	get_curr_stat(ch,STAT_STR),
 	ch->perm_stat[STAT_INT],
@@ -3354,7 +3361,9 @@ void do_oldscore( CHAR_DATA *ch, char *argument )
 	ch->perm_stat[STAT_DEX],
 	get_curr_stat(ch,STAT_DEX),
 	ch->perm_stat[STAT_CON],
-	get_curr_stat(ch,STAT_CON) );
+	get_curr_stat(ch,STAT_CON),
+	ch->perm_stat[STAT_CHA],
+	get_curr_stat(ch,STAT_CHA) );
     send_to_char( buf, ch );
 
     sprintf( buf,
@@ -3769,9 +3778,12 @@ show_score( CHAR_DATA *vch, CHAR_DATA *ch )
     p += sprintf( p, "%s", weight_string( get_carry_weight( vch ) ) );
     p += sprintf( p, "/`W%s\n\r", weight_string( can_carry_w( vch ) ) );
 
-    p  = stpcpy ( p, "`P| `GPrac `W: `W" );
-    p += sprintf( p, "%5d", vch->practice );
-    p  = stpcpy ( p, "  `P| `OCopper  `W: `W" );
+    p  = stpcpy ( p, "`P| `GCha`W: `W" );
+    p += sprintf( p, "%2d `W(`G%d`W) ",
+		  IS_NPC( vch ) ? 13 : vch->perm_stat[STAT_CHA],
+		  get_curr_stat( vch, STAT_CHA ) );
+    if ( get_curr_stat( vch, STAT_CHA ) < 10 ) *p++ = ' ';
+    p  = stpcpy ( p, " `P| `OCopper  `W: `W" );
     p += sprintf( p, "%-7d", vch->money.copper );
     p  = stpcpy ( p, " `P| `GYou are `W: `W" );
     switch( vch->position )
@@ -3901,6 +3913,10 @@ show_score( CHAR_DATA *vch, CHAR_DATA *ch )
     p = stpcpy( p, txt );
     p = stpcpy( p, "`c.\n\r" );
 
+    p  = stpcpy ( p, "`P| `GPrac `W: `W" );
+    p += sprintf( p, "%5d", vch->practice );
+    p  = stpcpy ( p, "  `P|                   `P|                                    \n\r" );
+
     p  = stpcpy ( p, "`P******************************************************************************\n\r" );
     if ( vch->level >= 1 )
     {
@@ -4010,14 +4026,44 @@ show_score( CHAR_DATA *vch, CHAR_DATA *ch )
 
 	/* Weather conditions */
 	found = FALSE;
-	if ( IS_SET( vch->act2, PLR_WET ) )
+	int wet_level = vch->pcdata->condition[COND_WET];
+	int freezing_level = vch->pcdata->condition[COND_FREEZING];
+	
+	if ( wet_level > 0 )
 	{
-	    p = stpcpy( p, "`GYou are `Wwet`c.  " );
+	    char *wet_desc;
+	    if ( wet_level <= 2 )
+		wet_desc = "`Wdamp`c";
+	    else if ( wet_level <= 4 )
+		wet_desc = "`Wwet`c";
+	    else if ( wet_level <= 6 )
+		wet_desc = "`Wdripping`c";
+	    else
+		wet_desc = "`Wsoaking wet`c";
+	    
+	    p += sprintf( p, "`GYou are %s.  ", wet_desc );
 	    found = TRUE;
 	}
-	if ( IS_SET( vch->act2, PLR_FREEZING ) )
+	
+	if ( freezing_level > 0 )
 	{
-	    p = stpcpy( p, "`GYou are `Bfreezing`c.  " );
+	    char *freeze_desc;
+	    if ( freezing_level == 1 )
+		freeze_desc = "`Bchilled`c";
+	    else if ( freezing_level == 2 )
+		freeze_desc = "`Bcold`c";
+	    else if ( freezing_level == 3 )
+		freeze_desc = "`Bquite cold`c";
+	    else if ( freezing_level == 4 )
+		freeze_desc = "`Bshivering`c";
+	    else if ( freezing_level == 5 )
+		freeze_desc = "`Bfreezing`c";
+	    else if ( freezing_level <= 7 )
+		freeze_desc = "`Bhypothermic`c";
+	    else
+		freeze_desc = "`Bseverely hypothermic`c";
+	    
+	    p += sprintf( p, "`GYou are %s.  ", freeze_desc );
 	    found = TRUE;
 	}
 	
@@ -5540,6 +5586,12 @@ void do_istat(CHAR_DATA *ch, char *argument)
             get_curr_stat(ch, STAT_CON),
         get_max_train(ch, STAT_CON),
         ch->perm_stat[STAT_CON] == get_max_train(ch, STAT_CON) ? "Maxed" : "");
+    send_to_char(buf, ch);
+    sprintf(buf, "`BCha`X[`B%2d`X/`B%2d`X] Max[`B%2d`X] %s\n\r",
+            ch->perm_stat[STAT_CHA],
+            get_curr_stat(ch, STAT_CHA),
+        get_max_train(ch, STAT_CHA),
+        ch->perm_stat[STAT_CHA] == get_max_train(ch, STAT_CHA) ? "Maxed" : "");
     send_to_char(buf, ch);
     return;
 }
@@ -7371,482 +7423,7 @@ web_who( int fd )
     return;
 }
 
-void
-do_forage( CHAR_DATA *ch, char *argument )
-{
-    const struct foraging_entry *table = NULL;
-    const struct foraging_entry *entry;
-    OBJ_DATA *obj;
-    OBJ_INDEX_DATA *pObjIndex;
-    int chance;
-    int count = 0;
-    int i;
-    int sn;
 
-    if ( IS_NPC(ch) )
-    {
-	send_to_char( "You don't know how to forage.\n\r", ch );
-	return;
-    }
-
-    sn = gsn_forage;
-    if ( (chance = get_skill(ch, sn)) == 0 )
-    {
-	send_to_char( "You don't know how to forage.\n\r", ch );
-	return;
-    }
-
-    /* Seasonal modifiers */
-    switch ( time_info.month )
-    {
-        case 2: case 3: case 4:  /* Spring - better foraging */
-            chance += 10;
-            break;
-        case 8: case 9: case 10: /* Fall - 10% more failure */
-            chance -= 10;
-            break;
-        case 0: case 1: case 11: /* Winter - extremely scarce */
-            chance -= 40;
-            break;
-    }
-
-    WAIT_STATE( ch, skill_table[gsn_forage].beats );
-
-    /* Determine which foraging table to use based on sector type */
-    switch ( ch->in_room->sector_type )
-    {
-	case SECT_FOREST:
-	    table = forest_foraging_table;
-	    break;
-	case SECT_DESERT:
-	    table = desert_foraging_table;
-	    break;
-	case SECT_FIELD:
-	    table = field_foraging_table;
-	    break;
-	case SECT_MOUNTAIN:
-	    table = mountain_foraging_table;
-	    break;
-	case SECT_HILLS:
-	    table = hills_foraging_table;
-	    break;
-	default:
-	    send_to_char( "You search around but find nothing of use here.\n\r", ch );
-	    return;
-    }
-
-    /* Count entries in the table */
-    for ( i = 0; table[i].name != NULL; i++ )
-	count++;
-
-    if ( count == 0 )
-    {
-	send_to_char( "You search around but find nothing of use here.\n\r", ch );
-	return;
-    }
-
-    /* Check skill success */
-    if ( number_percent() > chance )
-    {
-	send_to_char( "You search around but fail to find anything useful.\n\r", ch );
-	check_improve( ch, sn, FALSE, 1 );
-	return;
-    }
-
-    /* Select random entry from table */
-    entry = &table[number_range( 0, count - 1 )];
-
-    /* Create the foraged item */
-    pObjIndex = get_obj_index( OBJ_VNUM_FORAGED );
-    if ( pObjIndex == NULL )
-    {
-	send_to_char( "Something went wrong with foraging.\n\r", ch );
-	return;
-    }
-
-    obj = create_object( pObjIndex, 0 );
-    if ( obj == NULL )
-    {
-	send_to_char( "Something went wrong with foraging.\n\r", ch );
-	return;
-    }
-
-    /* Set object properties */
-    free_string( obj->name );
-    obj->name = str_dup( entry->name );
-    free_string( obj->short_descr );
-    obj->short_descr = str_dup( entry->short_descr );
-    free_string( obj->description );
-    obj->description = str_dup( entry->long_descr );
-
-    /* Set food values */
-    obj->value[0] = 1;  /* food value */
-    obj->value[1] = 3;  /* hours to decay */
-    obj->value[4] = 15; /* nutrition */
-
-    /* Give item to character */
-    obj_to_char( obj, ch );
-
-    /* Send messages */
-    act( "You forage around and find $p.", ch, obj, NULL, TO_CHAR );
-    act( "$n forages around and finds $p.", ch, obj, NULL, TO_ROOM );
-
-    /* Spring bonus - chance for extra item */
-    if ( (time_info.month >= 2 && time_info.month <= 4) && number_percent() < 15 )
-    {
-        obj = create_object( pObjIndex, 0 );
-        if ( obj != NULL )
-        {
-            free_string( obj->name );
-            obj->name = str_dup( entry->name );
-            free_string( obj->short_descr );
-            obj->short_descr = str_dup( entry->short_descr );
-            free_string( obj->description );
-            obj->description = str_dup( entry->long_descr );
-            obj->value[0] = 1;  /* food value */
-            obj->value[1] = 3;  /* hours to decay */
-            obj->value[4] = 15; /* nutrition */
-            obj_to_char( obj, ch );
-            send_to_char( "You find extra forage!\n\r", ch );
-        }
-    }
-
-    /* Improve skill */
-    check_improve( ch, sn, TRUE, 1 );
-
-    return;
-}
-
-/*
- * Hunted animal table for spawning in forest areas
- */
-const struct hunted_animal_entry hunted_animal_table[] =
-{
-    {"fox", "a red fox", "A red fox prowls here.\n\r", 0}, /* race_fox */
-    {"bear", "a brown bear", "A brown bear lumbers here.\n\r", 0}, /* race_bear */
-    {"wolf", "a gray wolf", "A gray wolf stalks here.\n\r", 0}, /* race_wolf */
-    {"rabbit", "a wild rabbit", "A wild rabbit hops here.\n\r", 0}, /* race_cat */
-    {"owl", "a great horned owl", "A great horned owl perches here.\n\r", 0}, /* race_bat */
-    {NULL, NULL, NULL, 0}
-};
-
-/*
- * UK wood species table for firewood gathering
- */
-const struct foraging_entry uk_wood_table[] =
-{
-    {"oak branches", "a bundle of oak branches", "A bundle of sturdy oak branches, perfect for a long-burning fire."},
-    {"ash branches", "a bundle of ash branches", "A bundle of ash branches, known for their excellent burning properties."},
-    {"birch branches", "a bundle of birch branches", "A bundle of birch branches, quick to ignite and burn brightly."},
-    {"beech branches", "a bundle of beech branches", "A bundle of beech branches, dense wood that burns slowly and hot."},
-    {"sycamore branches", "a bundle of sycamore branches", "A bundle of sycamore branches, good for kindling and quick fires."},
-    {"elm branches", "a bundle of elm branches", "A bundle of elm branches, though harder to split, burns well once dry."},
-    {"willow branches", "a bundle of willow branches", "A bundle of willow branches, burns quickly but produces good heat."},
-    {"hazel branches", "a bundle of hazel branches", "A bundle of hazel branches, excellent for starting fires and cooking."},
-    {"rowan branches", "a bundle of rowan branches", "A bundle of rowan branches, burns with a pleasant, aromatic smoke."},
-    {"holly branches", "a bundle of holly branches", "A bundle of holly branches, dense wood that burns long and steady."},
-    {"hawthorn branches", "a bundle of hawthorn branches", "A bundle of hawthorn branches, good for a hot, fast-burning fire."},
-    {"blackthorn branches", "a bundle of blackthorn branches", "A bundle of blackthorn branches, dense wood that burns slowly."},
-    {"elder branches", "a bundle of elder branches", "A bundle of elder branches, burns quickly but produces good heat."},
-    {"field maple branches", "a bundle of field maple branches", "A bundle of field maple branches, burns cleanly and evenly."},
-    {"wild cherry branches", "a bundle of wild cherry branches", "A bundle of wild cherry branches, burns with a sweet, pleasant aroma."},
-    {NULL, NULL, NULL}
-};
-
-void
-spawn_hunted_animal( CHAR_DATA *ch )
-{
-    const struct hunted_animal_entry *entry;
-    MOB_INDEX_DATA *pMobIndex;
-    CHAR_DATA *mob;
-    int chance = 5; /* Base 5% chance */
-    int count = 0;
-    int i;
-
-    /* Only spawn if character is hunting */
-    if ( !IS_SET(ch->act, PLR_HUNTING) )
-	return;
-
-    /* Only spawn in forest areas */
-    if ( ch->in_room->sector_type != SECT_FOREST )
-	return;
-
-    /* Seasonal modifiers */
-    switch ( time_info.month )
-    {
-        case 2: case 3: case 4:  /* Spring - animals spawn twice as often */
-            chance *= 2;
-            break;
-        case 8: case 9: case 10: /* Fall - 25% less often */
-            chance = chance * 3 / 4;
-            break;
-        case 0: case 1: case 11: /* Winter - no animals (hibernation) */
-            return; /* Don't spawn any animals in winter */
-    }
-
-    /* Don't spawn if there are already too many mobs in the room */
-    for ( mob = ch->in_room->people; mob != NULL; mob = mob->next_in_room )
-	if ( !IS_NPC(mob) )
-	    count++;
-    
-    if ( count > 3 ) /* Limit to 3+ players in room */
-	return;
-
-    /* Adjust chance based on affects */
-    if ( IS_AFFECTED(ch, AFF_INVISIBLE) )
-	chance += 10;
-    if ( IS_AFFECTED(ch, AFF_SNEAK) )
-	chance += 10;
-    if ( IS_AFFECTED(ch, AFF_FAERIE_FIRE) )
-	chance -= 15;
-
-    /* Ensure minimum chance */
-    if ( chance < 1 )
-	chance = 1;
-
-    /* Roll for spawn */
-    if ( number_percent() > chance )
-	return;
-
-    /* Count entries in table */
-    count = 0;
-    for ( i = 0; hunted_animal_table[i].name != NULL; i++ )
-	count++;
-
-    if ( count == 0 )
-	return;
-
-    /* Select random entry */
-    entry = &hunted_animal_table[number_range( 0, count - 1 )];
-
-    /* Safety check */
-    if ( entry->name == NULL )
-	return;
-
-    /* Create the mobile */
-    pMobIndex = get_mob_index( MOB_VNUM_HUNTED );
-    if ( pMobIndex == NULL )
-	return;
-
-    mob = create_mobile( pMobIndex );
-    if ( mob == NULL )
-	return;
-
-    /* Set race and level based on entry */
-    if ( !str_cmp( entry->name, "fox" ) )
-	mob->race = race_fox;
-    else if ( !str_cmp( entry->name, "bear" ) )
-	mob->race = race_bear;
-    else if ( !str_cmp( entry->name, "wolf" ) )
-	mob->race = race_wolf;
-    else if ( !str_cmp( entry->name, "rabbit" ) )
-	mob->race = race_cat; /* Using cat as closest to rabbit */
-    else if ( !str_cmp( entry->name, "owl" ) )
-	mob->race = race_bat; /* Using bat as closest to owl */
-    
-    mob->level = 1;
-    
-    /* Set stats using DICE_EASY */
-    set_mob_dice( mob->pIndexData, DICE_EASY );
-
-    /* Set mobile properties AFTER create_mobile and set_mob_dice */
-    free_string( mob->name );
-    mob->name = str_dup( entry->name );
-    free_string( mob->short_descr );
-    mob->short_descr = str_dup( entry->short_descr );
-    free_string( mob->long_descr );
-    mob->long_descr = str_dup( entry->long_descr );
-
-    /* Add to room */
-    char_to_room( mob, ch->in_room );
-
-    /* Send message to room */
-    act( "A $T appears in the area.", ch, NULL, entry->short_descr, TO_ROOM );
-
-    return;
-}
-
-void
-do_fish( CHAR_DATA *ch, char *argument )
-{
-    const struct fish_entry *table = NULL;
-    const struct fish_entry *entry;
-    OBJ_DATA *rod;
-    OBJ_DATA *fish;
-    OBJ_INDEX_DATA *pObjIndex;
-    int chance;
-    int count = 0;
-    int i;
-    int sn;
-
-    if ( IS_NPC(ch) )
-    {
-	send_to_char( "You don't know how to fish.\n\r", ch );
-	return;
-    }
-
-    sn = gsn_fishing;
-    if ( (chance = get_skill(ch, sn)) == 0 )
-    {
-	send_to_char( "You don't know how to fish.\n\r", ch );
-	return;
-    }
-
-    /* Seasonal modifiers */
-    switch ( time_info.month )
-    {
-        case 2: case 3: case 4:  /* Spring - 10% higher success rate */
-            chance += 10;
-            break;
-        case 8: case 9: case 10: /* Fall - 10% more failure */
-            chance -= 10;
-            break;
-        case 0: case 1: case 11: /* Winter - only in rivers and oceans (not frozen) */
-            if ( ch->in_room->sector_type != SECT_RIVER && ch->in_room->sector_type != SECT_OCEAN )
-            {
-                send_to_char( "The water is frozen over - you can only fish in rivers and oceans during winter.\n\r", ch );
-                return;
-            }
-            break;
-    }
-
-    /* Check if holding a fishing rod */
-    rod = get_eq_char( ch, WEAR_HOLD );
-    if ( rod == NULL || rod->item_type != ITEM_FISHING_ROD )
-    {
-	send_to_char( "You need to be holding a fishing rod to fish.\n\r", ch );
-	return;
-    }
-
-    /* Check if in a fishable area */
-    if ( ch->in_room->sector_type != SECT_RIVER &&
-	 ch->in_room->sector_type != SECT_LAKE &&
-	 ch->in_room->sector_type != SECT_OCEAN )
-    {
-	send_to_char( "You can only fish in rivers, lakes, or oceans.\n\r", ch );
-	return;
-    }
-
-    /* Add wait state */
-    if ( !IS_IMMORTAL(ch) )
-	WAIT_STATE( ch, skill_table[sn].beats );
-
-    /* Determine which fish table to use based on sector type */
-    switch ( ch->in_room->sector_type )
-    {
-	case SECT_RIVER:
-	    table = river_fish_table;
-	    break;
-	case SECT_LAKE:
-	    table = lake_fish_table;
-	    break;
-	case SECT_OCEAN:
-	    table = ocean_fish_table;
-	    break;
-	default:
-	    send_to_char( "You can't fish here.\n\r", ch );
-	    return;
-    }
-
-    /* Count entries in the table */
-    count = 0;
-    for ( i = 0; table[i].name != NULL; i++ )
-	count++;
-
-    if ( count == 0 )
-    {
-	send_to_char( "There don't seem to be any fish here.\n\r", ch );
-	return;
-    }
-
-    /* Cast line message */
-    act( "You cast your line into the water.", ch, NULL, NULL, TO_CHAR );
-    act( "$n casts $s fishing line into the water.", ch, NULL, NULL, TO_ROOM );
-
-    /* Check skill success */
-    if ( number_percent() > chance )
-    {
-	send_to_char( "You don't get any bites.\n\r", ch );
-	check_improve( ch, sn, FALSE, 1 );
-	return;
-    }
-
-    /* Select random fish from table */
-    entry = &table[number_range( 0, count - 1 )];
-
-    /* Check if fish size is too big for rod */
-    if ( entry->size > rod->value[0] )
-    {
-	send_to_char( "You feel a strong tug on your line!\n\r", ch );
-	send_to_char( "The fish is too strong and breaks your line!\n\r", ch );
-	send_to_char( "You quickly replace the line and cast again.\n\r", ch );
-	check_improve( ch, sn, FALSE, 1 );
-	return;
-    }
-
-    /* Create the fish */
-    pObjIndex = get_obj_index( OBJ_VNUM_FORAGED );
-    if ( pObjIndex == NULL )
-    {
-	send_to_char( "Something went wrong with fishing.\n\r", ch );
-	return;
-    }
-
-    fish = create_object( pObjIndex, 0 );
-    if ( fish == NULL )
-    {
-	send_to_char( "Something went wrong with fishing.\n\r", ch );
-	return;
-    }
-
-    /* Set fish properties */
-    free_string( fish->name );
-    fish->name = str_dup( entry->name );
-    free_string( fish->short_descr );
-    fish->short_descr = str_dup( entry->short_descr );
-    free_string( fish->description );
-    fish->description = str_dup( entry->long_descr );
-
-    /* Set food values */
-    fish->value[0] = 1;  /* food value */
-    fish->value[1] = 4;  /* hours to decay */
-    fish->value[4] = 20; /* nutrition */
-
-    /* Give fish to character */
-    obj_to_char( fish, ch );
-
-    /* Send messages */
-    act( "You reel in $p!", ch, fish, NULL, TO_CHAR );
-    act( "$n reels in $p!", ch, fish, NULL, TO_ROOM );
-
-    /* Improve skill */
-    check_improve( ch, sn, TRUE, 1 );
-
-    return;
-}
-
-void
-do_hunt( CHAR_DATA *ch, char *argument )
-{
-    if ( IS_NPC(ch) )
-    {
-	send_to_char( "You don't know how to hunt.\n\r", ch );
-	return;
-    }
-
-    if ( IS_SET(ch->act, PLR_HUNTING) )
-    {
-	REMOVE_BIT( ch->act, PLR_HUNTING );
-	send_to_char( "You stop hunting for animals.\n\r", ch );
-    }
-    else
-    {
-	SET_BIT( ch->act, PLR_HUNTING );
-	send_to_char( "You begin hunting for animals.\n\r", ch );
-    }
-
-    return;
-}
 
 void set_target( CHAR_DATA *ch, char *target )
 {

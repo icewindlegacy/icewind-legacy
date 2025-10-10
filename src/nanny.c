@@ -86,8 +86,6 @@ static	void	show_hair_adj_choices args((DESCRIPTOR_DATA *d ) );
 static	int	show_kingdoms	args( ( DESCRIPTOR_DATA *d ) );
 static	void	show_races	args( ( DESCRIPTOR_DATA *d ) );
 static	void	update_recent	args( ( int wizlvl, const char *str ) );
-static	void	roll_stats	args( ( CHAR_DATA *ch ) );
-static	void	show_stats	args( ( DESCRIPTOR_DATA *d, CHAR_DATA *ch ) );
 
 /*
  * Deal with sockets that haven't logged in yet.
@@ -652,9 +650,8 @@ nanny( DESCRIPTOR_DATA *d, char *argument )
 	}
 
         ch->race = race;
-	/* initialize stats */
-	for (i = 0; i < MAX_STATS; i++)
-	    ch->perm_stat[i] = race_table[race].stats[i];
+	/* roll stats and apply racial modifiers */
+	roll_stats(ch);
 	xSET_BITS( ch->affected_by, race_table[race].aff );
 	ch->imm_flags	= ch->imm_flags|race_table[race].imm;
 	ch->res_flags	= ch->res_flags|race_table[race].res;
@@ -1335,6 +1332,103 @@ void display_gods_list(DESCRIPTOR_DATA *d, const char *header, int *god_indices,
     write_to_buffer(d, "\n\r", 0);
 }
 
+/*
+ * Roll stats for a character during creation
+ */
+void roll_stats( CHAR_DATA *ch )
+{
+    int i;
+    
+    /* Roll base stats from 13-18 */
+    for (i = 0; i < MAX_STATS; i++)
+    {
+        ch->perm_stat[i] = number_range(13, 18);
+    }
+    
+    /* Apply racial modifiers for playable races */
+    if (race_table[ch->race].pc_race)
+    {
+        switch (ch->race)
+        {
+            case 14: /* dwarf */
+                ch->perm_stat[STAT_CON] += 2;
+                ch->perm_stat[STAT_CHA] -= 2;
+                break;
+            case 15: /* elf */
+                ch->perm_stat[STAT_DEX] += 2;
+                ch->perm_stat[STAT_CON] -= 2;
+                break;
+            case 16: /* gnome */
+                ch->perm_stat[STAT_CON] += 2;
+                ch->perm_stat[STAT_STR] -= 2;
+                break;
+            case 17: /* half-elf */
+                /* No modifiers */
+                break;
+            case 18: /* halfling */
+                ch->perm_stat[STAT_DEX] += 2;
+                ch->perm_stat[STAT_STR] -= 2;
+                break;
+            case 19: /* half-orc */
+                ch->perm_stat[STAT_STR] += 2;
+                ch->perm_stat[STAT_INT] -= 2;
+                ch->perm_stat[STAT_CHA] -= 2;
+                break;
+            case 20: /* human */
+                /* No modifiers */
+                break;
+            case 21: /* ogre */
+                ch->perm_stat[STAT_STR] += 2;
+                ch->perm_stat[STAT_INT] -= 2;
+                ch->perm_stat[STAT_CHA] -= 2;
+                break;
+            case 22: /* tiefling */
+                ch->perm_stat[STAT_DEX] += 2;
+                ch->perm_stat[STAT_INT] += 2;
+                ch->perm_stat[STAT_CHA] -= 2;
+                break;
+            case 13: /* drow */
+                ch->perm_stat[STAT_DEX] += 2;
+                ch->perm_stat[STAT_INT] += 2;
+                ch->perm_stat[STAT_CHA] += 2;
+                ch->perm_stat[STAT_CON] -= 2;
+                break;
+            case 23: /* dragonborn */
+                ch->perm_stat[STAT_DEX] -= 2;
+                ch->perm_stat[STAT_CON] += 2;
+                break;
+        }
+    }
+    
+    /* Ensure stats are within valid ranges */
+    for (i = 0; i < MAX_STATS; i++)
+    {
+        if (ch->perm_stat[i] < 3) ch->perm_stat[i] = 3;
+        if (ch->perm_stat[i] > race_table[ch->race].max_stats[i])
+            ch->perm_stat[i] = race_table[ch->race].max_stats[i];
+    }
+}
+
+/*
+ * Show stats to player during character creation
+ */
+void show_stats( DESCRIPTOR_DATA *d, CHAR_DATA *ch )
+{
+    char buf[200];
+    
+    write_to_buffer(d, "\n\r`P"
+    "---------------------------------------------------------------------------\n\r"
+    "`GYour rolled stats:\n\r"
+    "\n\r", 0);
+    
+    sprintf(buf, "`WStr: `Y%2d  `WInt: `Y%2d  `WWis: `Y%2d  `WDex: `Y%2d  `WCon: `Y%2d  `WCha: `Y%2d`X\n\r",
+        ch->perm_stat[STAT_STR], ch->perm_stat[STAT_INT], ch->perm_stat[STAT_WIS],
+        ch->perm_stat[STAT_DEX], ch->perm_stat[STAT_CON], ch->perm_stat[STAT_CHA]);
+    write_to_buffer(d, buf, 0);
+    
+    write_to_buffer(d, "\n\r`WType `Yaccept`W to keep these stats, or `Yreroll`W to try again: `X", 0);
+}
+
 /* instead of going straight to CON_DEFAULT_CHOICE, prompt for god */
 write_to_buffer(d, "\n\r`P"
         "---------------------------------------------------------------------------\n\r\n\r"
@@ -1779,11 +1873,11 @@ case CON_PICK_WEAPON:
 	{
 
 	    /*
-	     * Buff newbies a bit.
+	     * Set starting HP to class max + CON modifier (D&D style level 1)
 	     */
-	    ch->max_hit  = 50;
+	    ch->max_hit = class_table[ch->class].hp_max + stat_mod[ch->perm_stat[STAT_CON]];
 
-	    ch->perm_stat[class_table[ch->class].attr_prime] += 3;
+	    //ch->perm_stat[class_table[ch->class].attr_prime] += 3;
 
 	    ch->level	= 1;
 	    ch->exp	= 0;  /* Start with 0 experience */
@@ -1791,7 +1885,7 @@ case CON_PICK_WEAPON:
 	    ch->mana	= ch->max_mana;
 	    ch->move	= ch->max_move;
 	    ch->lines	= PAGELEN;
-	    ch->train	 = 3;
+	    ch->train	 = 0;
 	    ch->practice = 5;
 	    sprintf( buf, "the Newbie");
 	    set_title( ch, buf );
@@ -1870,15 +1964,67 @@ case CON_PICK_WEAPON:
 void roll_stats(CHAR_DATA *ch)
 {
     int i;
+    int racial_mods[6] = {0, 0, 0, 0, 0, 0}; // STR, DEX, CON, INT, WIS, CHA modifiers
+    
+    // Apply racial modifiers based on race (only for playable races)
+    switch (ch->race)
+    {
+        case 12: // dragonborn
+            racial_mods[STAT_DEX] = -2;   // -2 Dexterity
+            racial_mods[STAT_CON] = +2;   // +2 Constitution
+            break;
+        case 13: // drow
+            racial_mods[STAT_DEX] = +2;   // +2 Dexterity
+            racial_mods[STAT_INT] = +2;   // +2 Intelligence
+            racial_mods[STAT_CHA] = +2;   // +2 Charisma
+            racial_mods[STAT_CON] = -2;   // -2 Constitution
+            break;
+        case 14: // dwarf
+            racial_mods[STAT_CON] = +2;   // +2 Constitution
+            racial_mods[STAT_CHA] = -2;   // -2 Charisma
+            break;
+        case 15: // elf
+            racial_mods[STAT_DEX] = +2;   // +2 Dexterity
+            racial_mods[STAT_CON] = -2;   // -2 Constitution
+            break;
+        case 19: // gnome
+            racial_mods[STAT_CON] = +2;   // +2 Constitution
+            racial_mods[STAT_STR] = -2;   // -2 Strength
+            break;
+        case 21: // halfelf
+            // No ability score modifiers
+            break;
+        case 22: // halfling
+            racial_mods[STAT_DEX] = +2;   // +2 Dexterity
+            racial_mods[STAT_STR] = -2;   // -2 Strength
+            break;
+        case 23: // halforc
+            racial_mods[STAT_STR] = +2;   // +2 Strength
+            racial_mods[STAT_INT] = -2;   // -2 Intelligence
+            racial_mods[STAT_CHA] = -2;   // -2 Charisma
+            break;
+        case 26: // human
+            // No ability score modifiers
+            break;
+        case 27: // tiefling
+            racial_mods[STAT_DEX] = +2;   // +2 Dexterity
+            racial_mods[STAT_INT] = +2;   // +2 Intelligence
+            racial_mods[STAT_CHA] = -2;   // -2 Charisma
+            break;
+        default:
+            // Other races (non-playable) get no modifiers
+            break;
+    }
+    
+    // Roll base stats (13-18) and apply racial modifiers
     for (i = 0; i < MAX_STATS; i++)
     {
-        // If race_table defines base stats, just roll around them
-        int base = race_table[ch->race].stats[i];
-        int roll = number_range(-2, 2); // small variance
-        ch->perm_stat[i] = base + roll;
-
+        int base_roll = number_range(13, 18); // Roll 13-18 for each stat
+        ch->perm_stat[i] = base_roll + racial_mods[i];
+        
+        // Ensure stats stay within bounds (3-25)
         if (ch->perm_stat[i] < 3)   ch->perm_stat[i] = 3;
-        if (ch->perm_stat[i] > 25)  ch->perm_stat[i] = 25; // adjust cap if your game uses 30+
+        if (ch->perm_stat[i] > 25)  ch->perm_stat[i] = 25;
     }
 }
 
@@ -1888,14 +2034,15 @@ void show_stats(DESCRIPTOR_DATA *d, CHAR_DATA *ch)
     sprintf(buf,
         "\n\r`P---------------------------------------------------------------------------\n\r"
         "`WYour stats are:\n\r"
-        "  Str: %-2d  Int: %-2d  Wis: %-2d  Dex: %-2d  Con: %-2d\n\r"
+        "  Str: %-2d  Int: %-2d  Wis: %-2d  Dex: %-2d  Con: %-2d  Cha: %-2d\n\r"
         "`P---------------------------------------------------------------------------\n\r"
         "`WDo you wish to `Yaccept`W these stats or `Yreroll`W? `X",
         ch->perm_stat[STAT_STR],
         ch->perm_stat[STAT_INT],
         ch->perm_stat[STAT_WIS],
         ch->perm_stat[STAT_DEX],
-        ch->perm_stat[STAT_CON]);
+        ch->perm_stat[STAT_CON],
+        ch->perm_stat[STAT_CHA]);
     write_to_buffer(d, buf, 0);
 }
 

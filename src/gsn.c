@@ -174,3 +174,7 @@ int     gsn_guidance;
 int     gsn_resistance;
 int     gsn_virtue;
 int     gsn_entangle;
+int     gsn_endure_elements;
+int     gsn_water_breathing;
+int     gsn_water_walking;
+int     gsn_knock;

@@ -127,19 +127,371 @@ Values 2 10 0 0
 End
 
 #O
-Vnum 610
+Vnum 61
 Nest 0
-Name loaf of elvenbread~
-ShD  a loaf of `Oelvenbread`X~
-Desc A loaf of `Oelvenbread`X~
-ItemType 19
-ExtraFlags 262144
-WearFlags 1
+Name leather cap~
+ShD  a leather cap~
+Desc A leather cap lies here.~
+ItemType 9
+ExtraFlags 2097152
+WearFlags 17
 WearLoc -1
-Weight 0
+Weight 6
+Timer 21
+Cost 42
+Values 5 5 5 5
+End
+
+#O
+Vnum 61
+Nest 0
+Name leather armor~
+ShD  a leather armor~
+Desc A leather armor lies here.~
+ItemType 9
+ExtraFlags 2097152
+WearFlags 9
+WearLoc -1
+Weight 11
+Timer 39
+Cost 79
+Values 7 7 7 7
+End
+
+#O
+Vnum 61
+Nest 0
+Name leather bracers~
+ShD  a pair of leather bracers~
+Desc A pair of leather bracers lie here.~
+ItemType 9
+ExtraFlags 2097152
+WearFlags 257
+WearLoc -1
+Weight 3
+Timer 105
+Cost 34
+Values 3 3 3 3
+End
+
+#O
+Vnum 61
+Nest 0
+Name leather cap~
+ShD  a leather cap~
+Desc A leather cap lies here.~
+ItemType 9
+ExtraFlags 2097152
+WearFlags 17
+WearLoc -1
+Weight 7
+Timer 78
+Cost 41
+Values 2 2 2 2
+End
+
+#O
+Vnum 61
+Nest 0
+Name leather leggings~
+ShD  a pair of leather leggings~
+Desc A pair of leather leggings lie here.~
+ItemType 9
+ExtraFlags 2097152
+WearFlags 33
+WearLoc -1
+Weight 10
+Timer 37
+Cost 28
+Values 6 6 6 6
+End
+
+#O
+Vnum 60
+Nest 0
+Name leather whip~
+ShD  a leather whip~
+Desc A leather whip lies here.~
+ItemType 5
+ExtraFlags 2097152
+WearFlags 8193
+WearLoc -1
+Weight 4
+Timer 78
+Cost 36
+Values 7 1 4 4
+End
+
+#O
+Vnum 61
+Nest 0
+Name leather gloves~
+ShD  a pair of leather gloves~
+Desc A pair of leather gloves lie here.~
+ItemType 9
+ExtraFlags 2097152
+WearFlags 129
+WearLoc -1
+Weight 3
+Timer 110
+Cost 12
+Values 3 3 3 3
+End
+
+#O
+Vnum 61
+Nest 0
+Name leather armor~
+ShD  a leather armor~
+Desc A leather armor lies here.~
+ItemType 9
+ExtraFlags 2097152
+WearFlags 9
+WearLoc -1
+Weight 22
+Timer 79
+Cost 103
+Values 6 6 6 6
+End
+
+#O
+Vnum 60
+Nest 0
+Name steel war blade~
+ShD  a steel war blade~
+Desc A steel war blade lies here.~
+ItemType 5
+ExtraFlags 0
+WearFlags 8193
+WearLoc -1
+Weight 13
 Timer 0
-Cost 0
-Values 2 10 0 0
+Cost 351
+Values 10 1 8 3
+End
+
+#O
+Vnum 61
+Nest 0
+Name steel signet ring~
+ShD  a steel signet ring~
+Desc A steel signet ring lies here.~
+ItemType 9
+ExtraFlags 0
+WearFlags 3
+WearLoc -1
+Weight 1
+Timer 0
+Cost 129
+Values 0 0 0 0
+End
+
+#O
+Vnum 61
+Nest 0
+Name plate great helm~
+ShD  a plate great helm~
+Desc A plate great helm lies here.~
+ItemType 9
+ExtraFlags 0
+WearFlags 17
+WearLoc -1
+Weight 7
+Timer 0
+Cost 232
+Values 15 15 15 15
+End
+
+#O
+Vnum 60
+Nest 0
+Name iron mace~
+ShD  a iron mace~
+Desc A iron mace lies here.~
+ItemType 5
+ExtraFlags 0
+WearFlags 8193
+WearLoc -1
+Weight 30
+Timer 0
+Cost 39
+Values 4 1 4 27
+End
+
+#O
+Vnum 60
+Nest 0
+Name iron sword~
+ShD  a iron sword~
+Desc A iron sword lies here.~
+ItemType 5
+ExtraFlags 0
+WearFlags 8193
+WearLoc -1
+Weight 9
+Timer 0
+Cost 148
+Values 1 1 4 3
+End
+
+#O
+Vnum 60
+Nest 0
+Name iron longsword~
+ShD  a iron longsword~
+Desc A iron longsword lies here.~
+ItemType 5
+ExtraFlags 0
+WearFlags 8193
+WearLoc -1
+Weight 19
+Timer 0
+Cost 223
+Values 10 1 4 3
+End
+
+#O
+Vnum 60
+Nest 0
+Name war hammer~
+ShD  a war hammer~
+Desc A war hammer lies here.~
+ItemType 5
+ExtraFlags 0
+WearFlags 8193
+WearLoc -1
+Weight 17
+Timer 0
+Cost 43
+Values 9 1 8 7
+End
+
+#O
+Vnum 60
+Nest 0
+Name steel polearm~
+ShD  a steel polearm~
+Desc A steel polearm lies here.~
+ItemType 5
+ExtraFlags 0
+WearFlags 8193
+WearLoc -1
+Weight 27
+Timer 0
+Cost 65
+Values 8 1 10 15
+End
+
+#O
+Vnum 61
+Nest 0
+Name wooden shield~
+ShD  a wooden shield~
+Desc A wooden shield lies here.~
+ItemType 9
+ExtraFlags 0
+WearFlags 513
+WearLoc -1
+Weight 7
+Timer 0
+Cost 52
+Values 7 7 7 7
+End
+
+#O
+Vnum 60
+Nest 0
+Name war hammer~
+ShD  a war hammer~
+Desc A war hammer lies here.~
+ItemType 5
+ExtraFlags 0
+WearFlags 8193
+WearLoc -1
+Weight 17
+Timer 0
+Cost 82
+Values 9 1 8 7
+End
+
+#O
+Vnum 60
+Nest 0
+Name sharp dagger~
+ShD  a sharp dagger~
+Desc A sharp dagger lies here.~
+ItemType 5
+ExtraFlags 0
+WearFlags 8193
+WearLoc -1
+Weight 5
+Timer 0
+Cost 47
+Values 2 1 4 11
+End
+
+#O
+Vnum 60
+Nest 0
+Name heavy mace~
+ShD  a heavy mace~
+Desc A heavy mace lies here.~
+ItemType 5
+ExtraFlags 0
+WearFlags 8193
+WearLoc -1
+Weight 26
+Timer 0
+Cost 60
+Values 4 1 8 27
+End
+
+#O
+Vnum 60
+Nest 0
+Name sharp dagger~
+ShD  a sharp dagger~
+Desc A sharp dagger lies here.~
+ItemType 5
+ExtraFlags 0
+WearFlags 8193
+WearLoc -1
+Weight 6
+Timer 0
+Cost 64
+Values 2 1 4 11
+End
+
+#O
+Vnum 60
+Nest 0
+Name sharp dagger~
+ShD  a sharp dagger~
+Desc A sharp dagger lies here.~
+ItemType 5
+ExtraFlags 0
+WearFlags 8193
+WearLoc -1
+Weight 3
+Timer 0
+Cost 65
+Values 2 1 4 11
+End
+
+#O
+Vnum 60
+Nest 0
+Name sharp dagger~
+ShD  a sharp dagger~
+Desc A sharp dagger lies here.~
+ItemType 5
+ExtraFlags 0
+WearFlags 8193
+WearLoc -1
+Weight 2
+Timer 0
+Cost 24
+Values 2 1 4 11
 End
 
 #END

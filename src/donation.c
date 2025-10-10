@@ -71,6 +71,8 @@ void save_donation_pits(void);
 void load_donation_pits(void);
 void save_tokens(void);
 void load_tokens(void);
+void save_attune(void);
+void load_attune(void);
 /* from save.c */
 void     fwrite_obj_donation(OBJ_DATA *obj, FILE *fp, int iNest);
 OBJ_DATA *fread_obj_donation(FILE *fp);
@@ -283,4 +285,77 @@ void load_tokens(void)
     }
     fclose(fp);
     log_printf("load_tokens: Loaded %d tokens total", token_count);
+}
+
+void save_attune(void)
+{
+    FILE *fp;
+    OBJ_DATA *obj;
+    char filename[256];
+    int attune_count = 0;
+
+    sprintf(filename, "%s/attune.txt", SYSTEM_DIR);
+    if ((fp = fopen(filename, "w")) == NULL)
+    { 
+        bug("save_attune: fopen", 0); 
+        return; 
+    }
+    
+    log_printf("save_attune: Starting to save attunements to attune.txt");
+
+    for (obj = object_list; obj; obj = obj->next)
+    {
+        if (obj->attuned_to && IS_SET(obj->extra_flags2, ITEM2_ATTUNE))
+        {
+            fprintf(fp, "%d %s\n", obj->pIndexData->vnum, obj->attuned_to);
+            attune_count++;
+            log_printf("save_attune: Saved attunement for vnum %d to %s", obj->pIndexData->vnum, obj->attuned_to);
+        }
+    }
+
+    fclose(fp);
+    log_printf("save_attune: Saved %d attunements total", attune_count);
+}
+
+void load_attune(void)
+{
+    FILE *fp;
+    OBJ_DATA *obj;
+    char filename[256];
+    char line[256];
+    int vnum;
+    char player_name[256];
+    int attune_count = 0;
+
+    sprintf(filename, "%s/attune.txt", SYSTEM_DIR);
+    if ((fp = fopen(filename, "r")) == NULL) 
+    {
+        log_printf("load_attune: attune.txt file not found");
+        return;
+    }
+    
+    log_printf("load_attune: Starting to load attunements from attune.txt");
+
+    while (fgets(line, sizeof(line), fp))
+    {
+        if (sscanf(line, "%d %s", &vnum, player_name) == 2)
+        {
+            /* Find the object by vnum */
+            for (obj = object_list; obj; obj = obj->next)
+            {
+                if (obj->pIndexData && obj->pIndexData->vnum == vnum && IS_SET(obj->extra_flags2, ITEM2_ATTUNE))
+                {
+                    if (obj->attuned_to)
+                        free_string(obj->attuned_to);
+                    obj->attuned_to = str_dup(player_name);
+                    attune_count++;
+                    log_printf("load_attune: Loaded attunement for vnum %d to %s", vnum, player_name);
+                    break;
+                }
+            }
+        }
+    }
+    
+    fclose(fp);
+    log_printf("load_attune: Loaded %d attunements total", attune_count);
 }

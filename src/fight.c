@@ -61,6 +61,7 @@
 #include "interp.h"
 #include "magic.h"
 #include "items.h"
+#include "tables.h"
 
 
 /*
@@ -89,6 +90,7 @@ bool    check_phase     args( ( CHAR_DATA *ch, CHAR_DATA *victim ) );
 bool    check_counter   args( ( CHAR_DATA *ch, CHAR_DATA *victim, int dam, int dt ) );
 bool    dragonkin       args( ( CHAR_DATA *ch, char *spell_name));
 bool		check_critical		args( ( CHAR_DATA *ch, CHAR_DATA *victim ) );
+int		get_hardcoded_damage	args( ( int level ) );
 /*
  * Control the fights going on.
  * Called periodically by update_handler.
@@ -128,6 +130,47 @@ violence_update( void )
     }
 
     return;
+}
+
+/*
+ * Get hardcoded damage based on mobile level
+ * Returns damage in the range specified for each level
+ */
+int
+get_hardcoded_damage( int level )
+{
+    int min_dam, max_dam;
+    
+    /* Clamp level to valid range */
+    if ( level < 1 ) level = 1;
+    if ( level > 20 ) level = 20;
+    
+    switch ( level )
+    {
+        case 1:  min_dam = 1;  max_dam = 1;  break;
+        case 2:  min_dam = 2;  max_dam = 3;  break;
+        case 3:  min_dam = 4;  max_dam = 5;  break;
+        case 4:  min_dam = 4;  max_dam = 5;  break;
+        case 5:  min_dam = 6;  max_dam = 8;  break;
+        case 6:  min_dam = 6;  max_dam = 8;  break;
+        case 7:  min_dam = 6;  max_dam = 8;  break;
+        case 8:  min_dam = 9;  max_dam = 14; break;
+        case 9:  min_dam = 9;  max_dam = 14; break;
+        case 10: min_dam = 9;  max_dam = 14; break;
+        case 11: min_dam = 15; max_dam = 20; break;
+        case 12: min_dam = 15; max_dam = 20; break;
+        case 13: min_dam = 15; max_dam = 20; break;
+        case 14: min_dam = 21; max_dam = 25; break;
+        case 15: min_dam = 21; max_dam = 25; break;
+        case 16: min_dam = 21; max_dam = 25; break;
+        case 17: min_dam = 27; max_dam = 32; break;
+        case 18: min_dam = 27; max_dam = 32; break;
+        case 19: min_dam = 27; max_dam = 32; break;
+        case 20: min_dam = 33; max_dam = 38; break;
+        default: min_dam = 1;  max_dam = 1;  break;
+    }
+    
+    return number_range( min_dam, max_dam );
 }
 
 /* for auto assisting */
@@ -689,6 +732,9 @@ one_hit( CHAR_DATA *ch, CHAR_DATA *victim, int dt, bool secondary )
     else
 	wield = get_eq_char( ch, WEAR_DUAL );
 
+    /* Check if weapon should talk */
+    check_talking_weapon( ch, wield );
+
     if ( dt == TYPE_UNDEFINED )
     {
 	dt = TYPE_HIT;
@@ -815,14 +861,17 @@ one_hit( CHAR_DATA *ch, CHAR_DATA *victim, int dt, bool secondary )
      * Calc damage.
      */
     if ( IS_NPC( ch ) &&  wield == NULL )
-	dam = dice( ch->damage[DICE_NUMBER], ch->damage[DICE_TYPE] );
+	dam = get_hardcoded_damage( ch->level );
     else
     {
 	if ( sn != -1 )
 	    check_improve( ch, sn, TRUE,5 );
 	if ( wield != NULL )
 	{
-            dam = ( dice( wield->value[1], wield->value[2] ) + wield->value[5] ) * skill/100;
+            if ( IS_NPC( ch ) )
+                dam = get_hardcoded_damage( ch->level );
+            else
+                dam = ( dice( wield->value[1], wield->value[2] ) + wield->value[5] ) * skill/100;
 
 	    if (get_eq_char(ch,WEAR_SHIELD) == NULL)  /* no shield = more */
 		dam = dam * 11/10;
@@ -838,7 +887,12 @@ one_hit( CHAR_DATA *ch, CHAR_DATA *victim, int dt, bool secondary )
 	    }
 	}
 	else
-	    dam = number_range( 1 + 4 * skill/100, 2 * ch->level/3 * skill/100);
+	{
+            if ( IS_NPC( ch ) )
+                dam = get_hardcoded_damage( ch->level );
+            else
+                dam = number_range( 1 + 4 * skill/100, 2 * ch->level/3 * skill/100);
+	}
     }
 
     /*
@@ -1034,6 +1088,13 @@ damage( CHAR_DATA *ch, CHAR_DATA *victim, int dam, int dt, int dam_type,
     OBJ_DATA *	corpse;
     bool	immune;
     int		qploss;
+
+    /* Check for NULL victim to prevent segfaults */
+    if ( victim == NULL )
+    {
+	bug( "Damage: NULL victim", 0 );
+	return FALSE;
+    }
 
     if ( victim->position == POS_DEAD || IS_DEAD( victim ) )
 	return FALSE;
@@ -2087,6 +2148,51 @@ make_corpse( CHAR_DATA *ch )
     if ( IS_NPC( ch ) )
     {
         stuff_corpse( ch, corpse );
+        
+        /* Item Generator - Add random loot to NPC corpses */
+        int main_selection = number_range(1, 100);
+        
+        switch(main_selection)
+        {
+            default:
+            case 1:  case 2:  case 3:  case 4:  case 5:
+            case 6:  case 7:  case 8:  case 9:  case 10:
+            case 11: case 12: case 13: case 14: case 15:
+                /* 15% chance - no loot */
+                break;
+                
+            case 71: case 72: case 73: case 74: case 75:
+            case 21: case 22: case 23: case 24: case 25:
+            case 26: case 27: case 28: case 29: case 30:
+            case 31: case 32: case 33: case 34: case 35:
+                /* 25% chance - gold */
+                obj_to_obj( new_gen_gold( NULL, ch->level), corpse );
+                break;
+                
+            case 91: case 92: case 93: case 94: case 95:
+            case 76: case 77: case 78: case 79: case 80:
+            case 46: case 47: case 48: case 49: case 50:
+            case 51: case 52: case 53: case 54: case 55:
+                /* 25% chance - weapon */
+                obj_to_obj( new_gen_weapon( NULL, ch->level), corpse );
+                break;
+                
+            case 36: case 37: case 38: case 39: case 40:
+            case 41: case 42: case 43: case 44: case 45:
+            case 86: case 87: case 88: case 89: case 90:
+            case 16: case 17: case 18: case 19: case 20:
+            case 56: case 57: case 58: case 59: case 60:
+            case 61: case 62: case 63: case 64: case 65:
+            case 66: case 67: case 68: case 69: case 70:
+                /* 30% chance - armor */
+                obj_to_obj( new_gen_armor( NULL, ch->level), corpse );
+                break;
+                
+            case 81: case 82: case 83: case 84: case 85:
+                /* 5% chance - magic item (placeholder for now) */
+                obj_to_obj( new_gen_gold( NULL, ch->level), corpse );
+                break;
+        }
     }
     else
     {
@@ -2501,28 +2607,28 @@ group_gain( CHAR_DATA *ch, CHAR_DATA *victim )
                 randi (gch, victim, number_range (UMAX (1, victim->level - 3),
                                                  UMIN (victim->level + 5, 20)));
         }*/
-        if (gch == ch)
-{
+        /*if (gch == ch)
+{*/
     /* 3% chance */
-    if (number_percent() <= 3)
+  /*  if (number_percent() <= 3)
         randi(gch, victim,
              number_range(UMAX(1, victim->level - 3),
                           UMIN(victim->level + 5, 20)));
-
+*/
     /* 1% chance */
-    if (number_percent() <= 1)
+    /*if (number_percent() <= 1)
         randi(gch, victim,
              number_range(UMAX(1, victim->level - 3),
                           UMIN(victim->level + 5, 20)));
-
+*/
     /* 0.5% chance (1 in 200) */
-    if (number_range(1,200) == 1)
+    /*if (number_range(1,200) == 1)
         randi(gch, victim,
              number_range(UMAX(1, victim->level - 3),
                           UMIN(victim->level + 5, 20)));
-
+*/
     /* 0.2% chance (1 in 500) */
-    if (number_range(1,500) == 1)
+    /*if (number_range(1,500) == 1)
         randi(gch, victim,
              number_range(UMAX(1, victim->level - 3),
                           UMIN(victim->level + 5, 20)));
@@ -2535,8 +2641,8 @@ group_gain( CHAR_DATA *ch, CHAR_DATA *victim )
             if (number_percent () < 1)
                 randi (gch, victim, number_range (UMAX (1, victim->level - 3),
                                                  UMIN (victim->level + 5, 20)));
-        }
-
+          }
+*/
 	for ( obj = ch->carrying; obj != NULL; obj = obj_next )
 	{
 	    obj_next = obj->next_content;
@@ -5394,4 +5500,82 @@ void do_fire( CHAR_DATA *ch, char *argument )
      } 
 
     return;
+}
+
+/*
+ * Check if a weapon should talk and send a message if so
+ */
+void
+check_talking_weapon( CHAR_DATA *ch, OBJ_DATA *weapon )
+{
+    char buf[MAX_STRING_LENGTH];
+    const char *message;
+    int message_count;
+    int random_index;
+
+    if ( weapon == NULL || weapon->item_type != ITEM_WEAPON )
+	return;
+
+    /* Check if weapon has talking flags */
+    if ( !IS_WEAPON_STAT( weapon, WEAPON_TALKING ) && !IS_WEAPON_STAT( weapon, WEAPON_TALKING_MACE ) )
+	return;
+
+    /* Only talk occasionally (1 in 20 chance) */
+    if ( number_range( 1, 20 ) != 1 )
+	return;
+
+    /* Count available messages */
+    for ( message_count = 0; talking_weapon_messages[message_count] != NULL; message_count++ )
+	;
+
+    if ( message_count == 0 )
+	return;
+
+    /* Pick a random message */
+    random_index = number_range( 0, message_count - 1 );
+    message = talking_weapon_messages[random_index];
+
+    /* Format and send the message using tell-style color codes */
+    sprintf( buf, "`W%s speaks to you telepathically: '`Y%s`W'\n\r", 
+	     weapon->short_descr, message );
+    send_to_char( buf, ch );
+}
+
+/*
+ * Check if a weapon should talk out of combat and send a message if so
+ */
+void
+check_talking_weapon_out_of_combat( CHAR_DATA *ch, OBJ_DATA *weapon )
+{
+    char buf[MAX_STRING_LENGTH];
+    const char *message;
+    int message_count;
+    int random_index;
+
+    if ( weapon == NULL || weapon->item_type != ITEM_WEAPON )
+	return;
+
+    /* Check if weapon has talking flags */
+    if ( !IS_WEAPON_STAT( weapon, WEAPON_TALKING ) && !IS_WEAPON_STAT( weapon, WEAPON_TALKING_MACE ) )
+	return;
+
+    /* Only talk occasionally (1 in 5 chance) */
+    if ( number_range( 1, 5 ) != 1 )
+	return;
+
+    /* Count available messages */
+    for ( message_count = 0; talking_weapon_messages2[message_count] != NULL; message_count++ )
+	;
+
+    if ( message_count == 0 )
+	return;
+
+    /* Pick a random message */
+    random_index = number_range( 0, message_count - 1 );
+    message = talking_weapon_messages2[random_index];
+
+    /* Format and send the message using tell-style color codes */
+    sprintf( buf, "`W%s speaks to you telepathically: '`Y%s`W'\n\r", 
+	     weapon->short_descr, message );
+    send_to_char( buf, ch );
 }

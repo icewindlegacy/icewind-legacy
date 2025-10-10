@@ -458,6 +458,21 @@ Roommsg $n looks less graceful.~
   Rog -1 0
 End
 
+#SKILL 'eagles splendor'
+15 12 0
+Offmsg You feel less splendid.~
+Roommsg $n looks less splendid.~
+  Brb -1 0
+  Brd 3 1
+  Clr 3 1
+  Drd 3 1
+  Ftr -1 0
+  Mag 3 1
+  Mnk -1 0
+  Pal -1 0
+  Rng -1 0
+End
+
 #SKILL 'cause critical'
 20 12 0
 Dammsg spell~
@@ -556,6 +571,21 @@ Offmsg You feel more self-confident.~
   Pal -1 0
   Rng -1 0
   Rog -1 0
+End
+
+#SKILL 'chill metal'
+25 18 0
+Dammsg spell~
+Offmsg !Chill Metal!~
+  Brb -1 0
+  Brd -1 0
+  Clr -1 0
+  Drd 2 1
+  Ftr -1 0
+  Mag -1 0
+  Mnk -1 0
+  Pal -1 0
+  Rng -1 0
 End
 
 #SKILL 'chill touch'
@@ -1353,6 +1383,51 @@ Offmsg !Fireball!~
   Rog -1 0
 End
 
+#SKILL 'flame blade'
+20 12 0
+Dammsg flame blade~
+Offmsg !Flame Blade!~
+  Brb -1 0
+  Brd -1 0
+  Clr -1 0
+  Drd 2 1
+  Ftr -1 0
+  Mag -1 0
+  Mnk -1 0
+  Pal -1 0
+  Rng -1 0
+End
+
+#SKILL 'flaming sphere'
+25 12 0
+Dammsg flaming sphere~
+Offmsg !Flaming Sphere!~
+  Brb -1 0
+  Brd -1 0
+  Clr -1 0
+  Drd 2 1
+  Ftr -1 0
+  Mag -1 0
+  Mnk -1 0
+  Pal -1 0
+  Rng -1 0
+End
+
+#SKILL 'fog cloud'
+30 12 0
+Dammsg fog cloud~
+Offmsg The fog dissipates.~
+  Brb -1 0
+  Brd -1 0
+  Clr -1 0
+  Drd 2 1
+  Ftr -1 0
+  Mag -1 0
+  Mnk -1 0
+  Pal -1 0
+  Rng -1 0
+End
+
 #SKILL 'fireproof'
 10 12 0
 Objmsg $p's protective aura fades.~
@@ -1772,6 +1847,19 @@ Offmsg !Know Alignment!~
   Rog -1 0
 End
 
+#SKILL 'knock'
+15 12 0
+  Brb -1 0
+  Brd -1 0
+  Clr -1 0
+  Drd -1 0
+  Ftr -1 0
+  Mag 1 1
+  Mnk -1 0
+  Pal -1 0
+  Rng -1 0
+End
+
 #SKILL 'lightning bolt'
 15 12 0
 Dammsg lightning bolt~
@@ -2083,6 +2171,51 @@ Offmsg !Refresh!~
   Rog -1 0
 End
 
+#SKILL 'longstrider'
+15 12 0
+Dammsg longstrider~
+Offmsg Your steps return to normal.~
+  Brb -1 0
+  Brd -1 0
+  Clr -1 0
+  Drd 2 1
+  Ftr -1 0
+  Mag -1 0
+  Mnk -1 0
+  Pal -1 0
+  Rng 1 1
+End
+
+#SKILL 'obscuring mist'
+20 12 0
+Dammsg obscuring mist~
+Offmsg The mist around you dissipates.~
+  Brb -1 0
+  Brd -1 0
+  Clr -1 0
+  Drd 2 1
+  Ftr -1 0
+  Mag -1 0
+  Mnk -1 0
+  Pal -1 0
+  Rng -1 0
+End
+
+#SKILL 'pass without trace'
+15 12 0
+Dammsg pass without trace~
+Offmsg You begin to leave traces again.~
+  Brb -1 0
+  Brd -1 0
+  Clr -1 0
+  Drd 2 1
+  Ftr -1 0
+  Mag -1 0
+  Mnk -1 0
+  Pal -1 0
+  Rng 1 1
+End
+
 #SKILL 'remove curse'
 5 12 0
 Offmsg !Remove Curse!~
@@ -2096,6 +2229,21 @@ Offmsg !Remove Curse!~
   Pal 3 1
   Rng -1 0
   Rog -1 0
+End
+
+#SKILL 'shillelagh'
+20 12 0
+Dammsg shillelagh~
+Offmsg The warm glow fades from your weapon.~
+  Brb -1 0
+  Brd -1 0
+  Clr -1 0
+  Drd 2 1
+  Ftr -1 0
+  Mag -1 0
+  Mnk -1 0
+  Pal -1 0
+  Rng -1 0
 End
 
 #SKILL 'resurrect'
@@ -2315,6 +2463,21 @@ Offmsg !Summon!~
   Pal -1 0
   Rng -1 0
   Rog -1 0
+End
+
+#SKILL 'summon swarm'
+25 12 0
+Dammsg summon swarm~
+Offmsg !Summon Swarm!~
+  Brb -1 0
+  Brd -1 0
+  Clr -1 0
+  Drd 2 1
+  Ftr -1 0
+  Mag -1 0
+  Mnk -1 0
+  Pal -1 0
+  Rng -1 0
 End
 
 #SKILL 'preserve'
@@ -4084,6 +4247,51 @@ Offmsg !Entangle!~
   Mnk 3 0
   Pal 3 0
   Rng 1 1
+End
+
+#SKILL 'endure elements'
+25 12 0
+Offmsg You are no longer protected from the elements.~
+Roommsg $n's protection from the elements fades.~
+  Brb -1 0
+  Brd -1 0
+  Clr -1 0
+  Drd -1 0
+  Ftr -1 0
+  Mag -1 0
+  Mnk -1 0
+  Pal -1 0
+  Rng -1 0
+End
+
+#SKILL 'water breathing'
+30 12 0
+Offmsg You can no longer breathe underwater.~
+Roommsg $n can no longer breathe underwater.~
+  Brb -1 0
+  Brd -1 0
+  Clr -1 0
+  Drd -1 0
+  Ftr -1 0
+  Mag -1 0
+  Mnk -1 0
+  Pal -1 0
+  Rng -1 0
+End
+
+#SKILL 'water walking'
+35 12 0
+Offmsg You can no longer walk on water.~
+Roommsg $n can no longer walk on water.~
+  Brb -1 0
+  Brd -1 0
+  Clr -1 0
+  Drd -1 0
+  Ftr -1 0
+  Mag -1 0
+  Mnk -1 0
+  Pal -1 0
+  Rng -1 0
 End
 
 #$

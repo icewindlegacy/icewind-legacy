@@ -61,6 +61,7 @@ void init_multiclass( CHAR_DATA *ch )
     ch->primary_class = ch->class;
     ch->secondary_class = -1;
     ch->tertiary_class = -1;
+    ch->leveling_class = -1;
     ch->pcdata->pending_class_choice = FALSE;
     
     /* Initialize all class levels to 0 */
@@ -403,6 +404,7 @@ void handle_multiclass_levelup( CHAR_DATA *ch, int choice )
                 if ( class_index == choice )
                 {
                     ch->class_levels[i]++;
+                    ch->leveling_class = i;  /* Set the class being leveled up */
                     sprintf( buf, "You advance in %s to level %d!\n\r", 
                             class_table[i].name, 
                             ch->class_levels[i] );
@@ -424,6 +426,7 @@ void handle_multiclass_levelup( CHAR_DATA *ch, int choice )
                 if ( new_class_count == (choice - existing_class_count) )
                 {
                     add_class( ch, i );
+                    ch->leveling_class = i;  /* Set the class being leveled up */
                     sprintf( buf, "You begin studying %s!\n\r", class_table[i].name );
                     send_to_char( buf, ch );
                     break;
@@ -447,6 +450,9 @@ void handle_multiclass_levelup( CHAR_DATA *ch, int choice )
     
     /* Apply level up benefits */
     advance_level( ch, FALSE );
+    
+    /* Clear the leveling class after level up is complete */
+    ch->leveling_class = -1;
     
     sprintf( buf, "You are now a level %d character.\n\r", ch->level );
     send_to_char( buf, ch );

@@ -13,7 +13,7 @@ Recall      900
 Flags       0
 Color       7
 ExitSize    medium
-Changed     1759648070 Sun Oct  5 03:07:50 2025
+Changed     1759887984 Tue Oct  7 21:46:24 2025
 Resetmsg    A Simon and Garfunkel song comes to mind, then fades.~
 End
 
@@ -10484,6 +10484,26 @@ furniture 0 0 A
 0 20 0 0 P
 0 0 0 0
 0 0 0 10 10
+#60
+no name~
+(no short description)~
+(no description)~
+~
+weapon 0 0 AN
+exotic 1 6 none 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#61
+no name~
+(no short description)~
+(no description)~
+~
+armor 0 0 A
+0 0 0 0 0 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
 #0
 
 #ROOMS

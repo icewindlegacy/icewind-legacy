@@ -1760,6 +1760,93 @@ medit_shop( CHAR_DATA *ch, char *argument )
 
 
 bool
+medit_qshop( CHAR_DATA *ch, char *argument )
+{
+    MOB_INDEX_DATA *	pMob;
+    char		command[MAX_INPUT_LENGTH];
+    char		arg1[MAX_INPUT_LENGTH];
+
+    argument = one_argument( argument, command );
+    argument = one_argument( argument, arg1 );
+
+    EDIT_MOB( ch, pMob );
+
+    if ( command[0] == '\0' )
+    {
+	send_to_char( "Syntax:  qshop create\n\r", ch );
+	send_to_char( "         qshop delete\n\r", ch );
+	return FALSE;
+    }
+
+    if ( !str_cmp( command, "create" ) )
+    {
+	if ( pMob->pShop != NULL )
+	{
+	    send_to_char( "MEdit:  Shop already exists. Use 'shop delete' first.\n\r", ch );
+	    return FALSE;
+	}
+
+	/* Create a quest shop */
+	pMob->pShop = new_shop();
+	if (!shop_first)
+	    shop_first = pMob->pShop;
+	if (shop_last)
+	    shop_last->next = pMob->pShop;
+	shop_last = pMob->pShop;
+
+	pMob->pShop->keeper = pMob->vnum;
+	/* Quest shops don't need buy types, hours, or profit settings */
+
+	send_to_char( "Quest shop created. Add quest items to the mob's inventory and set their qcost values.\n\r", ch );
+	return TRUE;
+    }
+
+    if ( !str_cmp( command, "delete" ) )
+    {
+	SHOP_DATA *pShop;
+	SHOP_DATA *pPrev;
+
+	if ( pMob->pShop == NULL )
+	{
+	    send_to_char( "MEdit:  No shop to delete.\n\r", ch );
+	    return FALSE;
+	}
+
+	pPrev = NULL;
+	for ( pShop = shop_first; pShop != NULL; pPrev = pShop,
+	      pShop = pShop->next )
+	{
+	    if ( pShop == pMob->pShop )
+		break;
+	}
+
+	if ( pShop == NULL )
+	{
+	    send_to_char( "Oops.  Can't find the shop.\n\r", ch );
+	    bugf( "Shop remove: shop for %d not on global list.", pMob->vnum );
+	    return FALSE;
+	}
+
+	if ( pPrev == NULL )
+	    shop_first = shop_first->next;
+	else
+	    pPrev->next = pShop->next;
+
+	if ( shop_last == pShop )
+	    shop_last = pPrev;
+
+	free_shop( pShop );
+	pMob->pShop = NULL;
+	send_to_char( "Quest shop removed.\n\r", ch );
+	return TRUE;
+    }
+
+    medit_qshop( ch, "" );
+    return FALSE;
+}
+
+
+bool
 medit_short( CHAR_DATA *ch, char *argument )
 {
     MOB_INDEX_DATA *	pMob;

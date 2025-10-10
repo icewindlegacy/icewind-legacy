@@ -165,6 +165,12 @@ get_obj( CHAR_DATA *ch, OBJ_DATA *obj, OBJ_DATA *container )
 	return;
     }
 
+    if ( obj->attuned_to && str_cmp(obj->attuned_to, ch->name) )
+    {
+	send_to_char( "You can't take that - it's attuned to someone else.\n\r", ch );
+	return;
+    }
+
     if ( ch->carry_number + get_obj_number( obj ) > can_carry_n( ch ) )
     {
 	act( "$d: you can't carry that many items.",
@@ -981,6 +987,12 @@ void do_drop( CHAR_DATA *ch, char *argument )
 	    return;
 	}
 
+	if ( IS_SET( obj->extra_flags, ITEM_QUESTOBJ ) )
+	{
+	    send_to_char( "You cannot drop quest items.\n\r", ch );
+	    return;
+	}
+
 	if ( !can_drop_obj( ch, obj ) )
 	{
 	    send_to_char( "You can't let go of it.\n\r", ch );
@@ -1082,7 +1094,65 @@ void do_drop( CHAR_DATA *ch, char *argument )
     return;
 }
 
-
+void 
+do_attune( CHAR_DATA *ch, char *argument )
+{
+    OBJ_DATA *obj;
+    FILE *fp;
+    char filename[256];
+    
+    if (IS_NPC(ch))
+    {
+        send_to_char("NPCs cannot attune to items.\n\r", ch);
+        return;
+    }
+    
+    if (argument[0] == '\0')
+    {
+        send_to_char("Attune to what?\n\r", ch);
+        return;
+    }
+    
+    obj = get_obj_carry(ch, argument, ch);
+    if (obj == NULL)
+    {
+        send_to_char("You don't have that item.\n\r", ch);
+        return;
+    }
+    
+    if (!IS_SET(obj->extra_flags2, ITEM2_ATTUNE))
+    {
+        send_to_char("You cannot attune to that item.\n\r", ch);
+        return;
+    }
+    
+    /* Check if already attuned to someone else */
+    if (obj->attuned_to && str_cmp(obj->attuned_to, ch->name))
+    {
+        send_to_char("That item is already attuned to someone else.\n\r", ch);
+        return;
+    }
+    
+    /* Attune the item */
+    if (obj->attuned_to)
+        free_string(obj->attuned_to);
+    obj->attuned_to = str_dup(ch->name);
+    
+    /* Write to attune.txt */
+    sprintf(filename, "%s/attune.txt", SYSTEM_DIR);
+    if ((fp = fopen(filename, "a")) == NULL)
+    {
+        bug("do_attune: Cannot open attune.txt for writing", 0);
+        send_to_char("Error saving attunement.\n\r", ch);
+        return;
+    }
+    
+    fprintf(fp, "%d %s\n", obj->pIndexData->vnum, ch->name);
+    fclose(fp);
+    
+    act("You attune to $p.", ch, obj, NULL, TO_CHAR);
+    act("$n attunes to $p.", ch, obj, NULL, TO_ROOM);
+}
 
 void 
 do_give( CHAR_DATA *ch, char *argument )
@@ -1123,6 +1193,17 @@ do_give( CHAR_DATA *ch, char *argument )
 	return;
     }
 
+    if ( IS_SET( obj->extra_flags, ITEM_QUESTOBJ ) )
+    {
+	send_to_char( "You cannot give quest items to others.\n\r", ch );
+	return;
+    }
+
+    if ( obj->attuned_to && str_cmp(obj->attuned_to, ch->name) )
+    {
+	send_to_char( "You cannot give attuned items to others.\n\r", ch );
+	return;
+    }
 
     if ( obj->wear_loc != WEAR_NONE )
     {
@@ -2115,8 +2196,7 @@ do_envenom(CHAR_DATA *ch, char *argument)
     return;
 }
 
-void
-do_fill( CHAR_DATA *ch, char *argument )
+void do_fill( CHAR_DATA *ch, char *argument )
 {
     char arg[MAX_INPUT_LENGTH];
     char buf[MAX_STRING_LENGTH];
@@ -2138,26 +2218,6 @@ do_fill( CHAR_DATA *ch, char *argument )
 	return;
     }
 
-    if ( obj->item_type != ITEM_DRINK_CON )
-    {
-	send_to_char( "You can't fill that.\n\r", ch );
-	return;
-    }
-
-    if ( ch->in_room->sector_type == SECT_RIVER || ch->in_room->sector_type == SECT_LAKE )
-    {
-        if ( obj->value[1] != 0 && obj->value[2] != LIQ_WATER )
-        {
-            act( "Your $p doesn't contain water.", ch, obj, NULL, TO_CHAR );
-            return;
-        }
-	act_color( AT_ACTION, "You fill $p.", ch, obj, NULL, TO_CHAR, POS_RESTING );
-	act_color( AT_ACTION, "$n fills $p.", ch, obj, NULL, TO_ROOM, POS_RESTING );
-	if ( obj->value[0] > 0 )
-	    obj->value[1] = obj->value[0];
-        return;
-    }
-
     found = FALSE;
     for ( fountain = ch->in_room->contents; fountain != NULL;
 	fountain = fountain->next_content )
@@ -2175,6 +2235,12 @@ do_fill( CHAR_DATA *ch, char *argument )
 	return;
     }
 
+    if ( obj->item_type != ITEM_DRINK_CON )
+    {
+	send_to_char( "You can't fill that.\n\r", ch );
+	return;
+    }
+
     if ( obj->value[1] != 0 && obj->value[2] != fountain->value[2] )
     {
 	send_to_char( "There is already another liquid in it.\n\r", ch );
@@ -2187,42 +2253,35 @@ do_fill( CHAR_DATA *ch, char *argument )
 	return;
     }
 
-    if ( fountain->value[1] != 0 )
-    {
-        send_to_char( "The fountain is dry.\n\r", ch );
-        return;
-    }
-
-    sprintf( buf, "You fill $p with %s from $P.",
-	liq_table[fountain->value[2]].liq_name );
-    act_color( AT_ACTION, buf, ch, obj,fountain, TO_CHAR, POS_RESTING );
-    sprintf( buf, "$n fills $p with %s from $P.",
-	liq_table[fountain->value[2]].liq_name );
-    act_color( AT_ACTION, buf, ch,obj, fountain, TO_ROOM, POS_RESTING );
-    obj->value[3] = fountain->value[3];
+    sprintf(buf,"You fill $p with %s from $P.",
+	liq_table[fountain->value[2]].liq_name);
+    act( buf, ch, obj,fountain, TO_CHAR );
+    sprintf(buf,"$n fills $p with %s from $P.",
+	liq_table[fountain->value[2]].liq_name);
+    act(buf,ch,obj,fountain,TO_ROOM);
     obj->value[2] = fountain->value[2];
     obj->value[1] = obj->value[0];
-    oprog_fill_trigger( obj, ch, fountain );
-    oprog_use_trigger( fountain, ch, obj );
+    obj->value[4] = 0; /* jerome : potion filling security fix */
     return;
 }
 
 
-void
-do_pour (CHAR_DATA *ch, char *argument)
+void do_pour (CHAR_DATA *ch, char *argument)
 {
     char arg[MAX_STRING_LENGTH],buf[MAX_STRING_LENGTH];
     OBJ_DATA *out, *in;
     CHAR_DATA *vch = NULL;
-    int amount;
+    int amount,dose=0;
+    bool potion = FALSE;
 
     argument = one_argument(argument,arg);
-
+    
     if (arg[0] == '\0' || argument[0] == '\0')
     {
 	send_to_char("Pour what into what?\n\r",ch);
 	return;
     }
+    
 
     if ((out = get_obj_carry(ch,arg, ch)) == NULL)
     {
@@ -2230,9 +2289,11 @@ do_pour (CHAR_DATA *ch, char *argument)
 	return;
     }
 
-    if (out->item_type != ITEM_DRINK_CON)
+    if ( out->item_type == ITEM_POTION ) potion = TRUE;
+
+    if ( (out->item_type != ITEM_DRINK_CON) && (!potion) )
     {
-	send_to_char("That's not a drink container.\n\r",ch);
+	send_to_char("That's not a drink container or a potion.\n\r",ch);
 	return;
     }
 
@@ -2246,13 +2307,26 @@ do_pour (CHAR_DATA *ch, char *argument)
 
 	out->value[1] = 0;
 	out->value[3] = 0;
-	sprintf(buf,"You invert $p, spilling %s all over the ground.",
-		liq_table[out->value[2]].liq_name);
-	act(buf,ch,out,NULL,TO_CHAR);
+        if(  out->value[4] != 0 )potion = TRUE;
+        out->value[4] = 0;
 
-	sprintf(buf,"$n inverts $p, spilling %s all over the ground.",
+        if( !potion )
+        {
+    	  sprintf(buf,"You invert $p, spilling %s all over the ground.",
 		liq_table[out->value[2]].liq_name);
-	act(buf,ch,out,NULL,TO_ROOM);
+	  act(buf,ch,out,NULL,TO_CHAR);
+	
+	  sprintf(buf,"$n inverts $p, spilling %s all over the ground.",
+		liq_table[out->value[2]].liq_name);
+	  act(buf,ch,out,NULL,TO_ROOM);
+        }
+        else
+        {
+         act("You invert $p, spilling the magical liquid all over the ground.",
+           ch,out,NULL,TO_CHAR);
+         act("$n invert $p, spilling the magical liquid all over the ground.",
+           ch,out,NULL,TO_ROOM);
+        }
 	return;
     }
 
@@ -2277,23 +2351,28 @@ do_pour (CHAR_DATA *ch, char *argument)
 
     if (in->item_type != ITEM_DRINK_CON)
     {
-	send_to_char("You can only pour into other drink containers.\n\r",ch);
+	send_to_char("You can only pour into a drink containers.\n\r",ch);
 	return;
     }
-
+    
     if (in == out)
     {
 	send_to_char("You cannot change the laws of physics!\n\r",ch);
 	return;
     }
 
-    if (in->value[1] != 0 && in->value[2] != out->value[2])
+    if (   ( (!potion) && (in->value[1] != 0) 
+                       && (in->value[2] != out->value[2]) )
+         ||(  (potion) && (  ( (in->value[4] != 0 )  
+                             &&(in->value[4] != out->pIndexData->vnum) ) 
+                           ||( (in->value[1] != 0) 
+                             &&(in->value[4] == 0) ) ) ) ) 
     {
 	send_to_char("They don't hold the same liquid.\n\r",ch);
 	return;
     }
 
-    if (out->value[1] == 0)
+    if ( (!potion) && (out->value[1] == 0) )
     {
 	act("There's nothing in $p to pour.",ch,out,NULL,TO_CHAR);
 	return;
@@ -2304,24 +2383,47 @@ do_pour (CHAR_DATA *ch, char *argument)
 	act("$p is already filled to the top.",ch,in,NULL,TO_CHAR);
 	return;
     }
-
-    amount = UMIN(out->value[1],in->value[0] - in->value[1]);
-
-    in->value[1] += amount;
-    out->value[1] -= amount;
-    in->value[2] = out->value[2];
+  
+    if( potion )
+    {
+      dose = liq_table[ in->value[2] ].liq_affect[4];
+      amount = UMIN( dose , in->value[0]  - dose );
+      in->value[1] += amount;
+      if( (in->value[4] != 0) && (in->value[4] != out->pIndexData->vnum ) )
+        bug("Error potion mixing in pour command with potion %d",in->value[4]);
+      in->value[4] = out->pIndexData->vnum;
+      extract_obj( out );
+    }
+    else
+    {
+      amount = UMIN(out->value[1],in->value[0] - in->value[1]);
+      in->value[1] += amount;
+      out->value[1] -= amount;
+      in->value[2] = out->value[2];
+    } 
 
     if (vch == NULL)
     {
+      if( !potion)
+      {
     	sprintf(buf,"You pour %s from $p into $P.",
 	    liq_table[out->value[2]].liq_name);
     	act(buf,ch,out,in,TO_CHAR);
     	sprintf(buf,"$n pours %s from $p into $P.",
 	    liq_table[out->value[2]].liq_name);
     	act(buf,ch,out,in,TO_ROOM);
+      }
+      else
+      {
+        act("You pour $p into $P.",ch,out,in,TO_CHAR);
+        act("$n pours $p into $P.",ch,out,in,TO_ROOM);
+      }
+
     }
     else
     {
+      if(!potion)
+       {
         sprintf(buf,"You pour some %s for $N.",
             liq_table[out->value[2]].liq_name);
         act(buf,ch,NULL,vch,TO_CHAR);
@@ -2331,34 +2433,27 @@ do_pour (CHAR_DATA *ch, char *argument)
         sprintf(buf,"$n pours some %s for $N.",
             liq_table[out->value[2]].liq_name);
         act(buf,ch,NULL,vch,TO_NOTVICT);
+       }
+       else
+       {
+        act("You pour some potion for $N.",ch,NULL,vch,TO_CHAR);
+        act("$n pours you some potion.",ch,NULL,vch,TO_VICT);
+        act("$n pours some potion for $N.",ch,NULL,vch,TO_NOTVICT);
+       }
+	
     }
 }
 
 
-void
-do_drink( CHAR_DATA *ch, char *argument )
+void do_drink( CHAR_DATA *ch, char *argument )
 {
-    char	arg[MAX_INPUT_LENGTH];
-    OBJ_DATA *	obj;
-    int		amount;
-    int		liquid;
+    char arg[MAX_INPUT_LENGTH];
+    OBJ_DATA *obj,*potion;
+    int amount;
+    int liquid;
+    bool split = FALSE;
 
     one_argument( argument, arg );
-
-    if ( ( arg[0] == '\0' && ( ch->in_room->sector_type == SECT_RIVER || ch->in_room->sector_type == SECT_LAKE ) )
-    ||	 ( !str_cmp( arg, "lake" )  && ch->in_room->sector_type == SECT_LAKE )
-    ||	 ( !str_cmp( arg, "river" ) && ch->in_room->sector_type == SECT_RIVER ) )
-    {
-        if ( arg[0] == '\0' )
-            strcpy( arg, sector_data[ch->in_room->sector_type].name );
-        act_color( AT_ACTION, "You drink from the $t.", ch, arg, NULL, TO_CHAR, POS_RESTING );
-        act_color( AT_ACTION, "$n drinks from the $t.", ch, arg, NULL, TO_ROOM, POS_RESTING );
-        if ( !IS_NPC( ch ) && ch->pcdata->condition[COND_THIRST] >= 0 )
-        {
-            ch->pcdata->condition[COND_THIRST] = MAX_COND;
-        }
-        return;
-    }
 
     if ( arg[0] == '\0' )
     {
@@ -2378,38 +2473,8 @@ do_drink( CHAR_DATA *ch, char *argument )
     {
 	if ( ( obj = get_obj_here( ch, arg ) ) == NULL )
 	{
-	    if ( !str_cmp( arg, "rain" ) )
-	    {
-		if ( !IS_OUTSIDE( ch ) )
-		{
-		    send_to_char( "You are indoors.\n\r", ch );
-		    return;
-		}
-//		if (	ch->in_room->sector_type == SECT_UNDERGROUND
-//		     || ch->in_room->sector_type == SECT_SPACE
-//		     || ch->in_room->sector_type == SECT_DEEPSPACE )
-//		{
-//		    send_to_char( "It never rains here!\n\r", ch );
-//		    return;
-//		}
-		if ( weather_info.sky != SKY_RAINING && weather_info.sky != SKY_LIGHTNING )
-		{
-		    send_to_char( "It's not raining.\n\r", ch );
-		    return;
-		}
-		amount = number_range( 1, 3 );
-		gain_condition( ch, COND_THIRST, amount );
-		act_color( AT_LBLUE, "You catch a few raindrops on your tongue.", ch, NULL, NULL, TO_CHAR, POS_RESTING );
-		act_color( AT_LBLUE, "$n catches a few raindrops on $s tongue.", ch, NULL, NULL, TO_ROOM, POS_RESTING );
-		if ( !IS_NPC( ch ) && ch->pcdata->condition[COND_THIRST] > 40 )
-		    send_to_char( "You do not feel thirsty.\n\r", ch );
-		return;
-	    }
-	    else
-	    {
-		send_to_char( "You can't find it.\n\r", ch );
-		return;
-	    }
+	    send_to_char( "You can't find it.\n\r", ch );
+	    return;
 	}
     }
 
@@ -2426,15 +2491,6 @@ do_drink( CHAR_DATA *ch, char *argument )
 	return;
 
     case ITEM_FOUNTAIN:
-        if ( !can_use_obj( ch, obj, TRUE ) )
-            return;
-
-        if ( obj->value[1] != 0 )
-        {
-            send_to_char( "The fountain is dry.\n\r", ch );
-	    oprog_use_trigger( obj, ch, ch );
-            return;
-        }
         if ( ( liquid = obj->value[2] )  < 0 )
         {
             bug( "Do_drink: bad liquid number %d.", liquid );
@@ -2444,9 +2500,6 @@ do_drink( CHAR_DATA *ch, char *argument )
 	break;
 
     case ITEM_DRINK_CON:
-        if ( !can_use_obj( ch, obj, TRUE ) )
-            return;
-
 	if ( obj->value[1] <= 0 )
 	{
 	    send_to_char( "It is already empty.\n\r", ch );
@@ -2463,35 +2516,46 @@ do_drink( CHAR_DATA *ch, char *argument )
         amount = UMIN(amount, obj->value[1]);
 	break;
      }
-    if ( !IS_NPC( ch ) && !IS_IMMORTAL( ch )
-    &&	 liq_table[liquid].liq_affect[COND_FULL] > 0
-    &&   ch->pcdata->condition[COND_FULL] > 45 )
+    if (!IS_NPC(ch) && !IS_IMMORTAL(ch) 
+    &&  ch->pcdata->condition[COND_FULL] > 45)
     {
-	send_to_char( "You're too full to drink more.\n\r", ch );
+	send_to_char("You're too full to drink more.\n\r",ch);
 	return;
     }
 
-    act_color( AT_ACTION, "$n drinks $T from $p.",
-	ch, obj, liq_table[liquid].liq_name, TO_ROOM, POS_RESTING );
-    act_color( AT_ACTION, "You drink $T from $p.",
-	ch, obj, liq_table[liquid].liq_name, TO_CHAR, POS_RESTING );
+    if( obj->value[4] != 0 )
+    { /* we are drinking some potion stored in the container */
+         potion = create_object( get_obj_index( obj->value[4]) , 0 );
+         if( !auto_quaff(ch,potion) )
+          {
+            extract_obj(potion);
+            split = TRUE;
+          }
+    }
+    else
+    {
+      act( "$n drinks $T from $p.",
+	ch, obj, liq_table[liquid].liq_name, TO_ROOM );
+      act( "You drink $T from $p.",
+  	ch, obj, liq_table[liquid].liq_name, TO_CHAR );
 
-    gain_condition( ch, COND_DRUNK,
+      gain_condition( ch, COND_DRUNK,
 	amount * liq_table[liquid].liq_affect[COND_DRUNK] / 36 );
-    gain_condition( ch, COND_FULL,
-	amount * liq_table[liquid].liq_affect[COND_FULL] / 4 );
-    gain_condition( ch, COND_THIRST,
+      gain_condition( ch, COND_FULL,
+ 	amount * liq_table[liquid].liq_affect[COND_FULL] / 4 );
+      gain_condition( ch, COND_THIRST,
 	amount * liq_table[liquid].liq_affect[COND_THIRST] / 10 );
-    gain_condition(ch, COND_HUNGER,
+      gain_condition(ch, COND_HUNGER,
 	amount * liq_table[liquid].liq_affect[COND_HUNGER] / 2 );
 
-    if ( !IS_NPC(ch) && ch->pcdata->condition[COND_DRUNK]  > 10 )
-	send_to_char( "You feel drunk.\n\r", ch );
-    if ( !IS_NPC(ch) && ch->pcdata->condition[COND_FULL]   > 40 )
+      if ( !IS_NPC(ch) && ch->pcdata->condition[COND_DRUNK]  > 10 )
+     	send_to_char( "You feel drunk.\n\r", ch );
+      if ( !IS_NPC(ch) && ch->pcdata->condition[COND_FULL]   > 40 )
 	send_to_char( "You are full.\n\r", ch );
-    if ( !IS_NPC(ch) && ch->pcdata->condition[COND_THIRST] > 40 )
+      if ( !IS_NPC(ch) && ch->pcdata->condition[COND_THIRST] > 40 )
 	send_to_char( "Your thirst is quenched.\n\r", ch );
-
+    }
+	
     if ( obj->value[3] != 0 )
     {
 	/* The drink was poisoned ! */
@@ -2501,21 +2565,20 @@ do_drink( CHAR_DATA *ch, char *argument )
 	send_to_char( "You choke and gag.\n\r", ch );
 	af.where     = TO_AFFECTS;
 	af.type      = gsn_poison;
-	af.level	 = number_fuzzy(amount);
+	af.level	 = number_fuzzy(amount); 
 	af.duration  = 3 * amount;
 	af.location  = APPLY_NONE;
 	af.modifier  = 0;
 	af.bitvector = AFF_POISON;
 	affect_join( ch, &af );
     }
-
-    if ( obj->value[0] > 0 )
-    {
+	
+    if ( (!split) && (obj->value[0] > 0) )
         obj->value[1] -= amount;
-        ch->carry_weight -= amount * 10;
-    }
 
-    oprog_use_trigger( obj, ch, ch );
+    if( obj->value[1] <= 0 )obj->value[4] = 0;
+
+    WAIT_STATE( ch, PULSE_VIOLENCE );
 
     return;
 }
@@ -2679,7 +2742,7 @@ remove_obj( CHAR_DATA *ch, int iWear, bool fReplace )
     if ( !fReplace )
 	return FALSE;
 
-    if ( IS_SET(obj->extra_flags, ITEM_NOREMOVE) )
+    if ( IS_SET(obj->extra_flags, ITEM_NOREMOVE) && !IS_IMMORTAL(ch) )
     {
 	act( "You can't remove $p.", ch, obj, NULL, TO_CHAR );
 	return FALSE;
@@ -3108,6 +3171,9 @@ wear_obj( CHAR_DATA *ch, OBJ_DATA *obj, bool fReplace )
 	act( "$n wields $p.", ch, obj, NULL, TO_ROOM );
 	act( "You wield $p.", ch, obj, NULL, TO_CHAR );
 	equip_char( ch, obj, WEAR_WIELD );
+
+	/* Check if weapon should talk when wielded */
+	check_talking_weapon( ch, obj );
 
         sn = get_weapon_sn(ch);
 
@@ -5425,6 +5491,12 @@ do_donate( CHAR_DATA *ch, char *argument )
         return;
     }
 
+    if ( IS_SET( obj->extra_flags, ITEM_QUESTOBJ ) )
+    {
+        send_to_char( "You cannot donate quest items.\n\r", ch );
+        return;
+    }
+
     /* now find the donation box, will have to tweak this later for clans */
     if ( ch->clan != NULL && ch->clan->box != 0 )
         vnum = ch->clan->box;
@@ -6543,348 +6615,6 @@ return;
 }
 }
          
-void do_butcher(CHAR_DATA *ch, char *argument)
-{
-
-    /* Butcher skill, created by Argawal */
-    /* Original Idea taken fom Carrion Fields Mud */
-    /* If you have an interest in this skill, feel free */
-    /* to use it in your mud if you so desire. */
-    /* All I ask is that Argawal is credited with creating */
-    /* this skill, as I wrote it from scratch. */
-
-    char buf[MAX_STRING_LENGTH];
-    char arg[MAX_STRING_LENGTH];
-    int numst = 0;
-    OBJ_DATA *steak;
-    OBJ_DATA *obj;
-
-    one_argument(argument, arg);
-
-    if(get_skill(ch,gsn_butcher)==0)
-    {
-       send_to_char("Butchering is beyond your skills.\n\r",ch);
-       return;
-    }
-
-    if(arg[0]=='\0')
-    {
-       send_to_char("Butcher what?\n\r",ch);
-       return;
-    }
-
-    obj = get_obj_list( ch, arg, ch->in_room->contents ); 
-    if ( obj == NULL )
-    {
-        send_to_char( "It's not here.\n\r", ch ); 
-        return; 
-    }
-
-    if( (obj->item_type != ITEM_CORPSE_NPC)
-        && (obj->item_type!=ITEM_CORPSE_PC) )
-    {
-        send_to_char( "You can only butcher corpses.\n\r", ch ); 
-        return; 
-    }
-
-    /* create and rename the steak */
-    buf[0]='\0';
-    strcat(buf,"A steak of ");
-    strcat(buf,str_dup(obj->short_descr));
-    strcat(buf," is here.");
-
-    steak = create_object( get_obj_index( OBJ_VNUM_STEAK ), 0 ); 
-
-    steak->description=str_dup(buf);
-    steak->value[0] = ch->level / 2;
-    steak->value[1] = ch->level;
-
-    buf[0]='\0';
-    strcat(buf,"A steak of ");
-    strcat(buf,str_dup(obj->short_descr));
-
-    steak->short_descr=str_dup(buf);
-
-    /* Check the skill roll, and put a random ammount of steaks here. */
-
-    if(number_percent( ) < get_skill(ch,gsn_butcher))
-    { 
-       numst = dice(1,4);
-       switch(numst)
-       {
-       case 1:
-         steak = create_object( get_obj_index( OBJ_VNUM_STEAK ), 0 );
-         obj_to_room( steak, ch->in_room );
-         act( "$n butchers a corpse and creates a steak.", ch, steak, NULL, TO_ROOM );
-         act( "You butcher a corpse and create a steak.", ch, steak, NULL, TO_CHAR );
-         break;
-       case 2: 
-         steak = create_object( get_obj_index( OBJ_VNUM_STEAK ), 0 ); 
-         obj_to_room( steak, ch->in_room );
-         steak = create_object( get_obj_index( OBJ_VNUM_STEAK ), 0 ); 
-         obj_to_room( steak, ch->in_room );
-         act( "$n butchers a corpse and creates two steaks.", ch, steak, NULL, TO_ROOM );
-         act( "You butcher a corpse and create two steaks.", ch, steak, NULL, TO_CHAR );
-         break; 
-       case 3:
-         steak = create_object( get_obj_index( OBJ_VNUM_STEAK ), 0 ); 
-         obj_to_room( steak, ch->in_room );
-         steak = create_object( get_obj_index( OBJ_VNUM_STEAK ), 0 ); 
-         obj_to_room( steak, ch->in_room );
-         steak = create_object( get_obj_index( OBJ_VNUM_STEAK ), 0 ); 
-         obj_to_room( steak, ch->in_room );
-         act( "$n butchers a corpse and creates three steaks.", ch, steak, NULL, TO_ROOM );
-         act( "You butcher a corpse and create three steaks.", ch, steak, NULL, TO_CHAR );
-         break;
-       case 4:
-         steak = create_object( get_obj_index( OBJ_VNUM_STEAK ), 0 ); 
-         obj_to_room( steak, ch->in_room );
-         steak = create_object( get_obj_index( OBJ_VNUM_STEAK ), 0 ); 
-         obj_to_room( steak, ch->in_room );
-         steak = create_object( get_obj_index( OBJ_VNUM_STEAK ), 0 ); 
-         obj_to_room( steak, ch->in_room );
-         steak = create_object( get_obj_index( OBJ_VNUM_STEAK ), 0 ); 
-         obj_to_room( steak, ch->in_room );
-         act( "$n butchers a corpse and creates four steaks.", ch, steak, NULL, TO_ROOM );
-         act( "You butcher a corpse and create four steaks.", ch, steak, NULL, TO_CHAR );
-         break;
-      } 
-      check_improve(ch,gsn_butcher,TRUE,1);
-
-    }   
-    else
-    {
-       act( "$n fails to butcher a corpse, and destroys it.", ch, steak, NULL, TO_ROOM );
-       act( "You fail to butcher a corpse, and destroy it.", ch, steak, NULL, TO_CHAR );
-       check_improve(ch,gsn_butcher,FALSE,1);
-    } 
-    /* dump items caried */
-    /* Taken from the original ROM code and added into here. */
-
-    if ( obj->item_type == ITEM_CORPSE_PC )
-    {   /* save the contents */ 
-       {
-
-            OBJ_DATA *t_obj, *next_obj; 
-            for (t_obj = obj->contains; t_obj != NULL; t_obj = next_obj)
-            {
-                next_obj = t_obj->next_content; 
-                obj_from_obj(t_obj); 
-                if (obj->in_obj) /* in another object */
-                    obj_to_obj(t_obj,obj->in_obj); 
-                else if (obj->carried_by) /* carried */
-                    if (obj->wear_loc == WEAR_FLOAT)
-                        if (obj->carried_by->in_room == NULL)
-                            extract_obj(t_obj); 
-                        else
-                            obj_to_room(t_obj,obj->carried_by->in_room); 
-                    else
-                        obj_to_char(t_obj,obj->carried_by); 
-               else if (obj->in_room == NULL) /* destroy it */
-                    extract_obj(t_obj); 
-                else /* to a room */
-                    obj_to_room(t_obj,obj->in_room); 
-           }
-      }
-
-  }
-
-    if ( obj->item_type == ITEM_CORPSE_NPC )
-    {
-       {
-            OBJ_DATA *t_obj, *next_obj; 
-            for (t_obj = obj->contains; t_obj != NULL; t_obj = next_obj)
-            {
-                next_obj = t_obj->next_content; 
-                obj_from_obj(t_obj); 
-                if (obj->in_obj) /* in another object */
-                    obj_to_obj(t_obj,obj->in_obj); 
-                else if (obj->carried_by) /* carried */
-                    if (obj->wear_loc == WEAR_FLOAT)
-                        if (obj->carried_by->in_room == NULL)
-                            extract_obj(t_obj); 
-                        else
-                            obj_to_room(t_obj,obj->carried_by->in_room); 
-                    else
-                        obj_to_char(t_obj,obj->carried_by); 
-                else if (obj->in_room == NULL) /* destroy it */
-                    extract_obj(t_obj); 
-                else /* to a room */
-                    obj_to_room(t_obj,obj->in_room); 
-         }
-     }
-  }
-
-    /* Now remove the corpse */
-    extract_obj(obj);
-    return;
-}
-
-void do_skin(CHAR_DATA *ch, char *argument)
-{
-
-    /* Butcher skill, created by Argawal */
-    /* Original Idea taken fom Carrion Fields Mud */
-    /* If you have an interest in this skill, feel free */
-    /* to use it in your mud if you so desire. */
-    /* All I ask is that Argawal is credited with creating */
-    /* this skill, as I wrote it from scratch. */
-
-    char buf[MAX_STRING_LENGTH];
-    char arg[MAX_STRING_LENGTH];
-    int numst = 0;
-    OBJ_DATA *steak;
-    OBJ_DATA *obj;
-
-    one_argument(argument, arg);
-
-    if(get_skill(ch,gsn_skin)==0)
-    {
-       send_to_char("Skinning is beyond your skills.\n\r",ch);
-       return;
-    }
-
-    if(arg[0]=='\0')
-    {
-       send_to_char("Skin what?\n\r",ch);
-       return;
-    }
-
-    obj = get_obj_list( ch, arg, ch->in_room->contents ); 
-    if ( obj == NULL )
-    {
-        send_to_char( "It's not here.\n\r", ch ); 
-        return; 
-    }
-
-    if( (obj->item_type != ITEM_CORPSE_NPC)
-        && (obj->item_type!=ITEM_CORPSE_PC) )
-    {
-        send_to_char( "You can only skin corpses.\n\r", ch ); 
-        return; 
-    }
-
-    /* create and rename the steak */
-    buf[0]='\0';
-    strcat(buf,"A skin of ");
-    strcat(buf,str_dup(obj->short_descr));
-    strcat(buf," is here.");
-
-    steak = create_object( get_obj_index( OBJ_VNUM_SKIN ), 0 ); 
-
-    steak->description=str_dup(buf);
-    steak->value[0] = ch->level / 2;
-    steak->value[1] = ch->level;
-
-    buf[0]='\0';
-    strcat(buf,"A skin of ");
-    strcat(buf,str_dup(obj->short_descr));
-
-    steak->short_descr=str_dup(buf);
-
-    /* Check the skill roll, and put a random ammount of steaks here. */
-
-    if(number_percent( ) < get_skill(ch,gsn_skin))
-    { 
-       numst = dice(1,4);
-       switch(numst)
-       {
-       case 1:
-         steak = create_object( get_obj_index( OBJ_VNUM_SKIN ), 0 );
-         obj_to_room( steak, ch->in_room );
-         act( "$n skins a corpse and creates a hide.", ch, steak, NULL, TO_ROOM );
-         act( "You skin a corpse and create a hide.", ch, steak, NULL, TO_CHAR );
-         break;
-       case 2: 
-         steak = create_object( get_obj_index( OBJ_VNUM_SKIN ), 0 ); 
-         obj_to_room( steak, ch->in_room );
-         act( "$n skins a corpse and creates a hide.", ch, steak, NULL, TO_ROOM );
-         act( "You skin a corpse and creates a hide.", ch, steak, NULL, TO_CHAR );
-         break; 
-       case 3:
-         steak = create_object( get_obj_index( OBJ_VNUM_SKIN ), 0 ); 
-         obj_to_room( steak, ch->in_room );
-         act( "$n skins a corpse and creates a hide.", ch, steak, NULL, TO_ROOM );
-         act( "You skin a corpse and create a hide.", ch, steak, NULL, TO_CHAR );
-         break;
-       case 4:
-         steak = create_object( get_obj_index( OBJ_VNUM_SKIN ), 0 ); 
-         obj_to_room( steak, ch->in_room );
-         act( "$n skins a corpse and creates a hide.", ch, steak, NULL, TO_ROOM );
-         act( "You skin a corpse and create a hide.", ch, steak, NULL, TO_CHAR );
-         break;
-      } 
-      check_improve(ch,gsn_skin,TRUE,1);
-
-    }   
-    else
-    {
-       act( "$n fails to skin a corpse, and destroys it.", ch, steak, NULL, TO_ROOM );
-       act( "You fail to skin a corpse, and destroy it.", ch, steak, NULL, TO_CHAR );
-       check_improve(ch,gsn_skin,FALSE,1);
-    } 
-    /* dump items caried */
-    /* Taken from the original ROM code and added into here. */
-
-    if ( obj->item_type == ITEM_CORPSE_PC )
-    {   /* save the contents */ 
-       {
-
-            OBJ_DATA *t_obj, *next_obj; 
-            for (t_obj = obj->contains; t_obj != NULL; t_obj = next_obj)
-            {
-                next_obj = t_obj->next_content; 
-                obj_from_obj(t_obj); 
-                if (obj->in_obj) /* in another object */
-                    obj_to_obj(t_obj,obj->in_obj); 
-                else if (obj->carried_by) /* carried */
-                    if (obj->wear_loc == WEAR_FLOAT)
-                        if (obj->carried_by->in_room == NULL)
-                            extract_obj(t_obj); 
-                        else
-                            obj_to_room(t_obj,obj->carried_by->in_room); 
-                    else
-                        obj_to_char(t_obj,obj->carried_by); 
-               else if (obj->in_room == NULL) /* destroy it */
-                    extract_obj(t_obj); 
-                else /* to a room */
-                    obj_to_room(t_obj,obj->in_room); 
-           }
-      }
-
-  }
-
-    if ( obj->item_type == ITEM_CORPSE_NPC )
-    {
-       {
-            OBJ_DATA *t_obj, *next_obj; 
-            for (t_obj = obj->contains; t_obj != NULL; t_obj = next_obj)
-            {
-                next_obj = t_obj->next_content; 
-                obj_from_obj(t_obj); 
-                if (obj->in_obj) /* in another object */
-                    obj_to_obj(t_obj,obj->in_obj); 
-                else if (obj->carried_by) /* carried */
-                    if (obj->wear_loc == WEAR_FLOAT)
-                        if (obj->carried_by->in_room == NULL)
-                            extract_obj(t_obj); 
-                        else
-                            obj_to_room(t_obj,obj->carried_by->in_room); 
-                    else
-                        obj_to_char(t_obj,obj->carried_by); 
-                else if (obj->in_room == NULL) /* destroy it */
-                    extract_obj(t_obj); 
-                else /* to a room */
-                    obj_to_room(t_obj,obj->in_room); 
-         }
-     }
-  }
-
-    /* Now remove the corpse */
-    extract_obj(obj);
-    return;
-}
-
 
 
 void
@@ -8100,255 +7830,4 @@ void do_dislodge( CHAR_DATA *ch, char *argument )
         return;
     }
 }
-
-/* Gather firewood from forest areas */
-void do_gather( CHAR_DATA *ch, char *argument )
-{
-    const struct foraging_entry *entry;
-    OBJ_DATA *obj;
-    OBJ_INDEX_DATA *pObjIndex;
-    int chance;
-    int count = 0;
-    int i;
-    
-    if ( ch->in_room == NULL )
-    {
-        send_to_char( "You are nowhere.\n\r", ch );
-        return;
-    }
-    
-    if ( ch->in_room->sector_type != SECT_FOREST )
-    {
-        send_to_char( "You can only gather firewood in forests.\n\r", ch );
-        return;
-    }
-    
-    if ( ch->move < 10 )
-    {
-        send_to_char( "You are too tired to gather firewood.\n\r", ch );
-        return;
-    }
-    
-    /* Use move points */
-    ch->move -= 10;
-    
-    /* Base chance of success */
-    chance = 60;
-    
-    /* Seasonal modifiers */
-    switch ( time_info.month )
-    {
-        case 2: case 3: case 4:  /* Spring - better gathering */
-            chance += 10;
-            break;
-        case 8: case 9: case 10: /* Fall - worse gathering */
-            chance -= 10;
-            break;
-        case 0: case 1: case 11: /* Winter - very scarce */
-            chance -= 30;
-            break;
-    }
-    
-    /* Count entries in the table */
-    for ( i = 0; uk_wood_table[i].name != NULL; i++ )
-        count++;
-    
-    if ( count == 0 )
-    {
-        send_to_char( "You search around but find nothing of use here.\n\r", ch );
-        return;
-    }
-    
-    if ( number_percent() < chance )
-    {
-        /* Select random entry from table */
-        entry = &uk_wood_table[number_range( 0, count - 1 )];
-        
-        /* Create the firewood item */
-        pObjIndex = get_obj_index( OBJ_VNUM_FIREWOOD );
-        if ( pObjIndex == NULL )
-        {
-            send_to_char( "Something went wrong with gathering.\n\r", ch );
-            return;
-        }
-        
-        obj = create_object( pObjIndex, 0 );
-        if ( obj == NULL )
-        {
-            send_to_char( "Something went wrong with gathering.\n\r", ch );
-            return;
-        }
-        
-        /* Set object properties */
-        free_string( obj->name );
-        obj->name = str_dup( entry->name );
-        free_string( obj->short_descr );
-        obj->short_descr = str_dup( entry->short_descr );
-        free_string( obj->description );
-        obj->description = str_dup( entry->long_descr );
-        
-        /* Set as firewood (trash type) */
-        obj->item_type = ITEM_FIREWOOD;
-        
-        /* Give item to character */
-        obj_to_char( obj, ch );
-        
-        /* Send messages */
-        act( "You gather $p from the forest.", ch, obj, NULL, TO_CHAR );
-        act( "$n gathers $p from the forest.", ch, obj, NULL, TO_ROOM );
-        
-        /* Spring bonus - chance for extra wood */
-        if ( (time_info.month >= 2 && time_info.month <= 4) && number_percent() < 20 )
-        {
-            obj = create_object( pObjIndex, 0 );
-            if ( obj != NULL )
-            {
-                free_string( obj->name );
-                obj->name = str_dup( entry->name );
-                free_string( obj->short_descr );
-                obj->short_descr = str_dup( entry->short_descr );
-                free_string( obj->description );
-                obj->description = str_dup( entry->long_descr );
-                obj->item_type = ITEM_FIREWOOD;
-                obj_to_char( obj, ch );
-                send_to_char( "You find extra firewood!\n\r", ch );
-            }
-        }
-    }
-    else
-    {
-        send_to_char( "You search but find no suitable firewood.\n\r", ch );
-    }
-    
-    return;
-}
-
-/* Build a temporary shelter */
-void do_build_shelter( CHAR_DATA *ch, char *argument )
-{
-    OBJ_DATA *firewood;
-    OBJ_DATA *shelter;
-    int move_cost = 50;
-    
-    if ( ch->in_room == NULL )
-    {
-        send_to_char( "You are nowhere.\n\r", ch );
-        return;
-    }
-    
-    if ( ch->move < move_cost )
-    {
-        send_to_char( "You are too tired to build a shelter.\n\r", ch );
-        return;
-    }
-    
-    /* Check for firewood (any wood branches) */
-    firewood = get_obj_carry( ch, "branches", ch );
-    if ( firewood == NULL )
-    {
-        send_to_char( "You need wood branches to build a shelter.\n\r", ch );
-        return;
-    }
-    
-    /* Check if there's already a shelter in the room */
-    for ( shelter = ch->in_room->contents; shelter != NULL; shelter = shelter->next_content )
-    {
-        if ( shelter->pIndexData->vnum == OBJ_VNUM_SHELTER )
-        {
-            send_to_char( "There is already a shelter here.\n\r", ch );
-            return;
-        }
-    }
-    
-    /* Use move points */
-    ch->move -= move_cost;
-    
-    /* Remove firewood */
-    extract_obj( firewood );
-    
-    /* Create shelter */
-    {
-        OBJ_INDEX_DATA *obj_index = get_obj_index( OBJ_VNUM_SHELTER );
-        if ( obj_index == NULL )
-        {
-            send_to_char( "You cannot build a shelter here.\n\r", ch );
-            return;
-        }
-        shelter = create_object( obj_index, 0 );
-    }
-    
-    obj_to_room( shelter, ch->in_room );
-    
-    act( "You build a temporary shelter from the firewood.", ch, NULL, NULL, TO_CHAR );
-    act( "$n builds a temporary shelter from firewood.", ch, NULL, NULL, TO_ROOM );
-    
-    return;
-}
-
-void do_blanket( CHAR_DATA *ch, char *argument )
-{
-    OBJ_DATA *skin1, *skin2;
-    OBJ_DATA *blanket;
-    OBJ_INDEX_DATA *pObjIndex;
-    
-    if ( ch->in_room == NULL )
-    {
-	send_to_char( "You are nowhere.\n\r", ch );
-	return;
-    }
-    
-    if ( ch->move < 15 )
-    {
-	send_to_char( "You are too tired to make a blanket.\n\r", ch );
-	return;
-    }
-    
-    /* Find first skin */
-    for ( skin1 = ch->carrying; skin1 != NULL; skin1 = skin1->next_content )
-    {
-	if ( skin1->pIndexData->vnum == OBJ_VNUM_SKIN )
-	    break;
-    }
-    if ( skin1 == NULL )
-    {
-	send_to_char( "You need 2 skins to make a blanket.\n\r", ch );
-	return;
-    }
-    
-    /* Find second skin */
-    for ( skin2 = ch->carrying; skin2 != NULL; skin2 = skin2->next_content )
-    {
-	if ( skin2->pIndexData->vnum == OBJ_VNUM_SKIN && skin2 != skin1 )
-	    break;
-    }
-    if ( skin2 == NULL )
-    {
-	send_to_char( "You need 2 skins to make a blanket.\n\r", ch );
-	return;
-    }
-    
-    ch->move -= 15;
-    
-    /* Remove both skins */
-    extract_obj( skin1 );
-    extract_obj( skin2 );
-    
-    /* Create blanket */
-    pObjIndex = get_obj_index( OBJ_VNUM_BLANKET );
-    if ( pObjIndex == NULL )
-    {
-	bug( "do_blanket: OBJ_VNUM_BLANKET not found", 0 );
-	send_to_char( "You cannot make a blanket right now.\n\r", ch );
-	return;
-    }
-    
-    blanket = create_object( pObjIndex, 0 );
-    obj_to_char( blanket, ch );
-    
-    act( "You make a warm blanket from two skins.", ch, NULL, NULL, TO_CHAR );
-    act( "$n makes a warm blanket from two skins.", ch, NULL, NULL, TO_ROOM );
-    
-    return;
-}
-
 

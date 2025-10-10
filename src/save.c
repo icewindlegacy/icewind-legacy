@@ -295,6 +295,7 @@ fwrite_char( CHAR_DATA *ch, FILE *fp )
 	    fprintf( fp, "Pcls %d\n", ch->primary_class );
 	    fprintf( fp, "Scls %d\n", ch->secondary_class );
 	    fprintf( fp, "Tcls %d\n", ch->tertiary_class );
+	    fprintf( fp, "Lcls %d\n", ch->leveling_class );
 	    fprintf( fp, "Pend %d\n", ch->pcdata->pending_class_choice ? 1 : 0 );
 	    
 	    /* Save class levels */
@@ -405,19 +406,21 @@ fwrite_char( CHAR_DATA *ch, FILE *fp )
     }
     else if ( ch->countdown )
 	fprintf( fp, "QNext %ld\n", current_time + ch->countdown * 60 );
-    fprintf( fp, "Attr %d %d %d %d %d\n",
+    fprintf( fp, "Attr %d %d %d %d %d %d\n",
 	ch->perm_stat[STAT_STR],
 	ch->perm_stat[STAT_INT],
 	ch->perm_stat[STAT_WIS],
 	ch->perm_stat[STAT_DEX],
-	ch->perm_stat[STAT_CON] );
+	ch->perm_stat[STAT_CON],
+	ch->perm_stat[STAT_CHA] );
 
-    fprintf (fp, "AMod %d %d %d %d %d\n",
+    fprintf (fp, "AMod %d %d %d %d %d %d\n",
 	ch->mod_stat[STAT_STR],
 	ch->mod_stat[STAT_INT],
 	ch->mod_stat[STAT_WIS],
 	ch->mod_stat[STAT_DEX],
-	ch->mod_stat[STAT_CON] );
+	ch->mod_stat[STAT_CON],
+	ch->mod_stat[STAT_CHA] );
 
     if ( IS_NPC(ch) )
     {
@@ -690,6 +693,8 @@ fwrite_obj( CHAR_DATA *ch, OBJ_DATA *obj, FILE *fp, int iNest )
         fprintf( fp, "ShD  %s~\n",	obj->short_descr	     );
     if ( obj->description != obj->pIndexData->description)
         fprintf( fp, "Desc %s~\n",	obj->description	     );
+    if ( obj->attuned_to != NULL)
+	fprintf( fp, "Attune %s~\n",	obj->attuned_to	     );
     if ( obj->extra_flags != obj->pIndexData->extra_flags)
         fprintf( fp, "ExtFl %s\n",	print_flags( obj->extra_flags ) );
 		if ( obj->extra_flags2 != obj->pIndexData->extra_flags2)
@@ -825,6 +830,8 @@ void fwrite_obj_donation(OBJ_DATA *obj, FILE *fp, int iNest)
     fprintf(fp, "Name %s~\n",  obj->name        ? obj->name        : obj->pIndexData->name);
     fprintf(fp, "ShD  %s~\n",  obj->short_descr ? obj->short_descr : obj->pIndexData->short_descr);
     fprintf(fp, "Desc %s~\n",  obj->description ? obj->description : obj->pIndexData->description);
+    if (obj->attuned_to)
+        fprintf(fp, "Attune %s~\n", obj->attuned_to);
 
     /* scalars */
     fprintf(fp, "ItemType %d\n",   obj->item_type);
@@ -874,6 +881,43 @@ OBJ_DATA *fread_obj_donation(FILE *fp)
     }
 
     obj = new_obj();
+
+    /* Fix corrupted items from the bug period */
+    if (obj->name == NULL || str_cmp(obj->name, "null") == 0 || 
+        obj->item_type < 0 || obj->item_type > 60)
+    {
+        /* This item is corrupted, reset to safe defaults */
+        if (obj->name) free_string(obj->name);
+        if (obj->short_descr) free_string(obj->short_descr);
+        if (obj->description) free_string(obj->description);
+        if (obj->attuned_to) free_string(obj->attuned_to);
+        
+        obj->name = str_dup("corrupted item");
+        obj->short_descr = str_dup("a corrupted item");
+        obj->description = str_dup("A corrupted item lies here.");
+        obj->attuned_to = NULL;
+        obj->item_type = ITEM_TRASH;
+        obj->value[0] = 0;
+        obj->value[1] = 0;
+        obj->value[2] = 0;
+        obj->value[3] = 0;
+        obj->value[4] = 0;
+        obj->value[5] = 0;
+        obj->weight = 1;
+        obj->cost = 0;
+        obj->level = 1;
+        obj->condition = 100;
+        obj->timer = -1;
+        obj->wear_loc = -1;
+        obj->extra_flags = 0;
+        obj->extra_flags2 = 0;
+        obj->wear_flags = 0;
+        xCLEAR_BITS(obj->race_flags);
+        xCLEAR_BITS(obj->class_flags);
+        xCLEAR_BITS(obj->material);
+        
+        bug("Fixed corrupted item during donation load", 0);
+    }
 
     for (;;)
     {
@@ -930,6 +974,7 @@ OBJ_DATA *fread_obj_donation(FILE *fp)
         if (!str_cmp(word, "Name"))       { obj->name         = fread_string(fp); continue; }
         if (!str_cmp(word, "ShD"))        { obj->short_descr  = fread_string(fp); continue; }
         if (!str_cmp(word, "Desc"))       { obj->description  = fread_string(fp); continue; }
+        if (!str_cmp(word, "Attune"))     { obj->attuned_to   = fread_string(fp); continue; }
         if (!str_cmp(word, "ItemType"))   { obj->item_type    = fread_number(fp); continue; }
         if (!str_cmp(word, "ExtraFlags")) { obj->extra_flags  = fread_number(fp); continue; }
         if (!str_cmp(word, "WearFlags"))  { obj->wear_flags   = fread_number(fp); continue; }
@@ -1187,6 +1232,8 @@ load_char_obj( DESCRIPTOR_DATA *d, char *name )
         {
             /* Recalculate multiclass_count from loaded class_levels */
             recalculate_multiclass_count( ch );
+            /* Initialize leveling_class to -1 for existing characters */
+            ch->leveling_class = -1;
         }
     }
     
@@ -1354,8 +1401,22 @@ fread_char( CHAR_DATA *ch, FILE *fp )
 	    if ( !str_cmp( word, "AttrMod"  ) || !str_cmp(word,"AMod"))
 	    {
 		int stat;
-		for (stat = 0; stat < MAX_STATS; stat ++)
-		   ch->mod_stat[stat] = fread_number(fp);
+		
+		/* Read available mod stats (old chars may only have 5 stats) */
+		for (stat = 0; stat < 5; stat++)
+		    ch->mod_stat[stat] = fread_number(fp);
+		
+		/* Check if there's a 6th mod stat (CHA) */
+		if (fscanf(fp, " %d", &ch->mod_stat[STAT_CHA]) == 1)
+		{
+		    /* CHA mod stat found */
+		}
+		else
+		{
+		    /* Old character - give them default CHA mod of 0 */
+		    ch->mod_stat[STAT_CHA] = 0;
+		}
+		
 		fMatch = TRUE;
 		break;
 	    }
@@ -1363,9 +1424,26 @@ fread_char( CHAR_DATA *ch, FILE *fp )
 	    if ( !str_cmp( word, "AttrPerm" ) || !str_cmp(word,"Attr"))
 	    {
 		int stat;
+		int attr_count = 0;
 
-		for (stat = 0; stat < MAX_STATS; stat++)
+		/* Read available stats (old chars may only have 5 stats) */
+		for (stat = 0; stat < 5; stat++)
+		{
 		    ch->perm_stat[stat] = fread_number(fp);
+		    attr_count++;
+		}
+		
+		/* Check if there's a 6th stat (CHA) */
+		if (fscanf(fp, " %d", &ch->perm_stat[STAT_CHA]) == 1)
+		{
+		    attr_count++;
+		}
+		else
+		{
+		    /* Old character - give them default CHA of 10 */
+		    ch->perm_stat[STAT_CHA] = 10;
+		}
+		
 		fMatch = TRUE;
 		break;
 	    }
@@ -1470,6 +1548,12 @@ fread_char( CHAR_DATA *ch, FILE *fp )
 	    if ( !str_cmp( word, "Tcls" ) )
 	    {
 		ch->tertiary_class = fread_number( fp );
+		fMatch = TRUE;
+		break;
+	    }
+	    if ( !str_cmp( word, "Lcls" ) )
+	    {
+		ch->leveling_class = fread_number( fp );
 		fMatch = TRUE;
 		break;
 	    }
@@ -2036,8 +2120,21 @@ fread_pet( CHAR_DATA *ch, FILE *fp, bool fMount )
     	    {
     	     	int stat;
 
-    	     	for (stat = 0; stat < MAX_STATS; stat++)
+    	     	/* Read available mod stats (old pets may only have 5 stats) */
+    	     	for (stat = 0; stat < 5; stat++)
     	     	    pet->mod_stat[stat] = fread_number(fp);
+    	     	
+    	     	/* Check if there's a 6th mod stat (CHA) */
+    	     	if (fscanf(fp, " %d", &pet->mod_stat[STAT_CHA]) == 1)
+    	     	{
+    	     	    /* CHA mod stat found */
+    	     	}
+    	     	else
+    	     	{
+    	     	    /* Old pet - give them default CHA mod of 0 */
+    	     	    pet->mod_stat[STAT_CHA] = 0;
+    	     	}
+    	     	
     	     	fMatch = TRUE;
     	     	break;
     	    }
@@ -2046,8 +2143,21 @@ fread_pet( CHAR_DATA *ch, FILE *fp, bool fMount )
     	    {
     	         int stat;
 
-    	         for (stat = 0; stat < MAX_STATS; stat++)
+    	         /* Read available stats (old pets may only have 5 stats) */
+    	         for (stat = 0; stat < 5; stat++)
     	             pet->perm_stat[stat] = fread_number(fp);
+    	         
+    	         /* Check if there's a 6th stat (CHA) */
+    	         if (fscanf(fp, " %d", &pet->perm_stat[STAT_CHA]) == 1)
+    	         {
+    	             /* CHA stat found */
+    	         }
+    	         else
+    	         {
+    	             /* Old pet - give them default CHA of 10 */
+    	             pet->perm_stat[STAT_CHA] = 10;
+    	         }
+    	         
     	         fMatch = TRUE;
     	         break;
     	    }
@@ -2230,6 +2340,7 @@ fread_obj( CHAR_DATA *ch, FILE *fp )
     	obj->name		= str_dup( "" );
     	obj->short_descr	= str_dup( "" );
     	obj->description	= str_dup( "" );
+    	obj->attuned_to		= NULL;
     }
 
     fNest		= FALSE;
@@ -2238,6 +2349,43 @@ fread_obj( CHAR_DATA *ch, FILE *fp )
 
     xCLEAR_BITS( obj->race_flags );
     xCLEAR_BITS( obj->class_flags );
+
+    /* Fix corrupted items from the bug period */
+    if (obj->name == NULL || str_cmp(obj->name, "null") == 0 || 
+        obj->item_type < 0 || obj->item_type > 60)
+    {
+        /* This item is corrupted, reset to safe defaults */
+        if (obj->name) free_string(obj->name);
+        if (obj->short_descr) free_string(obj->short_descr);
+        if (obj->description) free_string(obj->description);
+        if (obj->attuned_to) free_string(obj->attuned_to);
+        
+        obj->name = str_dup("corrupted item");
+        obj->short_descr = str_dup("a corrupted item");
+        obj->description = str_dup("A corrupted item lies here.");
+        obj->attuned_to = NULL;
+        obj->item_type = ITEM_TRASH;
+        obj->value[0] = 0;
+        obj->value[1] = 0;
+        obj->value[2] = 0;
+        obj->value[3] = 0;
+        obj->value[4] = 0;
+        obj->value[5] = 0;
+        obj->weight = 1;
+        obj->cost = 0;
+        obj->level = 1;
+        obj->condition = 100;
+        obj->timer = -1;
+        obj->wear_loc = -1;
+        obj->extra_flags = 0;
+        obj->extra_flags2 = 0;
+        obj->wear_flags = 0;
+        xCLEAR_BITS(obj->race_flags);
+        xCLEAR_BITS(obj->class_flags);
+        xCLEAR_BITS(obj->material);
+        
+        bug("Fixed corrupted item during load", 0);
+    }
 
     for ( ; ; )
     {
@@ -2316,6 +2464,7 @@ fread_obj( CHAR_DATA *ch, FILE *fp )
                 fMatch = TRUE;
                 break;
 	    }
+	    KEY( "Attune",	obj->attuned_to,	fread_string( fp ) );
 
 	    break;
 

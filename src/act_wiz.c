@@ -656,6 +656,8 @@ void do_pack ( CHAR_DATA *ch, char *argument )
 
     obj = create_object( get_obj_index(OBJ_VNUM_SCHOOL_FLINT), 0 );
     obj_to_obj( obj, pack);
+    obj = create_object( get_obj_index(OBJ_VNUM_SCHOOL_FIRESTEEL), 0 );
+    obj_to_obj( obj, pack);
 
     for ( i = 0; i < 5; i ++ )                                                                                         
     {                                                                                                                   
@@ -2187,6 +2189,7 @@ do_reboot( CHAR_DATA *ch, char *argument )
     save_vehicles( );
     save_donation_pits( );
     save_tokens( );
+    save_attune( );
 
     unlink( SHUTDOWN_FILE );
     return;
@@ -2227,6 +2230,7 @@ do_shutdown( CHAR_DATA *ch, char *argument )
     save_vehicles( );
     save_donation_pits();
     save_tokens( );
+    save_attune( );
 
     return;
 }
@@ -4117,7 +4121,7 @@ do_mset( CHAR_DATA *ch, char *argument )
 	send_to_char( "Syntax:\n\r", ch );
 	send_to_char( "  mset <name> <field> <value>\n\r", ch ); 
 	send_to_char( "  Field being one of:\n\r",			ch );
-	send_to_char( "    str int wis dex con sex class level multiclass \n\r",	ch );
+	send_to_char( "    str int wis dex con cha sex class level multiclass \n\r",	ch );
 	send_to_char( "    race group hp kingdom mana move prac\n\r",ch );
 	ch_printf( ch, "    %s %s %s %s\n\r",
 	           GOLD_PLURAL, SILVER_PLURAL, COPPER_PLURAL, FRACT_PLURAL );
@@ -4231,7 +4235,21 @@ do_mset( CHAR_DATA *ch, char *argument )
 	return;
     }
 
+    if ( !str_cmp( arg2, "cha" ) )
+    {
+	if ( value < 3 || value > get_max_train(victim,STAT_CHA) )
+	{
+	    sprintf(buf,
+		"Charisma range is 3 to %d.\n\r",
+		get_max_train(victim,STAT_CHA));
+	    send_to_char( buf, ch );
+	    return;
+	}
 
+	victim->perm_stat[STAT_CHA] = value;
+	send_to_char( "Ok.\n\r", ch );
+	return;
+    }
 
     if ( !str_prefix( arg2, "sex" ) )
     {
@@ -5658,6 +5676,7 @@ do_hotboot( CHAR_DATA *ch, char * argument )
     save_vehicles( );
     save_donation_pits();
     save_tokens( );
+    save_attune( );
 
     sprintf( buf, "\n\r`W%s's voice thunders, '"
     "`cBeware, a shadow comes to envelop the world!`W'`w\n\r", rch->name );
@@ -5791,12 +5810,13 @@ stat_mob( CHAR_DATA *ch, char *argument, BUFFER *pBuf, int whence )
         buf_printf( pBuf,"Count: %d  Killed: %d\n\r", pMob->count, pMob->killed );
 
     buf_printf( pBuf, 
-   	"Str: %d(%d)  Int: %d(%d)  Wis: %d(%d)  Dex: %d(%d)  Con: %d(%d)\n\r",
+   	"Str: %d(%d)  Int: %d(%d)  Wis: %d(%d)  Dex: %d(%d)  Con: %d(%d)  Cha: %d(%d)\n\r",
 	victim->perm_stat[STAT_STR], get_curr_stat( victim, STAT_STR ),
 	victim->perm_stat[STAT_INT], get_curr_stat( victim, STAT_INT ),
 	victim->perm_stat[STAT_WIS], get_curr_stat( victim, STAT_WIS ),
 	victim->perm_stat[STAT_DEX], get_curr_stat( victim, STAT_DEX ),
-	victim->perm_stat[STAT_CON], get_curr_stat( victim, STAT_CON ) );
+	victim->perm_stat[STAT_CON], get_curr_stat( victim, STAT_CON ),
+	victim->perm_stat[STAT_CHA], get_curr_stat( victim, STAT_CHA ) );
 
     buf_printf( pBuf, "Hp: %d/%d  Mana: %d/%d  Move: %d/%d  Practices: %d\n\r",
 	victim->hit,         victim->max_hit,
@@ -5804,14 +5824,55 @@ stat_mob( CHAR_DATA *ch, char *argument, BUFFER *pBuf, int whence )
 	victim->move,        victim->max_move,
 	IS_NPC( victim ) ? 0 : victim->practice );
 
-    buf_printf( pBuf,
-	"Lv: %d  Class: %s  Race: %s  Align: %d  Exp: %d\n\r",
-	victim->level,       
-	IS_NPC( victim ) ? flag_string( class_flags, victim->pIndexData->class )
-			 : class_table[victim->class].name,
-	race_table[victim->race].name,
-	victim->alignment,
-	victim->exp );
+    if ( IS_NPC( victim ) )
+    {
+        buf_printf( pBuf,
+	    "Lv: %d  Class: %s  Race: %s  Align: %d  Exp: %d\n\r",
+	    victim->level,       
+	    flag_string( class_flags, victim->pIndexData->class ),
+	    race_table[victim->race].name,
+	    victim->alignment,
+	    victim->exp );
+    }
+    else
+    {
+        if ( victim->multiclass_count > 1 )
+        {
+            char multiclass_str[200];
+            sprintf( multiclass_str, "%s (%d)", 
+                    class_table[victim->primary_class].name,
+                    victim->class_levels[victim->primary_class] );
+            if ( victim->secondary_class >= 0 )
+            {
+                sprintf( multiclass_str + strlen(multiclass_str), "/%s (%d)", 
+                        class_table[victim->secondary_class].name,
+                        victim->class_levels[victim->secondary_class] );
+            }
+            if ( victim->tertiary_class >= 0 )
+            {
+                sprintf( multiclass_str + strlen(multiclass_str), "/%s (%d)", 
+                        class_table[victim->tertiary_class].name,
+                        victim->class_levels[victim->tertiary_class] );
+            }
+            buf_printf( pBuf,
+	        "Lv: %d  Class: %s  Race: %s  Align: %d  Exp: %d\n\r",
+	        victim->level,       
+	        multiclass_str,
+	        race_table[victim->race].name,
+	        victim->alignment,
+	        victim->exp );
+        }
+        else
+        {
+            buf_printf( pBuf,
+	        "Lv: %d  Class: %s  Race: %s  Align: %d  Exp: %d\n\r",
+	        victim->level,       
+	        class_table[victim->class].name,
+	        race_table[victim->race].name,
+	        victim->alignment,
+	        victim->exp );
+        }
+    }
 
     buf_printf( pBuf, "Coins: %s: %d  %s: %d  %s: %d  %s: %d\n\r",
 	        GOLD_PLURAL,   victim->money.gold,
@@ -5846,12 +5907,14 @@ stat_mob( CHAR_DATA *ch, char *argument, BUFFER *pBuf, int whence )
 
     if ( !IS_NPC( victim) )
 	buf_printf( pBuf,
-	    "Thirst: %d  Hunger: %d  Full: %d  Drunk: %d  Tired: %d\n\r",
+	    "Thirst: %d  Hunger: %d  Full: %d  Drunk: %d  Tired: %d  Wet: %d  Freezing: %d\n\r",
 	    victim->pcdata->condition[COND_THIRST],
 	    victim->pcdata->condition[COND_HUNGER],
 	    victim->pcdata->condition[COND_FULL],
 	    victim->pcdata->condition[COND_DRUNK],
-	    victim->pcdata->condition[COND_TIRED] );
+	    victim->pcdata->condition[COND_TIRED],
+	    victim->pcdata->condition[COND_WET],
+	    victim->pcdata->condition[COND_FREEZING] );
 
     strcpy( buf, weight_string( get_carry_weight( victim ) ) );
     buf_printf( pBuf, "Carry number: %d  Carry weight: %s/%s\n\r",

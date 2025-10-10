@@ -189,6 +189,193 @@ do_map( CHAR_DATA *ch, char *argument )
     return;
 }
 
+void
+do_asciimap( CHAR_DATA *ch, char *argument )
+{
+    ROOM_INDEX_DATA *	room;
+    ROOM_INDEX_DATA *	veh_room;
+    ROOM_INDEX_DATA *	map_rooms[15][39];  /* 15x39 grid to hold room references */
+    char		arg[MAX_INPUT_LENGTH];
+    BUFFER *		buf;
+    int			lines;
+    int			width;
+    int			row;
+    int			col;
+    int			center_row;
+    int			center_col;
+    int			sector;
+    int			symbol;
+    int			color;
+    int			last_color;
+    int			door;
+    EXIT_DATA *		pexit;
+    ROOM_INDEX_DATA *	to_room;
+    /* Direction mapping for grid offsets: [DIR_NORTH, DIR_EAST, DIR_SOUTH, DIR_WEST, DIR_UP, DIR_DOWN, DIR_NORTHWEST, DIR_NORTHEAST, DIR_SOUTHWEST, DIR_SOUTHEAST] */
+    int			dir_row[10] = { -1, 0, 1, 0, 0, 0, -1, -1, 1, 1 };   /* row offsets (negative = up/north) */
+    int			dir_col[10] = { 0, 1, 0, -1, 0, 0, -1, 1, -1, 1 };   /* col offsets (negative = left/west) */
+
+    if ( ch->in_room == NULL )
+	return;
+
+    if ( ch->in_room->in_room != NULL )
+    {
+	veh_room = ch->in_room;
+	char_from_room( ch );
+	char_to_room( ch, veh_room->in_room );
+    }
+    else
+	veh_room = NULL;
+
+    one_argument( argument, arg );
+    if ( arg[0] != '\0' )
+	lines = atoi( arg );
+    else
+	lines = UMIN( ch->lines, 15 );
+
+    if ( lines < 2 || lines > 15 )
+    {
+	send_to_char( "Number of lines must be between 2 and 15.\n\r", ch );
+	if ( veh_room != NULL )
+	{
+	    char_from_room( ch );
+	    char_to_room( ch, veh_room );
+	}
+	return;
+    }
+
+    width = 39;  /* Fixed width for better display */
+    center_row = lines / 2;
+    center_col = width / 2;
+
+    /* Initialize map grid */
+    for ( row = 0; row < lines; row++ )
+	for ( col = 0; col < width; col++ )
+	    map_rooms[row][col] = NULL;
+
+    /* Set current room in center */
+    map_rooms[center_row][center_col] = ch->in_room;
+
+    /* Explore rooms outward in levels (BFS-style exploration) */
+    ROOM_INDEX_DATA * current_room;
+    ROOM_INDEX_DATA * next_room;
+    int level;
+    int max_levels = UMIN(lines/2, width/2);  /* Maximum exploration distance */
+    
+    /* Level 0: current room (already set) */
+    
+    /* Level 1+: explore outward */
+    for ( level = 1; level <= max_levels; level++ )
+    {
+	bool found_new_rooms = FALSE;
+	
+	/* Check all positions at current level distance */
+	for ( row = center_row - level; row <= center_row + level; row++ )
+	{
+	    for ( col = center_col - level; col <= center_col + level; col++ )
+	    {
+		/* Skip positions not at exact level distance */
+		int row_dist = (row - center_row < 0) ? -(row - center_row) : (row - center_row);
+		int col_dist = (col - center_col < 0) ? -(col - center_col) : (col - center_col);
+		if ( row_dist != level && col_dist != level )
+		    continue;
+		
+		/* Skip out of bounds */
+		if ( row < 0 || row >= lines || col < 0 || col >= width )
+		    continue;
+		
+		/* Skip if already has a room */
+		if ( map_rooms[row][col] != NULL )
+		    continue;
+		
+		/* Find which adjacent position (from previous level) this connects to */
+		for ( door = 0; door < MAX_DIR; door++ )
+		{
+		    if ( door == DIR_UP || door == DIR_DOWN )
+			continue;
+		    
+		    int source_row = row - dir_row[door];
+		    int source_col = col - dir_col[door];
+		    
+		    /* Check if source position is in bounds and has a room */
+		    if ( source_row < 0 || source_row >= lines || source_col < 0 || source_col >= width )
+			continue;
+		    
+		    current_room = map_rooms[source_row][source_col];
+		    if ( current_room == NULL )
+			continue;
+		    
+		    /* Check if there's an exit in this direction */
+		    if ( ( pexit = current_room->exit[door] ) != NULL 
+		    &&   pexit->to_room != NULL 
+		    &&   !IS_SET( pexit->exit_info, EX_CLOSED ) )
+		    {
+			map_rooms[row][col] = pexit->to_room;
+			found_new_rooms = TRUE;
+			break;  /* Found a room for this position, move to next */
+		    }
+		}
+	    }
+	}
+	
+	/* If no new rooms found at this level, we can stop exploring */
+	if ( !found_new_rooms )
+	    break;
+    }
+
+    last_color = '\0';
+    buf = new_buf( );
+
+    /* Display the map */
+    for ( row = 0; row < lines; row++ )
+    {
+	for ( col = 0; col < width; col++ )
+	{
+	    room = map_rooms[row][col];
+	    
+	    if ( room != NULL )
+	    {
+		if ( row == center_row && col == center_col )
+		{
+		    symbol = '@';
+		    color  = 'R';
+		}
+		else
+		{
+		    sector = room->sector_type;
+		    symbol = sector_data[sector].symbol;
+		    color  = sector_data[sector].color_char;
+		}
+	    }
+	    else
+	    {
+		symbol = ' ';
+		color  = 'w';
+	    }
+
+	    if ( color == last_color )
+		buf_printf( buf, "%c", symbol );
+	    else
+	    {
+		buf_printf( buf, "`%c%c", color, symbol );
+		last_color = color;
+	    }
+	}
+
+	add_buf( buf, "\n\r" );
+    }
+
+    send_to_char( buf_string( buf ), ch );
+    free_buf( buf );
+
+    if ( veh_room != NULL )
+    {
+	char_from_room( ch );
+	char_to_room( ch, veh_room );
+    }
+
+    return;
+}
+
 
 /*
  * Merge a minimap with a string.

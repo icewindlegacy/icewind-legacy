@@ -15,7 +15,7 @@ Flags       B
 Color       7
 ExitSize    medium
 Created     1279250009
-Changed     1756675146 Sun Aug 31 17:19:06 2025
+Changed     1759979842 Wed Oct  8 23:17:22 2025
 End
 
 #MOBILES
@@ -29,7 +29,7 @@ A strange looking dagger~
 obsidian~
 weapon ABCGSTYc 0 AN
 dagger 25 8 slash CM 2
-1 150 200 0 P
+1 150 0 10000 P
 0 0 0 0
 0 0 0 0 0
 #201
@@ -39,7 +39,7 @@ Some plain leather bracers~
 leather~
 armor GHSTYc 0 AM
 14 13 13 7 0 0
-1 40 100 0 P
+1 40 100 400 P
 0 0 0 0
 0 0 0 0 0
 A
@@ -57,7 +57,7 @@ A small metal band~
 ~
 jewelry GHSTYc 0 AB
 0 0 0 0 0 0
-1 10 200 400 P
+1 10 0 400 P
 0 0 0 0
 0 0 0 0 0
 A
@@ -71,9 +71,9 @@ dread helm~
 The `rD`Rr`ze`Ra`rd `YH`Oelm`X~
 A black metal helm with glowing `Rred`X eyes~
 steel~
-armor CHSTY 0 AE
+armor CHSTYc 0 AE
 14 13 15 6 0 0
-1 200 0 0 P
+1 200 0 500 P
 0 0 0 0
 0 0 0 0 0
 A
@@ -91,9 +91,9 @@ amulet natural armor~
 Amulet of Natural Armor~
 A small river stone on a necklace chain~
 ~
-armor GHSTY 0 AC
+armor GHSTYc 0 AC
 13 13 14 7 0 0
-1 40 0 0 P
+1 40 0 400 P
 0 0 0 0
 0 0 0 0 0
 #205
@@ -101,9 +101,9 @@ Ioun stone of protection~
 `WI`Coun `wStone of `pP`Brotection`X~
 A strange cyan stone hovers~
 ~
-armor AGHSTY 0 AQ
+armor AGHSTYc 0 AQ
 13 14 13 6 0 0
-1 10 0 0 P
+1 10 0 500 P
 0 0 0 0
 0 0 0 0 0
 #206
@@ -111,9 +111,9 @@ smoldering smouldering armor~
 `zsmoldering`X armor~
 A set of armor smoldering and smoking~
 leather~
-armor CHSTY 0 AD
+armor CHSTYc 0 AD
 12 14 13 6 0 0
-1 500 0 0 P
+1 500 0 500 P
 0 0 0 0
 0 0 0 0 0
 #207
@@ -121,9 +121,9 @@ bag of holding~
 bag of `Oholding`X~
 A bag of holding~
 ~
-container HSTY 0 AK
+container HSTYc 0 AK
 999990 A 0 99990 50 99999
-0 100 0 0 P
+0 100 0 200 P
 0 0 0 0
 0 0 0 0 0
 #208
@@ -131,9 +131,9 @@ horn caps spiked~
 `Rsp`Yik`Red`X horn caps~
 Some spiked horn caps~
 ~
-armor STY 0 AZ
+armor STYc 0 AZ
 13 15 14 7 0 0
-1 40 0 0 P
+1 40 0 500 P
 0 0 0 0
 0 0 0 0 0
 A
@@ -147,9 +147,9 @@ spectacles of truesight~
 spectacles of `Pt`Br`Cu`ce`Ws`ci`Cg`Bh`Pt`X~
 Spectacles with a wire rim and a faint glow~
 ~
-armor AGSTY 0 AR
+armor AGSTYc 0 AR
 14 13 13 7 0 0
-1 10 0 0 P
+1 10 0 500 P
 5 'truesight' 9999 9999
 0 0 0 0 0
 E
@@ -163,9 +163,9 @@ earring crystal light~
 `CC`cry`Ws`cta`Cl `XEarrings of `YL`Oi`Wg`Oh`Yt`X~
 A pair of glowing crystal earrings~
 ~
-jewelry ASTY 0 AT
+jewelry ASTYc 0 AT
 0 0 0 0 0 0
-0 10 0 0 P
+0 10 0 400 P
 0 0 0 0
 0 0 0 0 0
 A
@@ -187,7 +187,7 @@ A faceplate made impossibly of black stone~
 ~
 questitem ASTYc 0 AS
 0 0 0 0 0 0
-1 30 1000 400 P
+1 30 0 500 P
 0 0 0 0
 0 0 0 100 0
 A
@@ -203,9 +203,9 @@ spiked shoulder guards shoulderguards~
 `ws`zp`wi`zk`we`zd `Rs`rho`Rul`rd`zer`rg`Rua`rrd`Rs`X~
 Some leather shoulderguards covered in spikes and studs~
 ~
-armor GSTY 0 AW
+armor GSTYc 0 AW
 15 14 14 7 0 0
-1 200 0 0 P
+1 200 0 500 P
 0 0 0 0
 0 0 0 0 0
 A
@@ -219,9 +219,9 @@ chain sleeves~
 a pair of `wc`Wh`za`Wi`wn`X sleeves~
 A pair of chain sleeves~
 ~
-armor GSTY 0 AI
+armor GSTYc 0 AI
 15 14 14 7 0 0
-1 100 0 0 P
+1 100 0 500 P
 0 0 0 0
 0 0 0 0 0
 A
@@ -235,9 +235,9 @@ steel handguard hand guards gauntlets~
 a pair of `Wst`we`Wel`X gauntlets~
 A large pair of steel gauntlets~
 ~
-armor STY 0 AH
+armor STYc 0 AH
 15 14 14 7 0 0
-1 120 0 0 P
+1 120 0 500 P
 0 0 0 0
 0 0 0 0 0
 A
@@ -253,7 +253,7 @@ A belt that looks very similar to the fabled megingjord~
 ~
 armor GNSTYc 0 AL
 13 14 14 6 0 0
-1 50 0 0 P
+1 50 0 500 P
 0 0 0 0
 0 0 0 0 0
 A
@@ -265,9 +265,9 @@ steel legguards leg guards~
 some `Wst`ze`Wel`X legguards~
 Steel legguards lie discarded here~
 ~
-armor GSTY 0 AF
+armor GSTYc 0 AF
 14 15 15 7 0 0
-1 300 0 0 P
+1 300 0 500 P
 0 0 0 0
 0 0 0 0 0
 A
@@ -279,9 +279,9 @@ golden chain anklets anklet~
 `Ygo`Ol`wd`Yen`X `Ych`Wa`Yin`X anklet~
 A small golden chain~
 ~
-jewelry GSTY 0 AX
+jewelry GSTYc 0 AX
 0 0 0 0 0 0
-1 10 0 0 P
+1 10 0 400 P
 0 0 0 0
 0 0 0 0 0
 A
@@ -299,9 +299,9 @@ black steel boots~
 `zblack `wst`ze`wel`X boots~
 Some black steel boots~
 ~
-armor STY 0 AG
+armor STYc 0 AG
 14 14 14 7 0 0
-1 350 0 0 P
+1 350 0 500 P
 0 0 0 0
 0 0 0 0 0
 A
@@ -313,9 +313,9 @@ darkwood shield~
 the `zda`wr`Okw`wo`zod`X shield~
 A shield made of very dark wood~
 ~
-armor STY 0 AJ
+armor STYc 0 AJ
 15 15 14 6 0 0
-1 200 0 0 P
+1 200 0 500 P
 0 0 0 0
 0 0 0 0 0
 A
@@ -331,9 +331,9 @@ everburning torch~
 everburning `Rto`Yr`Rch`X~
 A smouldering torch~
 ~
-light STY 0 AO
+light STYc 0 AO
 0 0 99999 0 0 0
-0 30 0 0 P
+0 30 0 500 P
 0 0 0 0
 0 0 0 0 0
 A
@@ -347,9 +347,9 @@ totem of power~
 a `Ct`co`Bt`ce`Cm`X of `Pp`po`Ww`pe`Pr`X~
 A carved wooded totem~
 ~
-treasure STY 0 AO
+treasure STYc 0 AO
 0 0 0 0 0 0
-1 30 0 0 P
+1 30 0 500 P
 0 0 0 0
 0 0 0 0 0
 A
@@ -361,9 +361,9 @@ tail spikes~
 `Wa`wr`zm`Xo`zr`we`Wd tail `Rs`Op`Wik`Oe`Rs`X~
 Armored tail spikes lie on the ground~
 ~
-armor STY 0 AY
+armor STYc 0 AY
 14 13 14 6 0 0
-1 30 0 0 P
+1 30 0 500 P
 0 0 0 0
 0 0 0 0 0
 #223
@@ -371,9 +371,9 @@ mace of force~
 `pm`Pace `Wo`wf `bf`Borce`X~
 A large glowing mace~
 ~
-weapon GSTY 0 AN
+weapon GSTYc 0 AN
 mace 25 6 smash GJK 2
-1 1000 0 0 P
+1 1000 0 10000 P
 0 0 0 0
 0 0 0 0 0
 #224
@@ -381,9 +381,9 @@ the vorpal sword~
 the `Cv`Bor`Cp`Bal`X sword~
 A large glowing sword~
 ~
-weapon AGSTY 0 AN
+weapon AGSTYc 0 AN
 short_sword 25 6 cleave DEK 2
-1 1500 0 0 P
+1 1500 0 10000 P
 0 0 0 0
 0 0 0 0 0
 #225
@@ -391,9 +391,9 @@ bearded axe~
 a `wbe`za`Wr`zd`wed`X axe~
 A bearded axe~
 ~
-weapon GSTY 0 AN
+weapon GSTYc 0 AN
 axe 25 6 wrath BDK 2
-1 1900 0 0 P
+1 1900 0 10000 P
 0 0 0 0
 0 0 0 0 0
 #226
@@ -401,9 +401,9 @@ club studded~
 a `Bs`Ct`cudded `Xclub~
 A studded length of wood~
 ~
-weapon GSTY 0 AN
+weapon GSTYc 0 AN
 club 25 6 beating CM 2
-1 900 0 0 P
+1 900 0 10000 P
 0 0 0 0
 0 0 0 0 0
 #227
@@ -411,9 +411,9 @@ spear gungnir replica~
 a replica of `RGu`wn`zg`wn`Rir`X~
 A perfect replica of Odin's spear, Gungnir~
 ~
-weapon STY 0 AN
+weapon STYc 0 AN
 spear 25 6 divine ABDEK 2
-1 2000 0 0 P
+1 2000 0 10000 P
 0 0 0 0
 0 0 0 0 0
 A
@@ -423,9 +423,9 @@ replica of mjolnir~
 a replica of `BM`Cjo`Wl`Cni`Br`X~
 A replica of Thor's hammer, Mjolnir~
 ~
-weapon AGSTY 0 AN
-hammer 25 6 divine EGIK 2
-1 2000 0 0 P
+weapon AGSTYc 0 AN
+hammer 1 10 divine EGIK 5
+1 2000 0 10000 P
 0 0 0 0
 0 0 0 0 0
 #229
@@ -433,9 +433,9 @@ restring ticket immortal~
 a `wr`Westring`X ticket~
 A strange sheet of paper~
 ~
-trash STY 0 0
+trash STYc 0 A
 0 0 0 0 0 0
-0 0 0 0 P
+0 0 0 1000 P
 0 0 0 0
 0 0 0 0 0
 #230
@@ -443,9 +443,9 @@ rename ticket~
 a `wr`Wename`X ticket~
 A strange sheet of paper~
 ~
-trash STY 0 0
+trash STYc 0 A
 0 0 0 0 0 0
-0 0 0 0 P
+0 0 0 30000 P
 0 0 0 0
 0 0 0 0 0
 #231
@@ -453,7 +453,7 @@ trash STY 0 0
 `Ga `Y10`Cqp `Gtoken`X~
 `Ga `Y10`Cqp `Gtoken`X~
 ~
-token OSTYe 0 A
+token OSTYce 0 A
 10 0 0 0 0 P
 0 0 0 0
 0 0 0 0 0
@@ -462,7 +462,7 @@ fifty 50 qp quest point token~
 `Ga `Y50`Cqp `Gtoken `X~
 `Ga `Y50`Cqp `Gtoken `X~
 ~
-token OSTYe 0 A
+token OSTYce 0 A
 50 0 0 0 0 P
 0 0 0 0
 0 0 0 0 0
@@ -471,7 +471,7 @@ token OSTYe 0 A
 `Ga `R100`Cqp `Gtoken!`X~
 `B(`PRARE`B)`Ga `R100`Cqp `Gtoken!`X~
 ~
-token OSTYe 0 A
+token OSTYce 0 A
 100 0 0 0 0 P
 0 0 0 0
 0 0 0 0 0
@@ -482,7 +482,7 @@ A voucher for creating a clan~
 ~
 questitem STYc 0 A
 0 0 0 0 0 0
-0 0 0 0 P
+0 0 0 20000 P
 0 0 0 0
 0 0 0 0 0
 E
@@ -501,7 +501,7 @@ A voucher for extra clan hall rooms.~
 ~
 questitem STYc 0 A
 0 0 0 0 0 0
-0 0 0 0 P
+0 0 0 10000 P
 0 0 0 0
 0 0 0 0 0
 E
@@ -516,7 +516,7 @@ A voucher for a clan healer~
 ~
 questitem STYc 0 A
 0 0 0 0 0 0
-0 0 0 0 P
+0 0 0 10000 P
 0 0 0 0
 0 0 0 0 0
 E
@@ -533,7 +533,7 @@ A voucher for adding a level to clan healer or guard~
 ~
 questitem STYc 0 A
 0 0 0 0 0 0
-0 0 0 0 P
+0 0 0 10000 P
 0 0 0 0
 0 0 0 0 0
 E
@@ -547,7 +547,7 @@ A voucher for a clan guard~
 ~
 questitem STYc 0 A
 0 0 0 0 0 0
-0 0 0 0 P
+0 0 0 10000 P
 0 0 0 0
 0 0 0 0 0
 E

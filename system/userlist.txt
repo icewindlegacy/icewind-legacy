@@ -361,13 +361,13 @@ End
 #USER
 Name Mask
 Host 'localhost'
-Id 1634293764
-Last 1759647485
-LogC 131
+Id 1719785959
+Last 1760060177
+LogC 148
 Lvl 30
 Race 'Dgnbn'
 Class 'Drd'
-Plyd 6447602
+Plyd 6569475
 End
 
 #USER
@@ -518,12 +518,12 @@ End
 Name Statty
 Host 'localhost'
 Id 1756671010
-Last 1756671522
+Last 1759898125
 LogC 1
 Lvl 1
-Race 'Dgnbn'
-Class 'Ftr'
-Plyd 144
+Race 'Human'
+Class 'Pal'
+Plyd 38
 End
 
 #USER
@@ -683,6 +683,18 @@ Plyd 3352
 End
 
 #USER
+Name Testnew
+Host 'localhost'
+Id 1759979178
+Last 1759979178
+LogC 1
+Lvl 11
+Race 'Drow'
+Class 'Clr'
+Plyd 583
+End
+
+#USER
 Name Testnewb
 Host 'aesir.fios-router.home'
 Id 1635839341
@@ -794,12 +806,12 @@ End
 Name Wanky
 Host 'localhost'
 Id 1756843253
-Last 1756843253
-LogC 1
-Lvl 1
-Race 'Dgnbn'
-Class 'Ftr'
-Plyd 710
+Last 1759900320
+LogC 2
+Lvl 3
+Race 'Human'
+Class 'Brb'
+Plyd 580
 End
 
 #USER

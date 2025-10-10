@@ -42,12 +42,16 @@ DECLARE_SPELL_FUN( spell_identify );
 #define QUEST_OBJQUEST4 33
 #define QUEST_OBJQUEST5 34
 
+#define MAX_QUEST_ITEMS 100
+
 /* Local functions */
 
 void generate_quest	args( ( CHAR_DATA *ch, CHAR_DATA *questman, int t ) );
 void quest_update	args( ( void ) );
 bool quest_level_diff   args( ( int clevel, int mlevel) );
 bool chance		args( ( int num ) );
+void do_quest_shop_buy	args( ( CHAR_DATA *ch, CHAR_DATA *questman, char *argument, char *arg3 ) );
+void do_quest_shop_sell	args( ( CHAR_DATA *ch, CHAR_DATA *questman, char *argument ) );
 
 /* CHANCE function. I use this everywhere in my code, very handy :> */
 
@@ -89,7 +93,7 @@ do_quest( CHAR_DATA *ch, char *argument )
 
     if ( arg1[0] == '\0' )
     {
-        send_to_char( "QUEST commands: POINTS INFO IDENTIFY TIME REQUEST COMPLETE LIST BUY QUIT.\n\r",ch );
+        send_to_char( "QUEST commands: POINTS INFO IDENTIFY TIME REQUEST COMPLETE LIST BUY SELL QUIT.\n\r",ch );
 	if ( get_trust( ch ) >= DEITY )
 	    send_to_char( "          QUEST GRANT <player> <amount>.\n\r", ch );
         send_to_char( "For more information, type 'HELP QUEST'.\n\r",ch );
@@ -259,38 +263,96 @@ do_quest( CHAR_DATA *ch, char *argument )
 
     if ( !strcmp( arg1, "list" ) )
     {
+	OBJ_DATA *obj_in_shop;
+	int qcost;
+
 	pBuf = new_buf( );
 	act( "$n asks $N for a list of quest items.", ch, NULL, questman, TO_ROOM );
 	act( "You ask $N for a list of quest items.",ch, NULL, questman, TO_CHAR );
 	item_count = 0;
 	add_buf( pBuf, "Current Quest Items available for purchase:\n\r" );
 	add_buf( pBuf, "=========================================\n\r" );
-	for ( index = 0; quest_table[ index ].vnum; index++ )
+
+	/* Check if this is a quest shop (questmaster with shop) */
+	if ( questman->pIndexData->pShop != NULL )
 	{
-	    if ( ( pObj = get_obj_index( quest_table[ index ].vnum ) ) == NULL )
+	    OBJ_DATA *sorted_items[MAX_QUEST_ITEMS];
+	    int sorted_count = 0;
+	    int i, j;
+
+	    /* First, collect all quest items */
+	    for ( obj_in_shop = questman->carrying; obj_in_shop; obj_in_shop = obj_in_shop->next_content )
 	    {
-		bug( "Do_quest: bad vnum %d", quest_table[ index ].vnum );
-		continue;
+		if ( !IS_SET( obj_in_shop->extra_flags, ITEM_QUESTOBJ ) )
+		    continue;
+
+		qcost = obj_in_shop->qcost ? obj_in_shop->qcost : obj_in_shop->pIndexData->qcost;
+		if ( qcost <= 0 )
+		    continue;
+
+		if ( sorted_count < MAX_QUEST_ITEMS )
+		{
+		    sorted_items[sorted_count] = obj_in_shop;
+		    sorted_count++;
+		}
 	    }
-	    buf_printf( pBuf, "%5dqp - lvl %3d  %s`X\n\r",
-			quest_table[ index ].qcost,
-			pObj->level,
-			pObj->short_descr );
-	    item_count++;
+
+	    /* Sort by qcost (highest first) using bubble sort */
+	    for ( i = 0; i < sorted_count - 1; i++ )
+	    {
+		for ( j = 0; j < sorted_count - i - 1; j++ )
+		{
+		    int qcost1 = sorted_items[j]->qcost ? sorted_items[j]->qcost : sorted_items[j]->pIndexData->qcost;
+		    int qcost2 = sorted_items[j+1]->qcost ? sorted_items[j+1]->qcost : sorted_items[j+1]->pIndexData->qcost;
+		    
+		    if ( qcost1 < qcost2 )
+		    {
+			OBJ_DATA *temp = sorted_items[j];
+			sorted_items[j] = sorted_items[j+1];
+			sorted_items[j+1] = temp;
+		    }
+		}
+	    }
+
+	    /* Display sorted items */
+	    for ( i = 0; i < sorted_count; i++ )
+	    {
+		qcost = sorted_items[i]->qcost ? sorted_items[i]->qcost : sorted_items[i]->pIndexData->qcost;
+		buf_printf( pBuf, "%5dqp - lvl %3d  %s`X\n\r",
+			    qcost,
+			    sorted_items[i]->pIndexData->level,
+			    sorted_items[i]->short_descr );
+		item_count++;
+	    }
 	}
+	else
+	{
+	    /* Legacy hardcoded quest table system */
+	    for ( index = 0; quest_table[ index ].vnum; index++ )
+	    {
+		if ( ( pObj = get_obj_index( quest_table[ index ].vnum ) ) == NULL )
+		{
+		    bug( "Do_quest: bad vnum %d", quest_table[ index ].vnum );
+		    continue;
+		}
+		buf_printf( pBuf, "%5dqp - lvl %3d  %s`X\n\r",
+			    quest_table[ index ].qcost,
+			    pObj->level,
+			    pObj->short_descr );
+		item_count++;
+	    }
+	}
+
 	if ( item_count )
 	    add_buf( pBuf, "=========================================\n\r" );
+
+	/* Add practice and honor options */
 	add_buf( pBuf, "5000qp - 500 pracs\n\r" );
 	add_buf( pBuf, " 500qp - 50 pracs\n\r" );
 	add_buf( pBuf, "  50qp - 5 pracs\n\r" );
 	if ( ch->clan != NULL )
 	{
 	    add_buf( pBuf, "=========================================\n\r" );
-	/*	add_buf( pBuf, "100000qp - clan creation voucher (comes with one room clan hall)\n\r" );
-	    add_buf( pBuf, " 10000qp - clan hall additional room voucher\n\r" );
-	    add_buf( pBuf, " 5000qp  - clan healer voucher (level 5)\n\r" );
-		add_buf( pBuf, " 5000qp  - clan guard voucher (level 5)\n\r" );
-		add_buf( pBuf, " 2000qp  - clan healer/guard level up voucher (+1 level)\n\r" );*/
 	    buf_printf( pBuf, "Honor points may be purchased for your %s at 1 qp per honor point.\n\r",
 			ch->clan->fHouse ? "house" : "clan" );
 	}
@@ -301,6 +363,8 @@ do_quest( CHAR_DATA *ch, char *argument )
 	add_buf( pBuf, "Quest point refunds will `RNOT`X be given for your mistake.\n\r" );
 	add_buf( pBuf, "=========================================\n\r\n\r" );
 	add_buf( pBuf, "To buy an item, type 'QUEST BUY <item>'.\n\r" );
+	if ( questman->pIndexData->pShop != NULL )
+	    add_buf( pBuf, "To sell an item back, type 'QUEST SELL <item>'.\n\r" );
 	page_to_char( buf_string( pBuf ), ch );
 	free_buf( pBuf );
 	return;
@@ -366,6 +430,14 @@ do_quest( CHAR_DATA *ch, char *argument )
 
     else if ( !strcmp( arg1, "buy" ) )
     {
+	/* Check if this is a quest shop (questmaster with shop) */
+	if ( questman->pIndexData->pShop != NULL )
+	{
+	    do_quest_shop_buy( ch, questman, arg2, arg3 );
+	    return;
+	}
+	
+	/* Legacy quest system for honor points and practices */
 	if ( arg2[0] == '\0' )
 	{
 	    send_to_char( "To buy an item, type 'QUEST BUY <item>'.\n\r", ch );
@@ -447,6 +519,7 @@ do_quest( CHAR_DATA *ch, char *argument )
 	    }
 	}
 
+	/* Legacy hardcoded quest table system */
 	for ( index = 0; quest_table[ index ].vnum; index++ )
 	{
 	    if ( ( pObj = get_obj_index( quest_table[ index ].vnum ) ) == NULL )
@@ -482,6 +555,18 @@ do_quest( CHAR_DATA *ch, char *argument )
     	    act( "$N gives you $p.",   ch, obj, questman, TO_CHAR );
 	    obj_to_char( obj, ch );
 	}
+	return;
+    }
+    else if ( !strcmp( arg1, "sell" ) )
+    {
+	/* Only quest shops support selling */
+	if ( questman->pIndexData->pShop == NULL )
+	{
+	    sayf( questman, "I don't buy items back, %s.", ch->name );
+	    return;
+	}
+	
+	do_quest_shop_sell( ch, questman, arg2 );
 	return;
     }
      else if (!strcmp(arg1, "identify"))
@@ -782,7 +867,7 @@ void generate_quest( CHAR_DATA *ch, CHAR_DATA *questman, int t )
 	}
 
         questitem = create_object( get_obj_index( objvnum ), ch->level );
-	questitem->item_type = ITEM_QUESTITEM;
+	questitem->item_type = ITEM_QUESTOBJ;
 	questitem->timer = t * ( PULSE_AREA / PULSE_TICK );
 	questitem->value[0] = ch->id;
 	obj_to_room( questitem, room );
@@ -961,4 +1046,236 @@ void sayf( CHAR_DATA *ch, const char *fmt, ... )
     va_end( args );
 
     do_say( ch, buf );
+}
+
+/*
+ * Quest shop buy function - handles buying items from questmasters with shops
+ */
+void do_quest_shop_buy( CHAR_DATA *ch, CHAR_DATA *questman, char *argument, char *arg3 )
+{
+    OBJ_DATA *obj;
+    OBJ_DATA *obj_in_shop;
+    OBJ_INDEX_DATA *pObj;
+    int qcost;
+    int sell_qcost;
+
+    if ( argument[0] == '\0' )
+    {
+	sayf( questman, "What would you like to buy, %s?", ch->name );
+	return;
+    }
+
+    if ( ch->questpoints == 0 )
+    {
+	sayf( questman, "You don't have any quest points to spend, %s.", ch->name );
+	return;
+    }
+
+    /* Handle special practice point purchases */
+    if ( ( argument[0] == '5' ) && ( argument[1] == ' ' || argument[1] == '\0') )
+    {
+	if ( ch->questpoints >= 50 )
+	{
+	    ch->questpoints -= 50;
+	    log_qp( ch, 50, QP_SPEND );
+	    ch->practice += 5;
+	    act( "$N gives 5 practices to $n.", ch, NULL, questman, TO_ROOM );
+	    act( "$N gives you 5 practices.", ch, NULL, questman, TO_CHAR );
+	    sayf( questman, "Here you are, %s. That will be 50 quest points.", ch->name );
+	    return;
+	}
+	else
+	{
+	    sayf( questman, "You don't have enough quest points for that, %s.", ch->name );
+	    return;
+	}
+    }
+    else if ( ( argument[0] == '5') && ( argument[1] == '0' ) && ( argument[2] == '\0' ))
+    {
+	if ( ch->questpoints >= 500 )
+	{
+	    ch->questpoints -= 500;
+	    log_qp( ch, 500, QP_SPEND );
+	    ch->practice += 50;
+	    act( "$N gives 50 practices to $n.", ch, NULL, questman, TO_ROOM );
+	    act( "$N gives you 50 practices.", ch, NULL, questman, TO_CHAR );
+	    sayf( questman, "Here you are, %s. That will be 500 quest points.", ch->name );
+	    return;
+	}
+	else
+	{
+	    sayf( questman, "You don't have enough quest points for that, %s.", ch->name );
+	    return;
+	}
+    }
+    else if ( ( argument[0] == '5') && ( argument[1] == '0' ) && ( argument[2] == '0' ) && ( argument[3] == '\0' ))
+    {
+	if ( ch->questpoints >= 5000 )
+	{
+	    ch->questpoints -= 5000;
+	    log_qp( ch, 5000, QP_SPEND );
+	    ch->practice += 500;
+	    act( "$N gives 500 practices to $n.", ch, NULL, questman, TO_ROOM );
+	    act( "$N gives you 500 practices.", ch, NULL, questman, TO_CHAR );
+	    sayf( questman, "Here you are, %s. That will be 5000 quest points.", ch->name );
+	    return;
+	}
+	else
+	{
+	    sayf( questman, "You don't have enough quest points for that, %s.", ch->name );
+	    return;
+	}
+    }
+
+    /* Handle honor point purchases */
+    if ( is_number( argument ) && !str_prefix( arg3, "honor" ) )
+    {
+	int value = atoi( argument );
+	if ( value == 0 )
+	{
+	    sayf( questman, "Why are you wasting my time with this, %s?", ch->name );
+	    return;
+	}
+	if ( value < 0 )
+	{
+	    sayf( questman, "Oh, a wise guy, eh, %s?", ch->name );
+	    return;
+	}
+	if ( ch->clan == NULL )
+	{
+	    sayf( questman, "That's very nice of you, %s, but you're not in a clan or house.", ch->name );
+	    return;
+	}
+	if ( value > ch->questpoints )
+	{
+	    sayf( questman, "You don't have enough quest points for that, %s.", ch->name );
+	    return;
+	}
+
+	act( "$n buys some honor points for $s $t.", ch,
+	     ch->clan->fHouse ? "house" : "clan", NULL, TO_ROOM );
+	ch_printf( ch, "You buy %d honor points for your %s.\n\r",
+		   value, ch->clan->fHouse ? "house" : "clan" );
+	ch->questpoints -= value;
+	ch->clan->honor += value;
+	log_qp( ch, value, QP_SPEND );
+	save_clans( );
+	sayf( questman, "Here you are, %s. That will be %d quest points.", ch->name, value );
+	return;
+    }
+
+    /* Search through the questmaster's inventory for the item */
+    for ( obj_in_shop = questman->carrying; obj_in_shop; obj_in_shop = obj_in_shop->next_content )
+    {
+	if ( !IS_SET( obj_in_shop->extra_flags, ITEM_QUESTOBJ ) )
+	    continue;
+
+	if ( is_name( argument, obj_in_shop->name ) )
+	{
+	    pObj = obj_in_shop->pIndexData;
+	    qcost = obj_in_shop->qcost ? obj_in_shop->qcost : pObj->qcost;
+
+	    if ( qcost <= 0 )
+	    {
+		sayf( questman, "That item isn't for sale, %s.", ch->name );
+		return;
+	    }
+
+	    if ( ch->questpoints < qcost )
+	    {
+		sayf( questman, "You don't have enough quest points for that, %s.", ch->name );
+		return;
+	    }
+
+	    if ( ch->level < pObj->level )
+	    {
+		sayf( questman, "You're not experienced enough for that item, %s.", ch->name );
+		return;
+	    }
+
+	    /* Create a new object for the player */
+	    obj = create_object( pObj, ch->level );
+	    if ( obj == NULL )
+	    {
+		sayf( questman, "I'm sorry, %s, but I can't create that item right now.", ch->name );
+		return;
+	    }
+
+	    /* Set quest cost for selling back */
+	    sell_qcost = (qcost * 75) / 100;  /* 75% of original cost */
+	    obj->qcost = sell_qcost;
+
+	    /* Transfer quest points */
+	    ch->questpoints -= qcost;
+	    log_qp( ch, qcost, QP_SPEND );
+
+	    /* Give item to player */
+	    obj_to_char( obj, ch );
+
+	    /* Room messages */
+	    act( "$N gives $p to $n.", ch, obj, questman, TO_ROOM );
+	    act( "$N gives you $p.", ch, obj, questman, TO_CHAR );
+
+	    /* Questmaster message */
+	    sayf( questman, "Here you are, %s. That will be %d quest points.", ch->name, qcost );
+	    return;
+	}
+    }
+
+    /* Item not found */
+    sayf( questman, "I don't have that item, %s.", ch->name );
+    return;
+}
+
+/*
+ * Quest shop sell function - handles selling items back to questmasters with shops
+ */
+void do_quest_shop_sell( CHAR_DATA *ch, CHAR_DATA *questman, char *argument )
+{
+    OBJ_DATA *obj;
+    int qcost;
+
+    if ( argument[0] == '\0' )
+    {
+	sayf( questman, "What would you like to sell back to me, %s?", ch->name );
+	return;
+    }
+
+    /* Find the item in player's inventory */
+    obj = get_obj_carry( ch, argument, ch );
+    if ( obj == NULL )
+    {
+	sayf( questman, "You don't have that item, %s.", ch->name );
+	return;
+    }
+
+    /* Check if it's a quest item */
+    if ( !IS_SET( obj->extra_flags, ITEM_QUESTOBJ ) )
+    {
+	sayf( questman, "I only buy back quest items, %s.", ch->name );
+	return;
+    }
+
+    /* Get the sell back cost */
+    qcost = obj->qcost;
+    if ( qcost <= 0 )
+    {
+	sayf( questman, "I'm not interested in that item, %s.", ch->name );
+	return;
+    }
+
+    /* Transfer quest points */
+    ch->questpoints += qcost;
+    log_qp( ch, qcost, QP_GAIN );
+
+    /* Remove item from player */
+    extract_obj( obj );
+
+    /* Room messages */
+    act( "$n gives $p to $N.", ch, obj, questman, TO_ROOM );
+    act( "You give $p to $N.", ch, obj, questman, TO_CHAR );
+
+    /* Questmaster message */
+    sayf( questman, "Thank you, %s. Here are %d quest points for that.", ch->name, qcost );
+    return;
 }

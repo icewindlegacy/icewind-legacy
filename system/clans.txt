@@ -8,6 +8,7 @@ Leader Mask
 Recall 400
 Members 1
 Box 499
+Honor 10
 Pkill 1
 Induct 0
 Outcast 0

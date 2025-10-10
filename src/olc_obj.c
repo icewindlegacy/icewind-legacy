@@ -251,6 +251,8 @@ oedit( CHAR_DATA *ch, char *argument )
 
         if ( pObj->item_type == ITEM_MAP )
             pObj->value[0] = 1;
+        if ( pObj->item_type == ITEM_FISHING_ROD )
+            pObj->value[0] = 3;  /* Default fishing rod strength */
 
         return;
     }
@@ -3020,6 +3022,25 @@ set_obj_values( CHAR_DATA *ch, OBJ_INDEX_DATA *pObj,
 	    }
 	    break;
 
+	case ITEM_FISHING_ROD:
+	    switch( value_num )
+	    {
+		default:
+		    send_to_char( "Fishing rod values: v0 = maximum fish size (0-5)\n\r", ch );
+		    return FALSE;
+		case 0:
+		    value = atoi( argument );
+		    if ( value < 0 || value > 5 )
+		    {
+			send_to_char( "Fishing rod strength must be between 0 and 5.\n\r", ch );
+			return FALSE;
+		    }
+		    pObj->value[0] = value;
+		    send_to_char( "Maximum fish size set.\n\r", ch );
+		    break;
+	    }
+	    break;
+
 	case ITEM_PORTAL:
 	    switch( value_num )
 	    {
@@ -3094,6 +3115,94 @@ set_obj_values( CHAR_DATA *ch, OBJ_INDEX_DATA *pObj,
                     pObj->value[4] = value;
                     send_to_char( "Size set.\n\r", ch );
                     break;
+	    }
+	    break;
+
+	case ITEM_TUNNEL:
+	    switch( value_num )
+	    {
+		int	value;
+
+		default:
+		    do_help( ch, "ITEM_TUNNEL" );
+		    return FALSE;
+		case 0:
+		    if ( atoi(argument) != 0 )
+		    {
+			if ( get_obj_index( atoi( argument ) ) == NULL )
+			{
+			    send_to_char( "There is no such object.\n\r", ch );
+			    return FALSE;
+			}
+			send_to_char( "Tunnel destination object set.\n\r", ch );
+			pObj->value[0] = atoi( argument );
+		    }
+		    else
+		    {
+			pObj->value[0] = 0;
+			send_to_char( "Tunnel destination cleared.\n\r", ch );
+		    }
+		    break;
+		case 1:
+		    if ( ( value = flag_value( portal_flags, argument ) ) == NO_FLAG )
+		    {
+		        do_help( ch, "item_portal" );
+		        return FALSE;
+                    }
+                    TOGGLE_BIT( pObj->value[1], value );
+                    send_to_char( "Flags set.\n\r", ch );
+                    break;
+		case 2:
+		    if ( atoi(argument) != 0 )
+		    {
+			if ( get_obj_index( atoi( argument ) ) == NULL )
+			{
+			    send_to_char( "There is no such item.\n\r\n\r", ch );
+			    return FALSE;
+			}
+
+			if ( get_obj_index( atoi( argument ) )->item_type != ITEM_KEY
+			&&   get_obj_index( atoi( argument ) )->item_type != ITEM_PERMKEY )
+			{
+			    send_to_char( "That is not a key.\n\r", ch );
+			    return FALSE;
+			}
+		    }
+		    pObj->value[2] = atoi( argument );
+		    send_to_char( "Key set.\n\r", ch );
+		    break;
+		case 3:
+		    if ( !is_number( argument ) )
+		    {
+			send_to_char( "OEdit:  value3 must be a room vnum.\n\r", ch );
+			return FALSE;
+		    }
+		    value = atoi( argument );
+		    if ( get_room_index( value ) == NULL )
+		    {
+			send_to_char( "OEdit:  value3 must be a valid room vnum, or \"none\".\n\r", ch );
+			return FALSE;
+		    }
+		    send_to_char( "Room vnum set.\n\r", ch );
+		    pObj->value[3] = value;
+		    break;
+		case 4:
+		    if ( is_number( argument ) )
+		        value = atoi( argument );
+                    else
+                        value = flag_value( size_types, argument );
+                    if ( value < 0 || value >= MAX_SIZE )
+                    {
+                        send_to_char( "OEdit:  Bad value for size.\n\r", ch );
+                        return FALSE;
+                    }
+                    pObj->value[4] = value;
+                    send_to_char( "Size set.\n\r", ch );
+                    break;
+		case 5:
+		    pObj->value[5] = atoi( argument );
+		    send_to_char( "Charges set.\n\r", ch );
+		    break;
 	    }
 	    break;
 
@@ -3241,7 +3350,7 @@ show_obj_info( CHAR_DATA *ch, OBJ_INDEX_DATA *pObj, BUFFER *pBuf )
     int			pcount;
     int			weight;
     int			cost;
-	//int         qcost;
+	int         qcost;
     int			gold;
     int			silver;
     int			copper;
@@ -3257,6 +3366,8 @@ show_obj_info( CHAR_DATA *ch, OBJ_INDEX_DATA *pObj, BUFFER *pBuf )
     buf_printf( pBuf, "Vnum:         [%5d]\n\rType:         [%s]\n\r",
 	pObj->vnum,
 	item_name( pObj->item_type ) );
+    
+    
     if ( pObj->item_type == ITEM_BOOK )
     {
         cnt = 0;
@@ -3310,8 +3421,8 @@ show_obj_info( CHAR_DATA *ch, OBJ_INDEX_DATA *pObj, BUFFER *pBuf )
 	add_buf( pBuf, "0" );
     add_buf( pBuf, "]\n\r" );
 
-//    qcost  = pObj->qcost;
-  //  buf_printf( pBuf, "QP Cost:  %s`X\n\r", qcost );
+    qcost  = pObj->qcost;
+    buf_printf( pBuf, "QP Cost:  %d`X\n\r", qcost );
 
 
 
@@ -3709,7 +3820,10 @@ show_obj_values( OBJ_INDEX_DATA *pObj, BUFFER *pBuf )
  case ITEM_TOKEN:
         buf_printf( pBuf, "[v0] Quest Point Value: [%d]\n\r", pObj->value[0]);
         break;
-    
+
+	case ITEM_FISHING_ROD:
+	    buf_printf( pBuf, "[v0] Maximum fish size: [%d]\n\r", pObj->value[0] );
+	    break;
 
 	case ITEM_BOAT:
 	case ITEM_CLOTHING:
@@ -3724,6 +3838,16 @@ show_obj_values( OBJ_INDEX_DATA *pObj, BUFFER *pBuf )
 	case ITEM_TRASH:
 	case ITEM_TREASURE:
 	case ITEM_WARP_STONE:
+	    break;
+
+	case ITEM_TUNNEL:
+	    buf_printf( pBuf, "[v0] Destination: [%d]\n\r", pObj->value[0] );
+	    buf_printf( pBuf, "[v1] Flags:        [%s]\n\r", 
+			flag_string( portal_flags, pObj->value[1] ) );
+	    buf_printf( pBuf, "[v2] Key:          [%d]\n\r", pObj->value[2] );
+	    buf_printf( pBuf, "[v3] Room vnum:    [%d]\n\r", pObj->value[3] );
+	    buf_printf( pBuf, "[v4] Size limit:   [%d]\n\r", pObj->value[4] );
+	    buf_printf( pBuf, "[v5] Charges:      [%d]\n\r", pObj->value[5] );
 	    break;
     }
 

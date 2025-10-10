@@ -1,0 +1,69 @@
+#AREADATA
+Version     9
+Name        towers~
+Credits     ~
+Builders    None~
+Kingdom     'Outlying'
+Continent   None
+World       'All'
+VNUMs       1401 1499
+Levels      0 0
+Security    0
+Recall      900
+Flags       B
+Color       7
+ExitSize    medium
+Created     1759966020
+Changed     1759966731 Wed Oct  8 19:38:51 2025
+End
+
+#MOBILES
+#0
+
+#OBJECTS
+#1401
+portable wizard tower~
+a portable wizard tower~
+A massive tower stretched up from the ground~
+~
+tunnel 0 B A
+1402 0 0 0 6 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#1402
+wooden door~
+wooden door~
+A thick wooden door~
+~
+tunnel AG B 0
+1401 0 0 0 6 0
+0 0 0 0 P
+0 0 0 0
+0 0 0 0 0
+#0
+
+#ROOMS
+#1401
+inside the tower~
+~
+~
+~
+~
+~
+~
+0 Ca 0 0
+S
+#0
+
+#RESETS
+O 0 1402 -1 1401
+S
+
+#SHOPS
+0
+
+#SPECIALS
+S
+
+#$

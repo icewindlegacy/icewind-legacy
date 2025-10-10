@@ -1006,12 +1006,13 @@ extern const int spell_slots[MAX_CHAR_LEVEL + 1][MAX_SPELL_LEVEL + 1];
  */
 
 #define MAX_GUILD 	2
-#define MAX_STATS 	5
+#define MAX_STATS 	6
 #define STAT_STR 	0
 #define STAT_INT	1
 #define STAT_WIS	2
 #define STAT_DEX	3
 #define STAT_CON	4
+#define STAT_CHA	5
 
 #define BASE_NONE	0
 #define BASE_CLERIC	1
@@ -1346,6 +1347,12 @@ struct	kill_data
 #define dd			536870912
 #define ee			1073741824
 #define ff			2147483648
+#define gg			4294967296
+#define hh			8589934592
+#define ii			17179869184
+#define jj			34359738368
+#define kk			68719476736
+#define ll			137438953472
 
 #define BV00			( 1 << 00 )
 #define BV01			( 1 << 01 )
@@ -1663,6 +1670,11 @@ struct	kill_data
 #define AFF_BLACK_MANTLE        42
 #define AFF_KNOCKOUT        43
 #define AFF_RAGE            44
+#define AFF_OBSCURING_MIST  45
+#define AFF_PASS_WITHOUT_TRACE 46
+#define AFF_ENDURE_ELEMENTS    47
+#define AFF_WATER_BREATHING    48
+#define AFF_WATER_WALKING      49
 /*
  * Bits for 'shielded_by'.
  * Used in #MOBILES
@@ -1804,6 +1816,8 @@ struct	kill_data
 #define OBJ_VNUM_SCHOOL_SPEAR	   903
 #define OBJ_VNUM_SCHOOL_STAFF	   904
 #define OBJ_VNUM_SCHOOL_AXE	       905
+#define OBJ_VNUM_RWEAP		       60
+#define OBJ_VNUM_RARM		       61
 #define OBJ_VNUM_SCHOOL_FLAIL	   906
 #define OBJ_VNUM_SCHOOL_WHIP	   907
 #define OBJ_VNUM_SCHOOL_POLEARM    908
@@ -1818,6 +1832,7 @@ struct	kill_data
 #define OBJ_VNUM_MAP		       916
 #define OBJ_VNUM_SCHOOL_FLINT	   616
 #define OBJ_VNUM_SCHOOL_FAGGOT	   617
+#define OBJ_VNUM_SCHOOL_FIRESTEEL	   618
 
 /* Skinning and butchering */
 #define OBJ_VNUM_STEAK 50
@@ -1830,7 +1845,6 @@ struct	kill_data
 #define OBJ_VNUM_BLANKET 59
 /* Doonation pit */
 #define OBJ_VNUM_PIT 944
-
 
 
 
@@ -1886,6 +1900,7 @@ struct	kill_data
 #define ITEM_FLINT           51
 #define ITEM_FIRESTEEL       52
 #define ITEM_FIREWOOD        53
+#define ITEM_TUNNEL          54
 
 
 /*
@@ -1999,6 +2014,12 @@ struct	kill_data
 #define ITEM_NOLIST		(dd)
 #define ITEM_NOIDENTIFY		(ee)
 #define ITEM_LODGED		(ff)
+#define ITEM_FLAMING		(gg)
+#define ITEM_FROST		(hh)
+#define ITEM_SHOCKING		(ii)
+#define ITEM_PESTILENCE		(jj)
+#define ITEM_POWERLEECH		(kk)
+#define ITEM_POISONED		(ll)
 //#define ITEM_QUESTOBJ       (hh)
 
 /*
@@ -2006,6 +2027,7 @@ struct	kill_data
  * Used in #OBJECTS
  */
 #define ITEM2_NONE	(A)
+#define ITEM2_ATTUNE	(B)
 /*
  * Wear flags.
  * Used in #OBJECTS.
@@ -2084,6 +2106,7 @@ struct	kill_data
 #define WEAPON_GRIPPED		(K)
 #define WEAPON_PESTILENCE	(L)
 #define WEAPON_POWERLEECH	(M)
+#define WEAPON_POISONED		(N)
 
 /* gate flags */
 #define GATE_NORMAL_EXIT	(A)
@@ -2144,31 +2167,32 @@ struct	kill_data
 #define APPLY_INT		      3
 #define APPLY_WIS		      4
 #define APPLY_CON		      5
-#define APPLY_SEX		      6
-#define APPLY_CLASS		      7
-#define APPLY_LEVEL		      8
-#define APPLY_AGE		      9
-#define APPLY_HEIGHT		     10
-#define APPLY_WEIGHT		     11
-#define APPLY_MANA		     12
-#define APPLY_HIT		     13
-#define APPLY_MOVE		     14
-#define APPLY_WEALTH		     15
-#define APPLY_EXP		     16
-#define APPLY_AC		     17
-#define APPLY_HITROLL		     18
-#define APPLY_DAMROLL		     19
-#define APPLY_SAVES		     20
-#define APPLY_SAVING_PARA	     20
-#define APPLY_SAVING_ROD	     21
-#define APPLY_SAVING_PETRI	     22
-#define APPLY_SAVING_BREATH	     23
-#define APPLY_SAVING_SPELL	     24
-#define APPLY_SPELL_AFFECT	     25
-#define APPLY_SPELL_LEVEL	     26
-#define APPLY_SIZE		     27
-#define APPLY_REGENERATION	     28
-#define APPLY_ALL_STATS     29  /* or whatever number comes next in sequence */
+#define APPLY_CHA		      6
+#define APPLY_SEX		      7
+#define APPLY_CLASS		      8
+#define APPLY_LEVEL		      9
+#define APPLY_AGE		     10
+#define APPLY_HEIGHT		     11
+#define APPLY_WEIGHT		     12
+#define APPLY_MANA		     13
+#define APPLY_HIT		     14
+#define APPLY_MOVE		     15
+#define APPLY_WEALTH		     16
+#define APPLY_EXP		     17
+#define APPLY_AC		     18
+#define APPLY_HITROLL		     19
+#define APPLY_DAMROLL		     20
+#define APPLY_SAVES		     21
+#define APPLY_SAVING_PARA	     21
+#define APPLY_SAVING_ROD	     22
+#define APPLY_SAVING_PETRI	     23
+#define APPLY_SAVING_BREATH	     24
+#define APPLY_SAVING_SPELL	     25
+#define APPLY_SPELL_AFFECT	     26
+#define APPLY_SPELL_LEVEL	     27
+#define APPLY_SIZE		     28
+#define APPLY_REGENERATION	     29
+#define APPLY_ALL_STATS     30  /* or whatever number comes next in sequence */
 
 /*
  * Values for containers and sheaths (value[1]).
@@ -2240,6 +2264,7 @@ struct	kill_data
 #define ROOM_AFF_NONE		 0
 #define ROOM_AFF_BLIND		(B)
 #define ROOM_AFF_CURSE		(C)
+#define ROOM_AFF_FOG		(I)
 #define ROOM_AFF_PLAGUE		(D)
 #define ROOM_AFF_POISON		(E)
 #define ROOM_AFF_SLEEP		(F)
@@ -2478,8 +2503,8 @@ struct	kill_data
 #define COND_THIRST		      2
 #define COND_HUNGER		      3
 #define COND_TIRED		      4
-#define COND_RFU5		      5
-#define COND_RFU6		      6
+#define COND_WET		      5
+#define COND_FREEZING		      6
 #define COND_RFU7		      7
 
 #define MAX_COND		     48	/* max for hunger, thirst etc */
@@ -2534,14 +2559,12 @@ struct	kill_data
 #define PLR_NOEXP               (ee)
 #define PLR_MENDED      (B)
 #define PLR_HUNTING             (I)
-#define PLR_WET                 (ff)
 /*
  * ACT2 bits for players
  */
 #define CODER			(A)
 #define HBUILDER		(B)
 #define PLR_FMETER		(C)
-#define PLR_FREEZING		(S)
 #define PLR_SEE_COL_CODE	(D)
 #define PLR_PEEK		(E)
 #define PLR_AUTOCHANNEL		(F)
@@ -2874,6 +2897,7 @@ struct	char_data
     sh_int		primary_class;		/* Primary class index */
     sh_int		secondary_class;	/* Secondary class index (-1 if none) */
     sh_int		tertiary_class;		/* Tertiary class index (-1 if none) */
+    sh_int		leveling_class;		/* Class being leveled up (-1 if none) */
     sh_int		trust;
     int			played;
     int			lines;  /* for the pager */
@@ -3187,6 +3211,7 @@ struct	obj_data
     EVENT_DATA *	event_first;
     EVENT_DATA *	event_last;
     char *	        owner;
+    char *		attuned_to;
     char *		name;
     char *		short_descr;
     char *		description;
@@ -3850,6 +3875,7 @@ extern	int	gsn_horseflail;
 extern	int	gsn_horsemace;
 extern	int	gsn_invis;
 extern	int	gsn_kick;
+extern	int	gsn_knock;
 extern	int	gsn_lance;
 extern	int	gsn_longsword;
 extern	int	gsn_lore;
@@ -3899,6 +3925,9 @@ extern   int   gsn_sharpen;
 extern   int   gsn_butcher;
 extern   int   gsn_skin;
 extern   int   gsn_whirlwind;
+extern   int   gsn_endure_elements;
+extern   int   gsn_water_breathing;
+extern   int   gsn_water_walking;
 extern   int   gsn_blackjack;
 extern int     gsn_acid_breath;
 extern int     gsn_fire_breath;
@@ -4127,6 +4156,8 @@ void	ext_toggle_bits		args( ( EXT_BV *var, EXT_BV *bits) );
 					(ch)->money.copper   * 8 + \
 					(ch)->money.fract )
 #define IS_DRUNK(ch)	((ch)->pcdata->condition[COND_DRUNK] > 10 )
+#define IS_WET(ch)	((ch)->pcdata->condition[COND_WET] > 0 )
+#define IS_FREEZING(ch)	((ch)->pcdata->condition[COND_FREEZING] > 0 )
 
 /* Returns the mob a player is mounted on. */
 #define MOUNTED(ch)	((!IS_NPC(ch) && ch->mount && ch->riding )?ch->mount:NULL)
@@ -4326,6 +4357,7 @@ extern	const	struct	class_type	class_table	[MAX_CLASS];
 extern	const		char		colorcode_list	[];
 int	get_base_exp_for_level	args( ( int level ) );
 extern	const	struct	con_app_type	con_app		[26];
+extern	const	int	stat_mod	[26];
 extern		char *	const		day_name	[];
 extern	const	struct	dex_app_type	dex_app		[26];
 extern		char *	const		dir_letter	[];
@@ -4889,6 +4921,8 @@ void	insert_dream	args( ( DREAM_DATA *pDream ) );
 void    save_donation_pits args ((void));
 void    save_tokens args ((void));
 void    load_tokens args ((void));
+void    save_attune args ((void));
+void    load_attune args ((void));
 /* effect.c */
 void	acid_effect	args( (void *vo, int level, int dam, int target) );
 void	cold_effect	args( (void *vo, int level, int dam, int target) );
@@ -4928,6 +4962,8 @@ bool 	is_safe		args( (CHAR_DATA *ch, CHAR_DATA *victim ) );
 bool 	is_safe_spell	args( (CHAR_DATA *ch, CHAR_DATA *victim, bool area ) );
 void	violence_update	args( ( void ) );
 void	multi_hit	args( ( CHAR_DATA *ch, CHAR_DATA *victim, int dt ) );
+void	check_talking_weapon args( ( CHAR_DATA *ch, OBJ_DATA *weapon ) );
+void	check_talking_weapon_out_of_combat args( ( CHAR_DATA *ch, OBJ_DATA *weapon ) );
 bool	damage		args( ( CHAR_DATA *ch, CHAR_DATA *victim, int dam,
 			        int dt, int class, bool show ) );
 bool    damage_old      args( ( CHAR_DATA *ch, CHAR_DATA *victim, int dam,
@@ -5110,6 +5146,7 @@ char *	weapon_bit_name	args( ( bitvector weapon_flags ) );
 char * 	wear_bit_name	args( ( bitvector wear_flags ) );
 bool    can_pack        args( ( CHAR_DATA *ch ) );
 int     god_lookup      args( ( const char *name) );
+bool auto_quaff               args( ( CHAR_DATA *ch, OBJ_DATA *obj ) );
 /* interp.c */
 char *	get_money_string args( ( char *argument, char *buffer ) );
 void	interpret	args( ( CHAR_DATA *ch, char *argument ) );
@@ -5126,6 +5163,13 @@ int	skill_lookup	args( ( const char *name ) );
 bool	saves_spell	args( ( int level, CHAR_DATA *victim, int dam_type ) );
 void	obj_cast_spell	args( ( int sn, int level, CHAR_DATA *ch,
 				    CHAR_DATA *victim, OBJ_DATA *obj ) );
+void	spell_knock	args( ( int sn, int level, CHAR_DATA *ch, void *vo, int target ) );
+
+/* item_generator.c */
+OBJ_DATA *new_gen_armor	args( ( OBJ_DATA *obj, int level ) );
+OBJ_DATA *new_gen_weapon	args( ( OBJ_DATA *obj, int level ) );
+OBJ_DATA *new_gen_gold	args( ( OBJ_DATA *obj, int level ) );
+
 /* multi.c */
 bool	can_use_skpell	args( ( CHAR_DATA *ch, int sn ) );
 bool	is_class	args( ( CHAR_DATA *ch, int classnum ) );
@@ -5163,6 +5207,15 @@ void	do_hname	args( ( CHAR_DATA *ch, char *argument ) );
 void	do_hdesc	args( ( CHAR_DATA *ch, char *argument ) );
 void	do_home		args( ( CHAR_DATA *ch, char *argument ) );
 void	do_invite	args( ( CHAR_DATA *ch, char *argument ) );
+
+/* New D&D-style combat system functions */
+void	new_one_hit		args( ( CHAR_DATA *ch, CHAR_DATA *victim, int dt, bool secondary ) );
+int		get_bab			args( ( CHAR_DATA *ch ) );
+int		get_attack_count	args( ( CHAR_DATA *ch ) );
+int		get_attack_bab	args( ( CHAR_DATA *ch, int attack_num ) );
+int		get_new_ac		args( ( CHAR_DATA *ch ) );
+void	init_new_combat_system args( ( void ) );
+void	do_test_new_combat	args( ( CHAR_DATA *ch, char *argument ) );
 void	do_house_join	args( ( CHAR_DATA *ch, char *argument ) );
 void	do_boot		args( ( CHAR_DATA *ch, char *argument ) );
 void	do_draw		args( ( CHAR_DATA *ch, char *argument ) );
@@ -5472,6 +5525,9 @@ void	update_handler	args( ( void ) );
 #undef	SF
 #undef	RID
 #undef	OD
+void	roll_stats	args( ( CHAR_DATA *ch ) );
+void	show_stats	args( ( DESCRIPTOR_DATA *d, CHAR_DATA *ch ) );
+
 #undef	OID
 #undef	MID
 #undef	HD

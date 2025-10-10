@@ -344,7 +344,7 @@ struct	race_type	race_table	[]		=
 */
     { "unique",	"uniq",	FALSE, 0, {{0}}, {{0}}, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
        0, 0, 0, { },
-       { "" }, { 13, 13, 13, 13, 13 }, { 18, 18, 18, 18, 18 },
+       { "" }, { 13, 13, 13, 13, 13, 13 }, { 18, 18, 18, 18, 18, 18 },
        { FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE }
     },
 
@@ -356,7 +356,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_SMALL,	&race_badger,
 	800, 2400,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -368,7 +368,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_TINY,	&race_bat,
 	5, 120,		0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -380,7 +380,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_LARGE,	&race_bear,
 	80000, 2400000,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
    { 
@@ -391,7 +391,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_SMALL,	&race_insect,
 	1, 160,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
     {
@@ -402,7 +402,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_SMALL,	&race_cat,
 	800, 3200,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -414,7 +414,7 @@ struct	race_type	race_table	[]		=
  	1000,	-1000, 1000,	-1000,	SIZE_TINY,	&race_centaur,
 	1, 10,		0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -426,7 +426,7 @@ struct	race_type	race_table	[]		=
  	1000,	-1000, 1000,	-1000,	SIZE_TINY,	&race_centipede,
 	1, 10,		0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -438,7 +438,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_MEDIUM,	&race_chimera,
 	16000, 40000,	0,	{ },
    	{ "" },
- 	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+ 	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -450,7 +450,7 @@ struct	race_type	race_table	[]		=
 	-350,	-1000,-350,	-1000,	SIZE_MEDIUM,	&race_demon,
 	16000, 40000,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -462,7 +462,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_SMALL,	&race_dog,
 	800, 8000,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -476,7 +476,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_SMALL,	&race_doll,
 	800, 8000,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -488,7 +488,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000,-350,	-1000,	SIZE_MEDIUM,	&race_dragonborn,
 	16000, 40000,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 11, 15, 13, 13, 13 },	{ 23, 21, 25, 23, 23, 23 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -500,7 +500,7 @@ struct	race_type	race_table	[]		=
 	-350,	-1000,-350,	-1000,	SIZE_MEDIUM,	&race_drow,
 	16000, 24000,	5,	{ }, 
 	{ "sneak", "hide" },
-	{ 12, 14, 13, 15, 11 },	{ 16, 20, 18, 21, 15 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 23, 25, 21, 25, 23, 25 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -512,7 +512,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_MEDIUM,	&race_dwarf,
 	16000, 32000,	8,	{ },
 	{ "berserk" },
-	{ 14, 12, 14, 10, 15 },	{ 20, 16, 19, 14, 21 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 23, 23, 25, 23, 23, 21 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -524,7 +524,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_MEDIUM,	&race_elf,
 	16000, 24000,	5,	{ }, 
 	{ "sneak", "hide" },
-	{ 12, 14, 13, 15, 11 },	{ 16, 20, 18, 21, 15 },
+	{ 13, 15, 11, 13, 13, 13 },	{ 23, 25, 21, 23, 23, 23 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -536,7 +536,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_MEDIUM,	&race_felis,
 	800, 8000,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, FALSE, TRUE, TRUE, TRUE }
     },		
 
@@ -548,7 +548,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_SMALL,	&race_fido,
 	800, 8000,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },		
 
@@ -560,7 +560,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_SMALL,	&race_fish,
 	800, 8000,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },		
 
@@ -572,7 +572,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_SMALL,	&race_fox,
 	800, 2400,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -584,7 +584,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_HUGE,	&race_giant,
 	48000, 160000,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -596,7 +596,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_MEDIUM,	&race_gnome,
 	16000, 24000,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 11, 13, 15, 13, 13, 13 },	{ 21, 23, 25, 23, 23, 23 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -608,7 +608,7 @@ struct	race_type	race_table	[]		=
 	349,	-1000,349,	-1000,	SIZE_MEDIUM,	&race_goblin,
 	16000, 24000,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, TRUE }
     },
 
@@ -620,7 +620,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_MEDIUM,	&race_halfelf,
 	16000, 32000,	5,	{ }, 
 	{ "sneak", "hide" },
-	{ 12, 14, 13, 15, 11 },	{ 16, 20, 18, 21, 15 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 23, 23, 23, 23, 23, 23 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -632,7 +632,7 @@ struct	race_type	race_table	[]		=
 	1000,	-349, 1000, -349,	SIZE_MEDIUM,	&race_halfling,
 	4000, 12000,	8,	{ },
 	{ "berserk" },
-	{ 14, 12, 14, 10, 15 },	{ 20, 16, 19, 14, 21 },
+	{ 11, 15, 13, 13, 13, 13 },	{ 21, 25, 23, 23, 23, 23 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -644,7 +644,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_MEDIUM,	&race_halfelf,
 	16000, 32000,	5,	{ }, 
 	{ "sneak", "hide" },
-	{ 12, 14, 13, 15, 11 },	{ 16, 20, 18, 21, 15 },
+	{ 15, 13, 13, 11, 13, 11 },	{ 25, 23, 23, 21, 23, 21 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -668,7 +668,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_MEDIUM,	&race_hobgoblin,
 	16000, 24000,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -680,7 +680,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_LARGE,	&race_horse,
 	160000, 320000,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -692,7 +692,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_MEDIUM,	&race_human,
 	16000, 40000,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 23, 23, 23, 23, 23, 23 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -704,7 +704,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_TINY,	&race_insect,
 	1, 160,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -716,7 +716,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_MEDIUM,	&race_kobold,
 	8000, 12000,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -728,7 +728,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_SMALL,	&race_lizard,
 	80, 1600,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -740,7 +740,7 @@ struct	race_type	race_table	[]		=
         349,	-1000,349,	-1000,	SIZE_LARGE,	&race_minotaur,
 	48000, 160000,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, FALSE, TRUE, TRUE, FALSE, TRUE, TRUE }
     },
     {
@@ -751,7 +751,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_MEDIUM,	&race_monkey,
 	8000, 12000,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -763,7 +763,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_HUGE,	&race_ogre,
 	80000, 160000,	6,	{ },
 	{ "bash", "fast healing" },
-	{ 16, 11, 13, 11, 14 },	{ 22, 15, 18, 15, 20 },
+	{ 16, 11, 13, 11, 14, 13 },	{ 22, 15, 18, 15, 20, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -775,7 +775,7 @@ struct	race_type	race_table	[]		=
 	-350,	-1000,-350,	-1000,	SIZE_MEDIUM,	&race_orc,
 	16000, 24000,	0,	{ },
 	{""},
-	{ 13, 13, 13, 13, 13 }, { 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 }, { 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -787,7 +787,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_TINY,	&race_owl,
 	5, 120,		0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -799,7 +799,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_SMALL,	&race_pig,
 	4000, 16000,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 }
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 }
     },	
 
     { 
@@ -810,7 +810,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_MEDIUM,	&race_pixie,
 	800, 1600,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -822,7 +822,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_SMALL,	&race_rabbit,
 	800, 1600,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -834,7 +834,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_MEDIUM,	&race_satyr,
 	16000, 40000,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -846,7 +846,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_MEDIUM,	&race_school_monster,
 	1600, 8000,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 }
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 }
     },	
 
     { 
@@ -857,7 +857,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_MEDIUM,	&race_shadow,
 	16000, 40000,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, TRUE }
     },
 
@@ -869,7 +869,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_SMALL,	&race_snake,
 	160, 1600,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -881,7 +881,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_TINY,	&race_songbird,
 	40, 320,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -893,7 +893,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_TINY,	&race_spider,
 	1, 160,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
     { 
@@ -904,7 +904,7 @@ struct	race_type	race_table	[]		=
 	1000,	-349, 1000, -349,	SIZE_MEDIUM,	&race_sprite,
 	3200, 8000,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -916,7 +916,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000,-350,	-1000,	SIZE_MEDIUM,	&race_tiefling,
 	16000, 40000,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 15, 13, 15, 13, 11 },	{ 23, 25, 23, 25, 23, 21 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -928,7 +928,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_HUGE,	&race_titan,
 	48000, 160000,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -940,7 +940,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_LARGE,		&race_troll,
 	40000, 80000,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, FALSE, TRUE, TRUE, TRUE }
     },
 
@@ -952,7 +952,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_MEDIUM,	&race_undead,
 	16000, 32000,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -964,7 +964,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_SMALL,	&race_waterfowl,
 	320, 800,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -976,7 +976,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_SMALL,	&race_wolf,
 	4000, 12000,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -988,7 +988,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	SIZE_HUGE,		&race_wyvern,
 	80000, 320000,	0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
       
@@ -1000,7 +1000,7 @@ struct	race_type	race_table	[]		=
         1000,   -1000, 1000, -1000, SIZE_MEDIUM,    &race_zombie,
         16000, 32000,   0,      { },
         { "" },
-        { 13, 13, 13, 13, 13 }, { 18, 18, 18, 18, 18 },
+        { 13, 13, 13, 13, 13, 13 }, { 18, 18, 18, 18, 18, 18 },
         { FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -1012,7 +1012,7 @@ struct	race_type	race_table	[]		=
 	1000,	-1000, 1000,	-1000,	0,		NULL,
 	0, 0,		0,	{ },
 	{ "" },
-	{ 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18 },
+	{ 13, 13, 13, 13, 13, 13 },	{ 18, 18, 18, 18, 18, 18 },
 	{ FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE }
     },
 
@@ -1038,70 +1038,70 @@ const	struct	class_type	class_table	[MAX_CLASS]	=
 */  
     {
         "barbarian",     "Brb",  "barbarians",    STAT_STR,  OBJ_VNUM_SCHOOL_SWORD,
-        { 0, 0 },  75,  100, 10,  7,  10, CLASS_NOFLAGS,
+        { 0, 0 },  75,  100, 10,  1,  12, CLASS_NOFLAGS,
         "barbarian basics", "barbarian default", &class_barbarian,
         TIER_TWO,       1000, -1000, 1000, -1000,   BASE_FIGHTER
     },
     
     {
         "bard",	"Brd",	"bards",	STAT_WIS, OBJ_VNUM_SCHOOL_MACE,
-        { 0, 0 },  75,  100, 10,  5,  11, CLASS_FMANA,
+        { 0, 0 },  75,  100, 10,  1,  8, CLASS_FMANA,
         "bard basics", "bard default", &class_bard,
         TIER_TWO,	1000,	-1000, 1000,	-1000,	BASE_ROGUE
     },
     
     {
         "cleric",	"Clr",	"clerics",	STAT_WIS, OBJ_VNUM_SCHOOL_MACE,
-        { 0, 0 },  75,  100, 10,  5,  11, CLASS_FMANA,
+        { 0, 0 },  75,  100, 10,  1,  8, CLASS_FMANA,
         "cleric basics", "cleric default", &class_cleric,
         TIER_TWO,	1000,	-1000, 1000,	-1000,	BASE_CLERIC
     },
 
     {
 	    "druid",        "Drd",  "druids", STAT_CON,  OBJ_VNUM_SCHOOL_SWORD,
-	    { 0, 0 },  75,  100,  -50,  12, 16, CLASS_NOFLAGS,
+	    { 0, 0 },  75,  100,  -50,  1,  8, CLASS_NOFLAGS,
 	    "druid basics", "druid default",	&class_druid,
 	    TIER_ONE,	1000,	-1000, 350, -350,	BASE_FIGHTER
     },
    
     {
         "fighter",     "Ftr",  "fighters",    STAT_STR,  OBJ_VNUM_SCHOOL_SWORD,
-        { 0, 0 },  75,  100, 10,  7,  10, CLASS_NOFLAGS,
+        { 0, 0 },  75,  100, 10,  1,  10, CLASS_NOFLAGS,
         "fighter basics", "fighter default", &class_fighter,
         TIER_TWO,       1000, -1000, 1000, -1000,   BASE_FIGHTER
     },
 
     {
 	    "mage",		"Mag",  "mages",	STAT_INT,  OBJ_VNUM_SCHOOL_DAGGER,
-	    { 0, 0 },  75,  100, 30,  4,  7, CLASS_FMANA,
+	    { 0, 0 },  75,  100, 30,  1,  6, CLASS_FMANA,
 	    "mage basics", "mage default",	&class_mage,
 	    TIER_ONE,	1000,	-1000, 1000,	-1000,	BASE_MAGE
     },
 
     {
         "monk",     "Mnk",  "monks",    STAT_STR,  OBJ_VNUM_SCHOOL_SWORD,
-        { 0, 0 },  75,  100, 10,  7,  10, CLASS_NOFLAGS,
+        { 0, 0 },  75,  100, 10,  1,  10, CLASS_NOFLAGS,
         "monk basics", "monk default", &class_monk,
         TIER_TWO,       1000, -1000,  350, -350,  BASE_FIGHTER
     },
 
     {
         "paladin",	"Pal",	"paladins",	STAT_WIS, OBJ_VNUM_SCHOOL_MACE,
-        { 0, 0 },  75,  100, 10,  5,  11, CLASS_FMANA,
+        { 0, 0 },  75,  100, 10,  1,  10, CLASS_FMANA,
         "paladin basics", "paladin default", &class_paladin,
         TIER_TWO,	1000,	350, 1000,	350,	BASE_CLERIC
     },
 
     {
         "ranger",     "Rng",  "rangers",    STAT_STR,  OBJ_VNUM_SCHOOL_SWORD,
-        { 0, 0 },  75,  100, 10,  7,  10, CLASS_NOFLAGS,
+        { 0, 0 },  75,  100, 10,  1,  10, CLASS_NOFLAGS,
         "ranger basics", "ranger default", &class_ranger,
         TIER_TWO,       1000, -1000,  1000, -1000,  BASE_FIGHTER
     },
     
     {
 	    "rogue",         "Rog",  "rogues",	STAT_DEX,  OBJ_VNUM_SCHOOL_DAGGER,
-	    { 0, 0 },  75,  100,  -20,  6, 11, CLASS_NOFLAGS,
+	    { 0, 0 },  75,  100,  -20,  1,  8, CLASS_NOFLAGS,
 	    "rogue basics", "rogue default",	&class_rogue,
 	    TIER_ONE,	1000,	-1000,1000,	-1000,	BASE_ROGUE
     },
@@ -2130,6 +2130,41 @@ const	struct	con_app_type	con_app		[26]		=
     {  6, 99 },
     {  7, 99 },
     {  8, 99 }    /* 25 */
+};
+
+
+/*
+ * Stat modifier table - used for HP calculation and other stat-based bonuses
+ * Index represents stat value (1-25), value represents modifier
+ */
+const int stat_mod[26] =
+{
+    -999,  /*  0 - invalid */
+    -4,    /*  1 */
+    -4,    /*  2 */
+    -3,    /*  3 */
+    -3,    /*  4 */
+    -2,    /*  5 */
+    -2,    /*  6 */
+    -1,    /*  7 */
+    -1,    /*  8 */
+    0,     /*  9 */
+    0,     /* 10 */
+    0,     /* 11 */
+    1,     /* 12 */
+    1,     /* 13 */
+    2,     /* 14 */
+    2,     /* 15 */
+    3,     /* 16 */
+    3,     /* 17 */
+    4,     /* 18 */
+    4,     /* 19 */
+    5,     /* 20 */
+    5,     /* 21 */
+    6,     /* 22 */
+    6,     /* 23 */
+    7,     /* 24 */
+    7      /* 25 */
 };
 
 

@@ -115,6 +115,50 @@ struct structdrunk drunk[] =
 };
 
 /*
+ * Chattering teeth struct for freezing speech
+ */
+struct structchatter
+{
+    int		min_freezing_level;
+    int		number_of_reps;
+    char *	replacement[11];
+};
+
+struct structchatter chatter[] =
+{
+    { 2, 8,
+        { "a", "a", "a", "A", "ah", "Ah", "ahh", "ahhh" }
+    },
+    { 4, 4, { "b", "b", "B", "B" } },
+    { 3, 6, { "c", "c", "C", "ch", "chh", "chhh" } },
+    { 4, 3, { "d", "d", "D" } },
+    { 2, 4, { "e", "e", "eh", "E" } },
+    { 5, 4, { "f", "f", "ff", "F" } },
+    { 6, 3, { "g", "g", "G" } },
+    { 4, 5, { "h", "h", "hh", "Hh", "H" } },
+    { 3, 4, { "i", "i", "ii", "I" } },
+    { 7, 3, { "j", "j", "J" } },
+    { 5, 3, { "k", "k", "K" } },
+    { 3, 3, { "l", "l", "L" } },
+    { 4, 5, { "m", "m", "mm", "Mm", "M" } },
+    { 3, 4, { "n", "n", "nn", "N" } },
+    { 2, 4, { "o", "o", "oo", "O" } },
+    { 4, 3, { "p", "p", "P" } },
+    { 6, 3, { "q", "q", "Q" } },
+    { 3, 4, { "r", "r", "rr", "R" } },
+    { 2, 6, { "s", "ss", "sss", "Sss", "sS", "S" } },
+    { 4, 4, { "t", "t", "tt", "T" } },
+    { 2, 4, { "u", "u", "uh", "U" } },
+    { 5, 3, { "v", "v", "V" } },
+    { 4, 3, { "w", "w", "W" } },
+    { 6, 3, { "x", "x", "X" } },
+    { 3, 3, { "y", "y", "Y" } },
+    { 2, 5,
+        { "z", "z", "zz", "Zz", "Z" }
+    }     
+};
+
+/*
  * Logoff quote tables, if you add  more than 15 make sure to increment
   * MAX_QUOTE in merc.h
   */
@@ -545,6 +589,61 @@ makedrunk( CHAR_DATA *ch, char *string )
             buf[pos++] = number_range( '0', '9' );
         }
         else if ( is_colcode( string ) && number_percent( ) < drunklevel * 2 )
+        {
+            randomnum = number_range( 1, 15 );
+            buf[pos++] = *string++;
+            buf[pos++] = colorcode_list[randomnum];
+        }
+        else
+        {
+            buf[pos++] = *string;
+        }
+
+        if ( pos >= MAX_INPUT_LENGTH - 10 )
+            break;
+        string++;
+    }
+
+    buf[pos] = '\0';
+    return buf;
+}
+
+
+static char *
+makechatter( CHAR_DATA *ch, char *string )
+{
+    int		freezinglevel;
+    static char	buf[MAX_INPUT_LENGTH];
+    int		pos;
+    int		randomnum;
+    char	temp;
+
+    freezinglevel = IS_NPC( ch ) ? 0 : (ch->pcdata ? ch->pcdata->condition[COND_FREEZING] : 0);
+    if ( freezinglevel <= 0 )
+        return string;
+
+    pos = 0;
+    while ( *string != '\0' )
+    {
+        temp = toupper( *string );
+        if ( temp >= 'A' && temp <= 'Z' )
+        {
+            if ( freezinglevel > chatter[temp - 'A'].min_freezing_level )
+            {
+                randomnum = number_range( 0, chatter[temp - 'A'].number_of_reps - 1 );
+                strcpy( &buf[pos], chatter[temp - 'A'].replacement[randomnum] );
+                pos += strlen( chatter[temp - 'A'].replacement[randomnum] );
+            }
+            else
+            {
+                buf[pos++] = *string;
+            }
+        }
+        else if ( temp >= '0' && temp <= '9' && number_percent( ) < freezinglevel * 3 )
+        {
+            buf[pos++] = number_range( '0', '9' );
+        }
+        else if ( is_colcode( string ) && number_percent( ) < freezinglevel * 3 )
         {
             randomnum = number_range( 1, 15 );
             buf[pos++] = *string++;
@@ -1272,7 +1371,7 @@ do_say( CHAR_DATA *ch, char *argument )
 	return;
     }
 
-    p = stpcpy( buf, makedrunk( ch, argument ) ) - 1;
+    p = stpcpy( buf, makechatter( ch, makedrunk( ch, argument ) ) ) - 1;
     if ( *p == '!' )
         verb = "exclaim";
     else if ( *p == '?' )
@@ -1352,7 +1451,7 @@ do_sayto( CHAR_DATA *ch, char *argument )
 
     pRoom = ch->in_room;
 
-    p = stpcpy( buf, makedrunk( ch, argument ) );
+    p = stpcpy( buf, makechatter( ch, makedrunk( ch, argument ) ) );
     punct = *(p - 1);
 
     if ( !IS_SET( ch->act2, PLR_NOPUNCT ) )
@@ -1736,7 +1835,7 @@ do_whisper( CHAR_DATA *ch, char *argument )
 	return;
     }
 
-    p = stpcpy( text, makedrunk( ch, argument ) ) - 1;
+    p = stpcpy( text, makechatter( ch, makedrunk( ch, argument ) ) ) - 1;
     if ( !ispunct( *p ) )
         strcpy( p + 1, "." );
     p = text;

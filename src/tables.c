@@ -226,7 +226,9 @@ const struct flag_type affect_flags[] =
     {	"hide",			AFF_HIDE,		TRUE	},
     {	"infrared",		AFF_INFRARED,		TRUE	},
     {	"invisible",		AFF_INVISIBLE,		TRUE	},
+    {	"obscuring_mist",	AFF_OBSCURING_MIST,	TRUE	},
     {	"pass_door",		AFF_PASS_DOOR,		TRUE	},
+    {	"pass_without_trace",	AFF_PASS_WITHOUT_TRACE,	TRUE	},
     {   "knockout",     AFF_KNOCKOUT,   TRUE    },
     {	"peace",		AFF_PEACE,		TRUE	},
     {	"plague",		AFF_PLAGUE,		TRUE	},
@@ -239,6 +241,9 @@ const struct flag_type affect_flags[] =
     {	"slow",			AFF_SLOW,		TRUE	},
     {	"sneak",		AFF_SNEAK,		TRUE	},
     {	"swim",			AFF_SWIM,		TRUE	},
+    {	"endure_elements",	AFF_ENDURE_ELEMENTS,	TRUE	},
+    {	"water_breathing",	AFF_WATER_BREATHING,	TRUE	},
+    {	"water_walking",	AFF_WATER_WALKING,	TRUE	},
     {	"weaken",		AFF_WEAKEN,		TRUE	},
 //  {	"flame shield",		AFF_FLAME_SHIELD,	TRUE	},
 //  { 	"static shield",	AFF_STATIC_SHIELD,	TRUE	},
@@ -258,6 +263,7 @@ const struct flag_type apply_types[] =
     {	"intelligence",		APPLY_INT,		TRUE	},
     {	"wisdom",		APPLY_WIS,		TRUE	},
     {	"constitution",		APPLY_CON,		TRUE	},
+    {	"charisma",		APPLY_CHA,		TRUE	},
     {	"sex",			APPLY_SEX,		TRUE	},
     {	"class",		APPLY_CLASS,		TRUE	},
     {	"level",		APPLY_LEVEL,		TRUE	},
@@ -538,6 +544,7 @@ const struct flag_type extra_flags2[] =
 {
 
     {	"enone",		ITEM2_NONE,	TRUE	},
+    {	"attuned",		ITEM2_ATTUNE,	TRUE	},
     
     {	NULL,			0,			0	}
 };
@@ -691,6 +698,7 @@ const struct flag_type		item_types	[]	=
     {   "flint",          ITEM_FLINT,           TRUE},
     {   "firesteel",      ITEM_FIRESTEEL,       TRUE},
     {   "firewood",       ITEM_FIREWOOD,        TRUE},
+    {   "tunnel",         ITEM_TUNNEL,          TRUE},
     {	NULL,		0,		0	}
 };
 
@@ -1042,6 +1050,7 @@ const struct flag_type room_aff_flags[] =
     {	"none",		ROOM_AFF_NONE,		TRUE	},
     {	"blind",	ROOM_AFF_BLIND,		TRUE	},
     {	"curse",	ROOM_AFF_CURSE,		TRUE	},
+    {	"fog",		ROOM_AFF_FOG,		TRUE	},
     {	"plague",	ROOM_AFF_PLAGUE,	TRUE	},
     {	"poison",	ROOM_AFF_POISON,	TRUE	},
     {	"sleep",	ROOM_AFF_SLEEP,		TRUE	},
@@ -1271,6 +1280,7 @@ const struct flag_type stat_types[] =
     {	"wis",		STAT_WIS,	TRUE	},
     {	"dex",		STAT_DEX,	TRUE	},
     {	"con",		STAT_CON,	TRUE	},
+    {	"cha",		STAT_CHA,	TRUE	},
     {	NULL,		0,		0	},
 };
 
@@ -1770,6 +1780,33 @@ const struct recipe_entry recipe_table[] =
     {NULL, NULL, NULL, 0, 0, 0, {NULL, NULL, NULL}}
 };
 
+
+/*
+ * Talking weapon messages table (combat)
+ */
+const char *talking_weapon_messages[] =
+{
+    "Come on! You can do better than that!",
+    "You're not even trying!",
+    "You're doing great! Keep it up!",
+    "You're getting better! Almost there!",
+    "Maybe use your dagger next time, you're embarassing me.",
+    NULL
+};
+
+/*
+ * Talking weapon messages table (out-of-combat)
+ */
+const char *talking_weapon_messages2[] =
+{
+    "I hunger for battle... Let's fight that one over there",
+    "Stop putting me in your bags, I am too good for that filthy thing.",
+    "I tire of you wasting my potential.",
+    "I am not your plaything, I am a weapon of war.",
+    "Would it kill you to clean me once in a while?",
+    NULL
+};
+
 /* House furniture table */
 const struct  house_item  house_table [] =
 {
@@ -1779,3 +1816,40 @@ const struct  house_item  house_table [] =
   {   "Healer",     500,        1200,      MOB_VNUM    },
   {   NULL,          0,         0,          0,          }
 };
+
+/*
+ * Hunted animal table for spawning in forest areas
+ */
+ const struct hunted_animal_entry hunted_animal_table[] =
+ {
+     {"fox", "a red fox", "A red fox prowls here.\n\r", 0}, /* race_fox */
+     {"bear", "a brown bear", "A brown bear lumbers here.\n\r", 0}, /* race_bear */
+     {"wolf", "a gray wolf", "A gray wolf stalks here.\n\r", 0}, /* race_wolf */
+     {"rabbit", "a wild rabbit", "A wild rabbit hops here.\n\r", 0}, /* race_cat */
+     {"owl", "a great horned owl", "A great horned owl perches here.\n\r", 0}, /* race_bat */
+     {NULL, NULL, NULL, 0}
+ };
+ 
+ /*
+  * UK wood species table for firewood gathering
+  */
+ const struct foraging_entry uk_wood_table[] =
+ {
+     {"oak branches", "a bundle of oak branches", "A bundle of sturdy oak branches, perfect for a long-burning fire."},
+     {"ash branches", "a bundle of ash branches", "A bundle of ash branches, known for their excellent burning properties."},
+     {"birch branches", "a bundle of birch branches", "A bundle of birch branches, quick to ignite and burn brightly."},
+     {"beech branches", "a bundle of beech branches", "A bundle of beech branches, dense wood that burns slowly and hot."},
+     {"sycamore branches", "a bundle of sycamore branches", "A bundle of sycamore branches, good for kindling and quick fires."},
+     {"elm branches", "a bundle of elm branches", "A bundle of elm branches, though harder to split, burns well once dry."},
+     {"willow branches", "a bundle of willow branches", "A bundle of willow branches, burns quickly but produces good heat."},
+     {"hazel branches", "a bundle of hazel branches", "A bundle of hazel branches, excellent for starting fires and cooking."},
+     {"rowan branches", "a bundle of rowan branches", "A bundle of rowan branches, burns with a pleasant, aromatic smoke."},
+     {"holly branches", "a bundle of holly branches", "A bundle of holly branches, dense wood that burns long and steady."},
+     {"hawthorn branches", "a bundle of hawthorn branches", "A bundle of hawthorn branches, good for a hot, fast-burning fire."},
+     {"blackthorn branches", "a bundle of blackthorn branches", "A bundle of blackthorn branches, dense wood that burns slowly."},
+     {"elder branches", "a bundle of elder branches", "A bundle of elder branches, burns quickly but produces good heat."},
+     {"field maple branches", "a bundle of field maple branches", "A bundle of field maple branches, burns cleanly and evenly."},
+     {"wild cherry branches", "a bundle of wild cherry branches", "A bundle of wild cherry branches, burns with a sweet, pleasant aroma."},
+     {NULL, NULL, NULL}
+ };
+ 

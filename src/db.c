@@ -469,6 +469,7 @@ boot_db( void )
     load_whoborder( );
     load_donation_pits();
     load_tokens();
+    load_attune();
     load_house( );
 
     /*
@@ -1974,6 +1975,7 @@ create_object( OBJ_INDEX_DATA *pObjIndex, int level )
     case ITEM_MAP:
     case ITEM_CLOTHING:
     case ITEM_PORTAL:
+    case ITEM_TUNNEL:
     case ITEM_SHEATH:
 	break;
 

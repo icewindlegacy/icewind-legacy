@@ -408,7 +408,7 @@ End
 #RACE 'dragonborn'
 Act 0
 Aff 0
-AlMax 1000
+AlMax -350
 AlMin -1000
 AlMax -350
 AlMin -1000

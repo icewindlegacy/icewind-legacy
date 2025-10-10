@@ -214,6 +214,14 @@ Flags GH
 Sec 0
 End
 
+#CMD attune
+Pos rest
+Lvl 0
+Log normal
+Flags GH
+Sec 0
+End
+
 #CMD go
 Pos stand
 Lvl 0
@@ -591,6 +599,14 @@ Sec 0
 End
 
 #CMD map
+Pos rest
+Lvl 0
+Log normal
+Flags 0
+Sec 0
+End
+
+#CMD asciimap
 Pos rest
 Lvl 0
 Log normal
@@ -1478,7 +1494,7 @@ Flags GH
 Sec 0
 End
 
-#CMD drop_money
+#CMD toss
 Pos rest
 Lvl 0
 Log normal
@@ -1574,7 +1590,15 @@ Flags 0
 Sec 0
 End
 
-#CMD build_shelter
+#CMD shelter
+Pos stand
+Lvl 0
+Log normal
+Flags 0
+Sec 0
+End
+
+#CMD blanket
 Pos stand
 Lvl 0
 Log normal

@@ -207,3 +207,121 @@ You have learned the art of axe!
 
 The system is complete and ready for use!
 
+---
+
+# New D&D-Style Combat System Implementation
+
+## Overview
+Implemented a complete D&D 3.5/Pathfinder-style combat system to replace the existing THAC0-based system. The new system includes Base Attack Bonus (BAB) progression, multiple attacks per round, critical hits/misses, and authentic armor mechanics.
+
+## Core Combat Mechanics
+
+### Base Attack Bonus (BAB) System
+- **High BAB**: Barbarian, Fighter, Paladin, Ranger (+1 per level)
+- **Medium BAB**: Bard, Cleric, Druid, Monk, Rogue (+3/4 per level)  
+- **Low BAB**: Mage (+1/2 per level)
+
+### Attack Rolls
+- Formula: `1d20 + BAB + STR_mod + weapon_magical_bonus`
+- Natural 1: Automatic miss (critical miss)
+- Natural 20: Triggers critical hit confirmation roll
+- Critical confirmation: `1d20 + BAB + STR_mod + magical_bonus` vs AC
+- Confirmed critical: Double damage, otherwise normal hit
+
+### Multiple Attacks
+- Based on BAB progression and character level
+- High BAB: 6 attacks at level 26+ (+26/+21/+16/+11/+6/+1)
+- Medium BAB: 3 attacks at level 22+ (+15/+10/+5)
+- Low BAB: 2 attacks at level 20+ (+10/+5)
+
+### Dual Wielding
+- Off-hand attack at 1/2 highest BAB
+- Cannot be split into additional attacks
+- Requires `gsn_dual` skill
+
+## Armor System Overhaul
+
+### ITEM_ARMOR Value Structure
+- **value[0]**: Armor type (light/medium/heavy)
+- **value[1]**: Armor bonus (0-8, added to AC)
+- **value[2]**: Max DEX bonus (limits DEX modifier to AC/rolls)
+- **value[3]**: Spell failure chance (percentage)
+
+### Armor Examples
+- **Padded Armor**: Light, +1 AC, +8 max DEX, 5% spell failure
+- **Full Plate**: Heavy, +8 AC, +1 max DEX, 35% spell failure
+
+### Spell Failure Rules
+- **Clerics/Paladins**: No spell failure from armor
+- **Bards**: Spell failure only for medium/heavy armor
+- **Other classes**: Spell failure applies to all armor types
+
+### AC Calculation
+- **Base AC**: 10 + DEX_mod + armor_bonus
+- **DEX limit**: Cannot exceed armor's max DEX bonus
+- **Monks**: 10 + DEX_mod + WIS_mod (no armor bonus, no DEX limit)
+
+## Implementation Details
+
+### Files Created/Modified
+- **new_combat.c**: Complete new combat system
+- **merc.h**: Added function declarations
+- **interp.c**: Added `testnewcombat` command
+- **Makefile**: Added new_combat.c to build
+
+### Key Functions
+- `new_one_hit()`: Main combat entry point
+- `get_bab()`: Calculates BAB from highest class level
+- `get_attack_count()`: Determines number of attacks per round
+- `get_new_ac()`: Calculates new-style AC with armor limits
+- `perform_attack_roll()`: Handles attack rolls and criticals
+- `calculate_damage()`: Computes damage with critical multipliers
+
+### Multiclass Integration
+- Uses highest class level for BAB calculation
+- Maintains existing multiclass character progression
+- Seamless integration with current leveling system
+
+## Testing Status
+
+### Completed Features
+- ✅ BAB progression tables and lookup functions
+- ✅ Multiple attack system with proper sequencing
+- ✅ Critical hit/miss mechanics with confirmation
+- ✅ Dual wielding support
+- ✅ Monk AC calculation (10 + DEX + WIS)
+- ✅ Test command for verification
+- ✅ Clean compilation with no errors
+
+### Ready for Integration
+The new combat system is complete and ready to replace the existing THAC0 system. It can be integrated by:
+1. Commenting out old combat calls in `fight.c`
+2. Replacing with `new_one_hit()` calls
+3. Testing in-game combat scenarios
+4. Rolling back easily if needed (modular design)
+
+## Usage Examples
+
+### Testing Combat Stats
+```
+> testnewcombat
+New Combat System Test:
+Class: fighter (Level 7)
+BAB Category: High
+BAB: +7
+Attacks per round: 2
+Attack sequence: +7/+2
+New AC: 17 (10 + DEX3 + armor4)
+```
+
+### Armor System
+```
+> oedit <armor>
+> v0 2          # Heavy armor
+> v1 8          # +8 AC bonus
+> v2 1          # +1 max DEX
+> v3 35         # 35% spell failure
+```
+
+The new combat system brings authentic D&D mechanics to Icewind Legacy while maintaining compatibility with the existing multiclass system.
+

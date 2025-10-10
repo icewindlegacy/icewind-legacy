@@ -14,7 +14,7 @@ Flags       F
 Color       7
 ExitSize    medium
 Created     1635696280
-Changed     1759642926 Sun Oct  5 01:42:06 2025
+Changed     1759899792 Wed Oct  8 01:03:12 2025
 End
 
 #MOBILES
@@ -57,10 +57,10 @@ Its eyes glow red from the coal fires inside the body that power this monstrosit
 ~
 school monster~
 ABGU DFJZ 0 0 0 0 0
-2 10 1d4+10 1d1+99 1d4+0 none
+2 10 1d1+5 1d1+99 1d4+0 none
 17 17 17 17
 0 AB 0 C
-stand stand neutral 0
+stand stand neutral 10
 0 0 medium 0 easy ''
 #603
 healer academy~
@@ -96,10 +96,10 @@ An Arena Combatant looks for someone to battle
 ~
 dragonborn~
 ACG 0 0 C 500 -100 602
-3 0 1d4+25 1d1+114 1d5+1 flbite
-8 9 9 9
+2 0 2d4+1 1d1+114 2d0+3 flbite
+0 0 0 0
 M 0 HIJKL 0
-stand stand male 215
+stand stand male 20
 0 0 medium 0 hard ''
 #606
 Arena Combatant~
@@ -109,10 +109,10 @@ An Arena Combatant looks for someone to battle
 ~
 tiefling~
 ACG Z 0 A -200 -1000 602
-4 0 1d4+30 1d1+124 2d4+1 claw
-8 8 8 8
+2 0 2d4+1 1d1+124 2d0+3 claw
+0 0 0 0
 0 0 H 0
-stand stand male 0
+stand stand male 20
 0 0 medium 0 hard ''
 #607
 Arena Combatant~
@@ -122,10 +122,10 @@ An Arena Combatant looks for someone to battle
 ~
 dwarf~
 ACG JZ 0 B -10 500 602
-3 0 1d4+25 1d1+114 1d5+1 none
-9 8 9 9
+2 0 2d4+1 1d1+114 2d0+1 none
+0 0 0 0
 0 0 LQ 0
-stand stand female 0
+stand stand female 20
 0 0 medium 0 hard ''
 #608
 deformed beast leper arena~
@@ -365,13 +365,13 @@ drink I 0 A
 0 0 0 0
 0 0 0 0 0
 #616
-simple flint and steel~
-simple flint and steel~
-A simple flat piece of steel and a jagged piece of flint~
+simple flint stone jagged~
+a simple piece of flint~
+A jagged bit of flint rock ~
 ~
-firesteel 0 0 A
+flint 0 0 A
 0 0 0 0 0 0
-0 0 0 0 P
+0 10 3 0 P
 0 0 0 0
 0 0 0 0 0
 #617
@@ -382,6 +382,16 @@ wood~
 firewood 0 0 A
 0 0 0 0 0 0
 0 640 0 0 P
+0 0 0 0
+0 0 0 0 0
+#618
+firesteel simple bar steel~
+a simple firesteel~
+A piece of simple steel bar with scratches on it~
+steel~
+firesteel 0 0 0
+0 0 0 0 0 0
+0 10 3 0 P
 0 0 0 0
 0 0 0 0 0
 #0
@@ -2214,7 +2224,6 @@ S
 0
 
 #SPECIALS
-M 605 spec_breath_any
 S
 
 #$

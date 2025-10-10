@@ -140,6 +140,7 @@ do_asave( CHAR_DATA *ch, char *argument )
 	save_sysconfig( );
 	save_userlist_force( );
 	save_tokens( );
+	save_attune( );
 	return;
     }
 

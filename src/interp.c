@@ -61,6 +61,7 @@
 #include "recycle.h"
 
 DECLARE_DO_FUN( do_rnum );
+DECLARE_DO_FUN( do_asciimap );
 
 /*
  * Log-all switch.
@@ -108,6 +109,7 @@ struct	cmd_type	cmd_table	[] =
     { "exits",		do_exits,	POS_RESTING,	 0,  LOG_NORMAL, 0, 2 },
     { "finger",		do_finger,	POS_DEAD,	L2,  LOG_NORMAL, 0, 2 },
     { "get",		do_get,		POS_RESTING,	 0,  LOG_NORMAL, CMD_DEAD|CMD_UNHIDE, 2 },
+    { "attune",		do_attune,	POS_RESTING,	 0,  LOG_NORMAL, CMD_DEAD|CMD_UNHIDE, 2 },
     { "go",		do_enter,	POS_STANDING,	 0,  LOG_NORMAL, CMD_NOLIST|CMD_DEAD|CMD_UNHIDE, 2 },
 /*  { "goto",           do_goto,        POS_DEAD,       L8,  LOG_NORMAL, 0 }, */
     { "group",          do_group,       POS_SLEEPING,    0,  LOG_NORMAL, CMD_DEAD|CMD_UNHIDE, 2 },
@@ -165,6 +167,7 @@ struct	cmd_type	cmd_table	[] =
     { "info",           do_info,	POS_SLEEPING,	 0,  LOG_NORMAL, 0,4 },
     { "kingdoms",	do_kingdoms,	POS_SLEEPING,	 0,  LOG_NORMAL, 0,4 },
     { "map",		do_map,		POS_RESTING,	 0,  LOG_NORMAL, 0,4 },
+    { "asciimap",	do_asciimap,	POS_RESTING,	 0,  LOG_NORMAL, 0,4 },
     { "matrix",		do_matrix,	POS_DEAD,	 0,  LOG_NORMAL, 0,4 },
     { "memorize",		do_memorize,	POS_DEAD,	 0,  LOG_NORMAL, 0,4 },
     { "memlist",		do_memlist,	POS_DEAD,	 0,  LOG_NORMAL, 0,4 },
@@ -290,7 +293,7 @@ struct	cmd_type	cmd_table	[] =
     { "donate",		do_donate,	POS_RESTING,	 0,  LOG_NORMAL, CMD_DEAD|CMD_UNHIDE,5 },
     { "drink",		do_drink,	POS_RESTING,	 0,  LOG_NORMAL, CMD_DEAD|CMD_UNHIDE,5 },
     { "drop",		do_drop,	POS_RESTING,	 0,  LOG_NORMAL, CMD_DEAD|CMD_UNHIDE,5 },
-    { "drop_money",		do_moneydrop,	POS_RESTING,	 0,  LOG_NORMAL, CMD_DEAD|CMD_UNHIDE,5 },
+    { "toss",		do_moneydrop,	POS_RESTING,	 0,  LOG_NORMAL, CMD_DEAD|CMD_UNHIDE,5 },
     { "dual",		do_dual,	POS_RESTING,	 0,  LOG_NORMAL, CMD_DEAD|CMD_UNHIDE,5 },
     { "eat",		do_eat,		POS_RESTING,	 0,  LOG_NORMAL, CMD_DEAD|CMD_UNHIDE,5 },
     { "envenom",	do_envenom,	POS_RESTING,	 0,  LOG_NORMAL, CMD_DEAD|CMD_UNHIDE,5 },
@@ -302,7 +305,7 @@ struct	cmd_type	cmd_table	[] =
     { "cook",		do_cook,	POS_STANDING,	 0,  LOG_NORMAL, 0, 4},
     { "campfire",	do_campfire,	POS_STANDING,	 0,  LOG_NORMAL, 0, 4},
     { "gather",		do_gather,	POS_STANDING,	 0,  LOG_NORMAL, 0, 4},
-    { "build_shelter",	do_build_shelter,	POS_STANDING,	 0,  LOG_NORMAL, 0, 4},
+    { "shelter",	do_build_shelter,	POS_STANDING,	 0,  LOG_NORMAL, 0, 4},
     { "blanket",		do_blanket,	POS_STANDING,	 0,  LOG_NORMAL, 0, 4},
     { "phouse",		do_house,	POS_RESTING,	 0,  1,  LOG_NORMAL, 1 },
     { "objbuy",		do_objbuy,	POS_RESTING,	 0,  1,  LOG_NORMAL, 1 },
@@ -713,6 +716,11 @@ struct	cmd_type	cmd_table	[] =
      */
     { "levelup",	do_levelup,	POS_DEAD,	 0,  LOG_NORMAL, 0, 2 },
     { "multiclass",	do_multiclass,	POS_DEAD,	 0,  LOG_NORMAL, 0, 2 },
+
+    /*
+     * New combat system test command.
+     */
+    { "testnewcombat",	do_test_new_combat,	POS_DEAD,	 0,  LOG_NORMAL, 0, 0 },
 
     /*
      * End of list.

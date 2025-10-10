@@ -17,17 +17,17 @@ C_FILES = act_clan.c act_comm.c act_info.c act_misc.c act_move.c \
           alias.c ban.c boards.c combat.c combat_act.c comm.c const.c \
 	  control_animal.c db.c db2.c debug.c donation.c effects.c event.c  \
 	  fight.c fight2.c flags.c globals.c gsn.c \
-	  handler.c healer.c house.c interp.c items.c item_table.c lookup.c \
+	  handler.c healer.c house.c interp.c item_generator.c items.c item_table.c lookup.c \
 	  magic.c magic2.c \
-	  mob_cmds.c multi.c multiclass.c music.c nanny.c \
+	  mob_cmds.c multi.c multiclass.c music.c nanny.c new_combat.c \
 	  olc.c olc_area.c olc_board.c olc_clan.c olc_cmd.c olc_dream.c \
 	  olc_forge.c olc_grp.c olc_help.c olc_mob.c olc_obj.c olc_prog.c \
 	  olc_proj.c olc_race.c olc_room.c olc_save.c olc_skill.c \
 	  olc_social.c \
 	  overland.c progs.c quest.c rand_str.c \
 	  recycle.c save.c scan.c skills.c skilltable.c songs.c \
-	  special.c sql.c \
-	  string.c tables.c track.c update.c whoweb.c \
+	  special.c sql.c survival.c \
+	  string.c tables.c update.c whoweb.c \
 	  
 
 O_FILES := $(patsubst %.c,o/%.o,$(C_FILES))

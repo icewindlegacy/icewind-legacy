@@ -940,6 +940,7 @@ new_obj( void )
     *obj = obj_zero;
     VALIDATE( obj );
     obj->stype = STYPE_OBJ;
+    obj->attuned_to = NULL;  /* Initialize attuned_to field */
 
     return obj;
 }
@@ -973,6 +974,7 @@ free_obj( OBJ_DATA *obj )
     free_string( obj->description );
     free_string( obj->short_descr );
     free_string( obj->owner     );
+    free_string( obj->attuned_to );
 
     while ( obj->event_first != NULL )
 	dequeue_event( obj->event_first );
@@ -1465,6 +1467,7 @@ new_char( void )
     ch->max_mana                = 100;
     ch->move                    = 200;
     ch->max_move                = 200;
+    ch->train                   = 0;  /* No trains at level 1 */
     for (i = 0; i < MAX_STATS; i ++)
     {
         ch->perm_stat[i] = 13;

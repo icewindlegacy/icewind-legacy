@@ -181,7 +181,7 @@ move_char( CHAR_DATA *ch, int door, bool follow )
         } 
 
 
-	if(( in_room->sector_type == SECT_WATER_SWIM || to_room->sector_type == SECT_WATER_SWIM ) && !IS_AFFECTED(ch, AFF_SWIM) && !IS_AFFECTED(ch,AFF_FLYING))
+	if(( in_room->sector_type == SECT_WATER_SWIM || to_room->sector_type == SECT_WATER_SWIM ) && !IS_AFFECTED(ch, AFF_SWIM) && !IS_AFFECTED(ch,AFF_FLYING) && !IS_AFFECTED(ch, AFF_WATER_WALKING))
 	  {
 	    OBJ_DATA *obj;
 	    bool has_boat;
@@ -965,6 +965,22 @@ check_room_aff( CHAR_DATA *ch )
         act_color( AT_MAGIC, "You fall into a deep stupor.", ch, NULL, NULL, TO_CHAR, POS_RESTING );
         act_color( AT_MAGIC, "$n falls into a deep stupor.", ch, NULL, NULL, TO_ROOM, POS_RESTING );
         ch->position = POS_SLEEPING;
+        return;
+    }
+
+    if ( IS_SET( room->affect_flags, ROOM_AFF_FOG ) )
+    {
+        if ( ch->fighting != NULL )
+            stop_fighting( ch, FALSE );
+
+        if ( ( mount = MOUNTED( ch ) ) != NULL )
+        {
+            if ( mount->fighting != NULL )
+                stop_fighting( mount, FALSE );
+        }
+
+        act_color( AT_MAGIC, "The thick fog makes it impossible to see anyone to fight.",
+            ch, NULL, NULL, TO_CHAR, POS_RESTING );
         return;
     }
 
@@ -2878,13 +2894,21 @@ do_train( CHAR_DATA *ch, char *argument )
 	pOutput     = "constitution";
     }
 
+    else if ( !str_cmp(argument, "cha" ) )
+    {
+	if ( class_table[ch->class].attr_prime == STAT_CHA )
+	    cost    = 1;
+	stat	    = STAT_CHA;
+	pOutput     = "charisma";
+    }
+
     else if ( !str_cmp(argument, "hp" ) )
 	cost = 1;
 
     else if ( !str_cmp(argument, "mana" ) )
 	cost = 1;
   
-  else if ( !str_cmp(argument, "move" ) )
+    else if ( !str_cmp(argument, "move" ) )
 	cost = 1;
 
     else
@@ -2900,6 +2924,8 @@ do_train( CHAR_DATA *ch, char *argument )
 	    strcat( buf, " dex" );
 	if ( ch->perm_stat[STAT_CON] < get_max_train(ch,STAT_CON))  
 	    strcat( buf, " con" );
+	if ( ch->perm_stat[STAT_CHA] < get_max_train(ch,STAT_CHA))  
+	    strcat( buf, " cha" );
 	strcat( buf, " hp mana move");
 
 	if ( buf[strlen(buf)-1] != ':' )
@@ -3439,6 +3465,9 @@ void
 do_enter( CHAR_DATA *ch, char *argument)
 {    
     ROOM_INDEX_DATA *	location;
+    ROOM_INDEX_DATA *	old_room;
+    OBJ_DATA *		portal;
+    CHAR_DATA *		fch, *fch_next;
     int			size;
 
     if ( ch->fighting != NULL )
@@ -3453,10 +3482,6 @@ do_enter( CHAR_DATA *ch, char *argument)
     /* nifty portal stuff */
     if ( argument[0] != '\0' )
     {
-        ROOM_INDEX_DATA *old_room;
-	OBJ_DATA *portal;
-	CHAR_DATA *fch, *fch_next;
-
         old_room = ch->in_room;
 
 	portal = get_obj_list( ch, argument,  ch->in_room->contents );
@@ -3467,12 +3492,32 @@ do_enter( CHAR_DATA *ch, char *argument)
 	    return;
 	}
 
-	if ( portal->item_type != ITEM_PORTAL 
-        ||  ( IS_SET( portal->value[1], GATE_CLOSED ) && !IS_TRUSTED( ch, ANGEL ) ) )
+	if ( portal->item_type != ITEM_PORTAL && portal->item_type != ITEM_TUNNEL )
 	{
 	    send_to_char( "You can't seem to find a way in.\n\r", ch );
 	    return;
 	}
+
+	/* Handle both portals and tunnels */
+	if ( portal->item_type == ITEM_PORTAL || portal->item_type == ITEM_TUNNEL )
+	{
+	    if ( portal->item_type == ITEM_PORTAL )
+	    {
+		if ( IS_SET( portal->value[1], GATE_CLOSED ) && !IS_TRUSTED( ch, ANGEL ) )
+		{
+		    send_to_char( "You can't seem to find a way in.\n\r", ch );
+		    return;
+		}
+	    }
+	    else /* ITEM_TUNNEL */
+	    {
+		/* For tunnels, value[0] is the destination object vnum */
+		if ( portal->value[0] <= 0 )
+		{
+		    send_to_char( "This tunnel doesn't seem to go anywhere.\n\r", ch );
+		    return;
+		}
+	    }
 
 	if ( !IS_TRUSTED( ch, ANGEL ) && !IS_SET( portal->value[1], GATE_NOCURSE )
 	&&   ( IS_AFFECTED( ch, AFF_CURSE ) 
@@ -3489,7 +3534,43 @@ do_enter( CHAR_DATA *ch, char *argument)
 	    return;
 	}
 
-	if ( IS_SET( portal->value[1], GATE_RANDOM ) || portal->value[3] == -1 )
+	if ( portal->item_type == ITEM_TUNNEL )
+	{
+	    /* For tunnels, find the destination object and get its room */
+	    OBJ_INDEX_DATA *dest_index;
+	    OBJ_DATA *dest_obj;
+	    
+	    dest_index = get_obj_index( portal->value[0] );
+	    if ( dest_index == NULL )
+	    {
+		send_to_char( "The tunnel destination object doesn't exist.\n\r", ch );
+		return;
+	    }
+
+	    /* Find an instance of the destination object that's in a room */
+	    dest_obj = NULL;
+	    for ( dest_obj = object_list; dest_obj != NULL; dest_obj = dest_obj->next )
+	    {
+		if ( dest_obj->pIndexData == dest_index && dest_obj->in_room != NULL )
+		    break;
+	    }
+
+	    if ( dest_obj == NULL )
+	    {
+		send_to_char( "The tunnel destination is not accessible.\n\r", ch );
+		return;
+	    }
+
+	    /* Check if destination is in a valid room */
+	    if ( dest_obj->in_room->area == NULL )
+	    {
+		send_to_char( "The tunnel destination is in an invalid area.\n\r", ch );
+		return;
+	    }
+
+	    location = dest_obj->in_room;
+	}
+	else if ( IS_SET( portal->value[1], GATE_RANDOM ) || portal->value[3] == -1 )
 	{
 	    location = get_random_room( ch );
 	    portal->value[3] = location->vnum; /* for record keeping :) */
@@ -3619,12 +3700,139 @@ do_enter( CHAR_DATA *ch, char *argument)
 	    }
 	    extract_obj(portal);
 	}
-	rprog_enter_trigger( ch->in_room, ch );
-	check_nofloor( ch );
-	return;
+	    rprog_enter_trigger( ch->in_room, ch );
+	    check_nofloor( ch );
+	    return;
+	}
     }
 
-    send_to_char("Nope, can't do it.\n\r",ch);
+    /* Common logic for both portals and tunnels */
+    if ( location == NULL
+    ||   location == old_room
+    ||   !can_see_room(ch,location) 
+    ||   ( room_is_private( location ) && !IS_TRUSTED( ch, IMPLEMENTOR ) ) )
+    {
+       act( "$p`X doesn't seem to go anywhere.", ch, portal, NULL, TO_CHAR );
+       return;
+    }
+
+    if ( IS_NPC(ch ) && IS_SET( ch->act, ACT_AGGRESSIVE )
+    &&   IS_SET( location->room_flags, ROOM_LAW ) )
+    {
+        send_to_char( "Something prevents you from leaving...\n\r", ch );
+        return;
+    }
+
+    /* Size check only applies to portals */
+    if ( portal->item_type == ITEM_PORTAL )
+    {
+	if ( IS_SET( portal->value[1], GATE_WINDOW ) )
+	{
+	    send_to_char( "You can't do that.\n\r", ch );
+	    return;
+	}
+
+	if ( ch->mount != NULL && ch->riding )
+	{
+	    size = UMAX( ch->size, ch->mount->size );
+	    if ( ch->size >= ch->mount->size - 2
+	    &&   ch->mount->size >= ch->size - 2 )
+	        size = UMIN( size + 1, SIZE_TITANIC );
+        }
+        else
+	    size = ch->size;
+
+        if ( size > portal->value[4] )
+        {
+	    send_to_char( "You ", ch );
+	    if ( ch->riding )
+	        ch_printf( ch, "and %s ", PERS( ch->mount, ch ) );
+            send_to_char( "can't fit through there.\n\r", ch );
+            return;
+        }
+    }
+
+    act_color( AT_ACTION, "$n steps into $p.", ch, portal, NULL, TO_ROOM, POS_RESTING );
+
+    if ( portal->item_type == ITEM_TUNNEL )
+    {
+	act( "You enter the tunnel.", ch, portal, NULL, TO_CHAR );
+    }
+    else if ( IS_SET( portal->value[1], GATE_NORMAL_EXIT ) )
+	act( "You enter $p.", ch, portal, NULL, TO_CHAR );
+    else
+	act( "You walk through $p`X and find yourself somewhere else...",
+	    ch, portal, NULL, TO_CHAR ); 
+
+    char_from_room( ch );
+    char_to_room( ch, location );
+
+    if ( portal->item_type == ITEM_PORTAL && IS_SET( portal->value[1], GATE_GOWITH ) ) /* take the gate along */
+    {
+	obj_from_room( portal );
+	obj_to_room( portal, location );
+    }
+
+    if ( portal->item_type == ITEM_TUNNEL )
+	act( "$n has arrived through the tunnel.", ch, portal, NULL, TO_ROOM );
+    else if ( IS_SET( portal->value[1], GATE_NORMAL_EXIT ) )
+	act( "$n has arrived.", ch, portal, NULL, TO_ROOM );
+    else
+	act( "$n has arrived through $p.", ch, portal, NULL, TO_ROOM );
+
+    do_function( ch, &do_look, "auto" );
+
+    /* charges - only for portals */
+    if ( portal->item_type == ITEM_PORTAL && portal->value[0] > 0 )
+    {
+	portal->value[0]--;
+	if (portal->value[0] == 0)
+	    portal->value[0] = -1;
+    }
+
+    /* protect against circular follows */
+    if ( old_room == location )
+	return;
+
+    for ( fch = old_room->people; fch != NULL; fch = fch_next )
+    {
+        fch_next = fch->next_in_room;
+
+        if ( !IS_VALID(  portal ) || (portal->item_type == ITEM_PORTAL && portal->value[0] == -1) ) 
+	/* no following through dead portals */
+            continue;
+
+        if ( fch->master == ch && IS_AFFECTED(fch,AFF_CHARM)
+        &&   fch->position < POS_STANDING)
+        	do_function(fch, &do_stand, "");
+
+        if ( fch->master == ch && fch->position == POS_STANDING)
+        {
+            if (IS_SET(ch->in_room->room_flags,ROOM_LAW)
+            &&  (IS_NPC(fch) && IS_SET(fch->act,ACT_AGGRESSIVE)))
+            {
+                act("You can't bring $N into the city.",
+                	ch,NULL,fch,TO_CHAR);
+                act("You aren't allowed in the city.",
+                	fch,NULL,NULL,TO_CHAR);
+                continue;
+            }
+
+            if ( portal->item_type == ITEM_PORTAL && IS_SET( portal->value[1], GATE_GOWITH ) )
+            {
+                obj_from_room( portal );
+                obj_to_room( portal, location );
+            }
+
+            act_color( AT_ACTION, "$n follows $N.", fch, ch, NULL, TO_ROOM, POS_RESTING );
+            char_from_room( fch );
+            char_to_room( fch, location );
+            act_color( AT_ACTION, "$n has arrived.", fch, NULL, NULL, TO_ROOM, POS_RESTING );
+            do_function( fch, &do_look, "auto" );
+        }
+    }
+    rprog_enter_trigger( ch->in_room, ch );
+    check_nofloor( ch );
     return;
 }
 
